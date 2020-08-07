@@ -99,6 +99,18 @@ const router = new Router({
                     name: 'Informacion Solicitud ',
                     component: () =>
                         import ('./views/agenteView/InformacionSolicitud.vue')
+                },
+                {
+                    path: '/agenteView/FormularioAsignar',
+                    name: 'Asignar Solicitud ',
+                    component: () =>
+                        import ('./views/agenteView/FormularioAsignar.vue')
+                },
+                {
+                    path: '/agenteView/FormularioModificar',
+                    name: 'Modificar Solicitud ',
+                    component: () =>
+                        import ('./views/agenteView/FormularioModificar.vue')
                 }
 
 

@@ -1,128 +1,147 @@
 <template>
-  <div>
-    <h4>
-      <vs-divider>Crear Solicitud</vs-divider>
-    </h4>
+    <div>
+        <h4>
+            <vs-divider>Crear Solicitud</vs-divider>
+        </h4>
+        <div class="vx-row">
+            <div class="vx-col md:w-1/2 w-full mt-5">
+                <h3>Usuario Solicitante : {{ name }}</h3>
+            </div>
+        </div>
+        <h4>
+            <vs-divider>Lugar del problema</vs-divider>
+        </h4>
+        <div class="vx-row">
+            <div class="vx-col md:w-1/2 w-full mt-5">
+                <vs-select
+                    v-model="city"
+                    class="w-full select-large"
+                    label="Edificio"
+                >
+                    <vs-select-item
+                        :key="index"
+                        :value="item.value"
+                        :text="item.text"
+                        v-for="(item, index) in cityOptions"
+                        class="w-full"
+                    />
+                </vs-select>
+            </div>
+            <div class="vx-col md:w-1/2 w-full mt-5">
+                <vs-select
+                    v-model="city"
+                    class="w-full select-large"
+                    label="Servicio"
+                >
+                    <vs-select-item
+                        :key="index"
+                        :value="item.value"
+                        :text="item.text"
+                        v-for="(item, index) in cityOptions"
+                        class="w-full"
+                    />
+                </vs-select>
+            </div>
+            <div class="vx-col md:w-1/2 w-full mt-5">
+                <vs-select
+                    v-model="city"
+                    class="w-full select-large"
+                    label="Unidad Especifica"
+                >
+                    <vs-select-item
+                        :key="index"
+                        :value="item.value"
+                        :text="item.text"
+                        v-for="(item, index) in cityOptions"
+                        class="w-full"
+                    />
+                </vs-select>
+            </div>
+            <div class="vx-col md:w-1/2 w-full mt-5">
+                <vs-select
+                    v-model="city"
+                    class="w-full select-large"
+                    label="Tipo de Reparacion"
+                >
+                    <vs-select-item
+                        :key="index"
+                        :value="item.value"
+                        :text="item.text"
+                        v-for="(item, index) in cityOptions"
+                        class="w-full"
+                    />
+                </vs-select>
+            </div>
+        </div>
 
-    <vs-card fixedHeight>
-      <div slot="header">
-        <h3>Usuario Solicitante</h3>
-      </div>
-      <div>
-        <span>???</span>
-      </div>
-    </vs-card>
-    <h4>
-      <vs-divider>Ubicacion</vs-divider>
-    </h4>
-    <vx-card alignment="center" vs-align="center">
-      <vs-button class="btnx" type="filled">Edificio</vs-button>
-      <vs-dropdown>
-        <vs-button class="btn-drop" type="filled" icon="expand_more"></vs-button>
-        <!-- <a href="#">Hola mundo</a> -->
-        <vs-dropdown-menu>
-          <vs-dropdown-item>option 1</vs-dropdown-item>
-          <vs-dropdown-item>option 2</vs-dropdown-item>
-          <vs-dropdown-group>
-            <vs-dropdown-item>option 1</vs-dropdown-item>
-            <vs-dropdown-item>option 2</vs-dropdown-item>
-          </vs-dropdown-group>
-          <vs-dropdown-item divider>option 3</vs-dropdown-item>
-        </vs-dropdown-menu>
-      </vs-dropdown>
-      <span></span>
-      <vs-button class="btnx" type="filled">Servicio</vs-button>
-      <vs-dropdown>
-        <vs-button class="btn-drop" type="filled" icon="expand_more"></vs-button>
-        <!-- <a href="#">Hola mundo</a> -->
+        <h4>
+            <vs-divider>Informacion del Problema</vs-divider>
+        </h4>
+        <div class="vx-row">
+            <div class="vx-col w-full mt-5">
+                <vs-input
+                    label="Titulo problema"
+                    placeholder="Ej. Falla de red en equipo x"
+                    v-model="valorTitulo"
+                />
 
-        <vs-dropdown-menu>
-          <vs-dropdown-item>option 1</vs-dropdown-item>
-          <vs-dropdown-item>option 2</vs-dropdown-item>
-          <vs-dropdown-group>
-            <vs-dropdown-item>option 1</vs-dropdown-item>
-            <vs-dropdown-item>option 2</vs-dropdown-item>
-          </vs-dropdown-group>
-          <vs-dropdown-item divider>option 3</vs-dropdown-item>
-        </vs-dropdown-menu>
-      </vs-dropdown>
-      <span></span>
-      <vs-button class="btnx" type="filled">Unidad Especifica</vs-button>
-      <vs-dropdown>
-        <vs-button class="btn-drop" type="filled" icon="expand_more"></vs-button>
-        <!-- <a href="#">Hola mundo</a> -->
+                <br />
+                <vs-textarea
+                    label="Descripcion de la problematica"
+                    v-model="areaT"
+                />
+            </div>
+        </div>
 
-        <vs-dropdown-menu>
-          <vs-dropdown-item>option 1</vs-dropdown-item>
-          <vs-dropdown-item>option 2</vs-dropdown-item>
-          <vs-dropdown-group>
-            <vs-dropdown-item>option 1</vs-dropdown-item>
-            <vs-dropdown-item>option 2</vs-dropdown-item>
-          </vs-dropdown-group>
-          <vs-dropdown-item divider>option 3</vs-dropdown-item>
-        </vs-dropdown-menu>
-      </vs-dropdown>
-      <span></span>
-      <vs-button class="btnx" type="filled">Asignar Unidad de reparacion</vs-button>
-      <vs-dropdown>
-        <vs-button class="btn-drop" type="filled" icon="expand_more"></vs-button>
-        <!-- <a href="#">Hola mundo</a> -->
+        <br />
 
-        <vs-dropdown-menu>
-          <vs-dropdown-item>option 1</vs-dropdown-item>
-          <vs-dropdown-item>option 2</vs-dropdown-item>
-          <vs-dropdown-group>
-            <vs-dropdown-item>option 1</vs-dropdown-item>
-            <vs-dropdown-item>option 2</vs-dropdown-item>
-          </vs-dropdown-group>
-          <vs-dropdown-item divider>option 3</vs-dropdown-item>
-        </vs-dropdown-menu>
-      </vs-dropdown>
-    </vx-card>
-    <vs-card></vs-card>
-    <h4>
-      <vs-divider>Estado Solicitud</vs-divider>
-    </h4>
-    <vs-card fixedHeight>
-      <vs-input label="Titulo" placeholder="Ej. Falla enchufe sala cirugia" v-model="value1" />
-      <vs-textarea label="Descripcion de la solicitud" v-model="textarea" />
-      <vs-button type="gradient">Agregar</vs-button>
-    </vs-card>
-  </div>
+        <div class="vx-row">
+            <div class="vx-col w-full">
+                <vs-button class="mr-3 mb-2">Enviar</vs-button>
+                <vs-button color="warning" class="mb-2">Limpiar</vs-button>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
+import Datepicker from "vuejs-datepicker";
+import flatPickr from "vue-flatpickr-component";
+import "flatpickr/dist/flatpickr.css";
+import { FormWizard, TabContent } from "vue-form-wizard";
+import "vue-form-wizard/dist/vue-form-wizard.min.css";
+
 export default {
-  data: () => ({
-    textarea: "",
-    value1: "",
-  }),
+    data: () => ({
+        cityOptions: [
+            { text: "New York", value: "new-york" },
+            { text: "Chicago", value: "chicago" },
+            { text: "San Francisco", value: "san-francisco" },
+            { text: "Boston", value: "boston" }
+        ],
+        name: "Rick S.",
+        areaT: "",
+        valorTitulo: "",
+        city: "new-york"
+    }),
+    methods: {}
 };
 </script>
 
 <style lang="stylus">
-.examplex {
+.examplex
   display: flex;
   align-items: center;
   justify-content: center;
-
-  button {
+  button
     margin: 0px !important;
-
-    &.btnx {
+    &.btnx
       margin-left: 10px !important;
       border-radius: 5px 0px 0px 5px;
-    }
-
-    &.btn-drop {
+    &.btn-drop
       border-radius: 0px 5px 5px 0px;
-      border-left: 1px solid rgba(255, 255, 255, 0.2);
-    }
-  }
-}
-</style>
-<style lang="stylus">
-.cardx {
+      border-left: 1px solid rgba(255, 255, 255,.2);
+      .cardx {
   margin: 15px;
 }
 </style>
