@@ -129,7 +129,10 @@ export default {
                             localStorage.setItem("run", response.data[0].rut);
                             console.log(response.data[0].nombre);
                             sw = 1;
-                            pr = 3;
+
+                            if (response.data[0].estado_login == 1) {
+                                pr = 3;
+                            }
                             if (response.data[0].estado_login == 2) {
                                 pr = 4;
                             }

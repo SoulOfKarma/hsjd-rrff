@@ -205,7 +205,7 @@
                 <vs-input
                     disabled="true"
                     label-placeholder="Dias Ejecucion"
-                    v-model="diaCalculado"
+                    v-model="diasCalculados"
                 />
             </div>
 
@@ -213,7 +213,7 @@
                 <vs-input
                     disabled="true"
                     label-placeholder="Horas Ejecucion"
-                    v-model="horasCalculadas"
+                    v-model="calcularHorasTrabajo"
                 />
             </div>
         </div>
@@ -235,6 +235,7 @@ import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
 import { FormWizard, TabContent } from "vue-form-wizard";
 import "vue-form-wizard/dist/vue-form-wizard.min.css";
+import moment from "moment";
 
 export default {
     data: () => ({
@@ -246,6 +247,14 @@ export default {
         city: "new-york",
         fromDate: null,
         toDate: null,
+        fecha1: moment()
+            .startOf("day")
+            .fromNow(),
+        fecha2: moment()
+            .endOf("day")
+            .fromNow(),
+        hora1: moment("8:32", "HH:mm"),
+        hora2: moment("12:32", "HH:mm"),
         configFromdateTimePicker: {
             minDate: new Date(),
             maxDate: null
@@ -269,10 +278,19 @@ export default {
     }),
     computed: {
         calcularHorasTrabajo() {
-            this.horaCalculada = this.time1 - this.time2;
+            this.hora1 = moment(this.time1, "HH:mm");
+            this.hora2 = moment(this.time2, "HH:mm");
+            this.horaCalculada = moment
+                .duration(this.hora2 - this.hora1)
+                .humanize();
+            return this.horaCalculada;
         },
         diasCalculados() {
-            this.diaCalculado = this.fromDate - this.toDate;
+            this.fecha1 = moment(this.fromDate);
+            this.fecha2 = moment(this.toDate);
+            this.diaCalculado = this.fecha2.diff(this.fecha1, "days");
+            return this.diaCalculado;
+            // this.diaCalculado = this.fromDate - this.toDate;
         }
     },
     methods: {

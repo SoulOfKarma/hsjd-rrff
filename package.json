@@ -84,6 +84,7 @@
         "postcss-rtl": "^1.5.0"
     },
     "dependencies": {
+        "moment": "^2.27.0",
         "rut.js": "^1.0.2"
     }
 }

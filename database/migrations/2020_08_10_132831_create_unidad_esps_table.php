@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUnidadExesTable extends Migration
+class CreateUnidadEspsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateUnidadExesTable extends Migration
      */
     public function up()
     {
-        Schema::create('unidad_exes', function (Blueprint $table) {
+        Schema::create('unidad_esps', function (Blueprint $table) {
             $table->id();
-            $table->string('descripcionUnidadEx');
-            $table->bigInteger('id_unidadEx')->unsigned();
-            $table->foreign('id_unidadEx')->references('id')->on('servicios');
+            $table->string('descripcionUnidadEsp');
+            $table->bigInteger('id_servicio')->unsigned();
+            $table->foreign('id_servicio')->references('id')->on('servicios');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateUnidadExesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('unidad_exes');
+        Schema::dropIfExists('unidad_esps');
     }
 }

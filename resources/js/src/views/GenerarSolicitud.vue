@@ -14,60 +14,60 @@
         <div class="vx-row">
             <div class="vx-col md:w-1/2 w-full mt-5">
                 <vs-select
-                    v-model="city"
                     class="w-full select-large"
                     label="Edificio"
+                    v-model="solicitud.idEdificio"
                 >
                     <vs-select-item
                         :key="index"
-                        :value="item.value"
-                        :text="item.text"
-                        v-for="(item, index) in cityOptions"
+                        :value="item.id"
+                        :text="item.descripcionEdificio"
+                        v-for="(item, index) in listadoEdificios"
                         class="w-full"
                     />
                 </vs-select>
             </div>
             <div class="vx-col md:w-1/2 w-full mt-5">
                 <vs-select
-                    v-model="city"
                     class="w-full select-large"
                     label="Servicio"
+                    v-model="solicitud.idServicio"
                 >
                     <vs-select-item
                         :key="index"
-                        :value="item.value"
-                        :text="item.text"
-                        v-for="(item, index) in cityOptions"
+                        :value="item.id"
+                        :text="item.descripcionServicio"
+                        v-for="(item, index) in listadoServicios"
                         class="w-full"
                     />
                 </vs-select>
             </div>
             <div class="vx-col md:w-1/2 w-full mt-5">
                 <vs-select
-                    v-model="city"
                     class="w-full select-large"
                     label="Unidad Especifica"
+                    v-model="solicitud.idUnidadEsp"
                 >
                     <vs-select-item
                         :key="index"
-                        :value="item.value"
-                        :text="item.text"
-                        v-for="(item, index) in cityOptions"
+                        :value="item.id"
+                        :text="item.descripcionUnidadEsp"
+                        v-for="(item, index) in listadoUnidadEsp"
                         class="w-full"
                     />
                 </vs-select>
             </div>
             <div class="vx-col md:w-1/2 w-full mt-5">
                 <vs-select
-                    v-model="city"
                     class="w-full select-large"
                     label="Tipo de Reparacion"
+                    v-model="solicitud.idTipoRep"
                 >
                     <vs-select-item
                         :key="index"
-                        :value="item.value"
-                        :text="item.text"
-                        v-for="(item, index) in cityOptions"
+                        :value="item.id"
+                        :text="item.descripcionTipoReparacion"
+                        v-for="(item, index) in listadoTipoRep"
                         class="w-full"
                     />
                 </vs-select>
@@ -82,13 +82,13 @@
                 <vs-input
                     label="Titulo problema"
                     placeholder="Ej. Falla de red en equipo x"
-                    v-model="valorTitulo"
+                    v-model="solicitud.valorTitulo"
                 />
 
                 <br />
                 <vs-textarea
                     label="Descripcion de la problematica"
-                    v-model="areaT"
+                    v-model="solicitud.areaT"
                 />
             </div>
         </div>
@@ -97,7 +97,9 @@
 
         <div class="vx-row">
             <div class="vx-col w-full">
-                <vs-button class="mr-3 mb-2">Enviar</vs-button>
+                <vs-button class="mr-3 mb-2" @click="guardarSolicitud"
+                    >Enviar</vs-button
+                >
                 <vs-button color="warning" class="mb-2">Limpiar</vs-button>
             </div>
         </div>
@@ -110,21 +112,97 @@ import flatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
 import { FormWizard, TabContent } from "vue-form-wizard";
 import "vue-form-wizard/dist/vue-form-wizard.min.css";
+import axios from "axios";
 
 export default {
     data: () => ({
-        cityOptions: [
-            { text: "New York", value: "new-york" },
-            { text: "Chicago", value: "chicago" },
-            { text: "San Francisco", value: "san-francisco" },
-            { text: "Boston", value: "boston" }
-        ],
+        listadoEdificios: [],
+        listadoServicios: [],
+        listadoUnidadEsp: [],
+        listadoTipoRep: [],
+        localVal: "http://127.0.0.1:8000",
         name: "Rick S.",
-        areaT: "",
-        valorTitulo: "",
-        city: "new-york"
+        solicitud: {
+            areaT: "",
+            valorTitulo: "",
+            idEdificio: 0,
+            idServicio: 0,
+            idUnidadEsp: 0,
+            idTipoRep: 0
+        },
+        city: "Seleccione Edificio"
     }),
-    methods: {}
+    computed: {
+        csrf_token() {
+            let token = document.head.querySelector('meta[name="csrf-token"]');
+            return token.content;
+        }
+    },
+    methods: {
+        cargarEdificios() {
+            this.csrf_token;
+
+            axios.get(this.localVal + "/api/Usuario/GetEdificios").then(res => {
+                this.listadoEdificios = res.data;
+            });
+        },
+        cargarServicios() {
+            this.csrf_token;
+
+            axios.get(this.localVal + "/api/Usuario/GetServicios").then(res => {
+                this.listadoServicios = res.data;
+            });
+        },
+        cargarUnidadEsp() {
+            this.csrf_token;
+
+            axios.get(this.localVal + "/api/Usuario/GetUnidadEsp").then(res => {
+                this.listadoUnidadEsp = res.data;
+            });
+        },
+        cargarTipoRep() {
+            this.csrf_token;
+
+            axios.get(this.localVal + "/api/Usuario/GetTipoRep").then(res => {
+                this.listadoTipoRep = res.data;
+            });
+        },
+        guardarSolicitud() {
+            if (
+                this.solicitud.areaT.trim() === "" ||
+                this.solicitud.valorTitulo.trim() === ""
+            ) {
+                alert("Debes completar todos los campos antes de guardar");
+                return;
+            }
+            const solicitudNueva = this.solicitud;
+            this.solicitud = {
+                areaT: "",
+                valorTitulo: "",
+                idEdificio: 0,
+                idServicio: 0,
+                idUnidadEsp: 0,
+                idTipoRep: 0
+            };
+            console.log(solicitudNueva);
+            axios
+                .post(
+                    this.localVal + "/api/Usuario/PostSolicitud",
+                    solicitudNueva
+                )
+                .then(res => {
+                    const solicitudServer = res.data;
+                    alert("Data Enviada y guardada");
+                    console.log("Data Enviada y guardada");
+                });
+        }
+    },
+    beforeMount() {
+        this.cargarEdificios();
+        this.cargarServicios();
+        this.cargarUnidadEsp();
+        this.cargarTipoRep();
+    }
 };
 </script>
 

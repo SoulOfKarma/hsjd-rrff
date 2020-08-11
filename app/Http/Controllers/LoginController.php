@@ -14,7 +14,7 @@ class LoginController extends Controller
   public function getUsuarios(Request $request)
   {
     $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-    $out->writeln("Hola prro c:");
+    $out->writeln("Hola c:");
 
     $rut = str_replace('.', '', $request->input('rut'));
     $rut = strtoupper($rut);

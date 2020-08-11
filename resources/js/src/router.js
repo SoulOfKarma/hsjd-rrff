@@ -56,7 +56,7 @@ const router = new Router({
                         import ('./views/GenerarSolicitud.vue')
                 },
                 {
-                    path: '/InformacionSolicitud',
+                    path: '/InformacionSolicitud/:id',
                     name: 'InformacionSolicitud',
                     component: () =>
                         import ('./views/InformacionSolicitud.vue')
