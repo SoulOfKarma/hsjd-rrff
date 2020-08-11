@@ -56,7 +56,7 @@ const router = new Router({
                         import ('./views/GenerarSolicitud.vue')
                 },
                 {
-                    path: '/InformacionSolicitud/:id',
+                    path: '/InformacionSolicitud/:id,:uuid',
                     name: 'InformacionSolicitud',
                     component: () =>
                         import ('./views/InformacionSolicitud.vue')
@@ -90,13 +90,13 @@ const router = new Router({
                 },
                 {
                     path: '/agenteView/ListadoSolicitudes',
-                    name: 'Listado Solicitudes',
+                    name: 'ListadoSolicitudesAgente',
                     component: () =>
                         import ('./views/agenteView/ListadoSolicitudes.vue')
                 },
                 {
                     path: '/agenteView/InformacionSolicitud',
-                    name: 'Informacion Solicitud ',
+                    name: 'InformacionSolicitudAgente',
                     component: () =>
                         import ('./views/agenteView/InformacionSolicitud.vue')
                 },

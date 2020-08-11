@@ -1,28 +1,22 @@
 <template>
     <div>
         <h4>
-            <vs-divider>Solicitud N° "???"</vs-divider>
+            <vs-divider>Solicitud N° {{ solicitudes.id }}</vs-divider>
         </h4>
         <vs-row vs-justify="center">
             <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="6">
                 <vs-card class="cardx" color="primary" type="border">
                     <div>
                         <vs-input
-                            icon-no-border
-                            icon="account_circle"
-                            size="normal"
                             label-placeholder="Usuario Solicitante"
-                            v-model="value1"
+                            v-model="solicitudes.id_user"
                             disabled="true"
                             fixed-height
                         />
                         <br />
                         <vs-input
-                            label-placeholder="Anexo"
-                            icon-no-border
-                            icon="account_circle"
-                            size="normal"
-                            v-model="value1"
+                            label-placeholder="Edificio"
+                            v-model="solicitudes.id_edificio"
                             disabled="true"
                             fixed-height
                         />
@@ -33,21 +27,15 @@
                 <vs-card class="cardx" color="dark" type="border">
                     <div>
                         <vs-input
-                            label-placeholder="Edificio"
-                            icon-no-border
-                            icon="account_circle"
-                            size="normal"
-                            v-model="value1"
+                            label-placeholder="Servicio"
+                            v-model="solicitudes.id_servicio"
                             disabled="true"
                             fixed-height
                         />
                         <br />
                         <vs-input
-                            label-placeholder="Servicio"
-                            icon-no-border
-                            icon="account_circle"
-                            size="normal"
-                            v-model="value1"
+                            label-placeholder="Unidad Especifica"
+                            v-model="solicitudes.id_ubicacionEx"
                             disabled="true"
                             fixed-height
                         />
@@ -73,22 +61,33 @@
         </vs-card>
 
         <vs-card>
-            <vs-list>
-                <vs-list-item title="Usuario X" subtitle="AAAA"></vs-list-item>
-                <vs-list-item title="Usuario A" subtitle="BBBB"></vs-list-item>
-                <vs-list-item title="Usuario C" subtitle="VVVVV"></vs-list-item>
-                <vs-list-item title="Usuario X" subtitle="BBBBB"></vs-list-item>
-            </vs-list>
+            <template>
+                <vs-list :key="indextr" v-for="(tr, indextr) in seguimiento">
+                    <vs-list-item
+                        :title="tr.id_user.toString()"
+                        :subtitle="tr.descripcionSeguimiento"
+                    ></vs-list-item>
+                </vs-list>
+            </template>
         </vs-card>
     </div>
 </template>
 
 <script>
+import axios from "axios";
 import router from "../../router";
 export default {
     data: () => ({
         textarea: "",
-        value1: "Valor Existente Nulo"
+        value1: "Valor Existente Nulo",
+        localVal: "http://127.0.0.1:8000",
+        solicitudes: [],
+        seguimiento: [],
+
+        seguimientos: {
+            descripcionSeguimiento: "",
+            id_user: 1
+        }
     }),
     methods: {
         asignarSolicitud() {
@@ -96,7 +95,27 @@ export default {
         },
         modificarSolicitud() {
             router.push("/agenteView/FormularioModificar");
+        },
+        cargaSolicitudEspecifica() {
+            let id = this.$route.params.id;
+            axios
+                .get(this.localVal + `/api/Usuario/TraerSolicitud/${id}`)
+                .then(res => {
+                    this.solicitudes = res.data;
+                });
+        },
+        cargaSeguimiento() {
+            let uuid = this.$route.params.uuid;
+            axios
+                .get(this.localVal + `/api/Usuario/TraerSeguimiento/${uuid}`)
+                .then(res => {
+                    this.seguimiento = res.data;
+                });
         }
+    },
+    beforeMount() {
+        this.cargaSolicitudEspecifica();
+        this.cargaSeguimiento();
     }
 };
 </script>

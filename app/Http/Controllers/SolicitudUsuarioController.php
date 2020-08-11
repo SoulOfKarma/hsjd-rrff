@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\SolicitudTickets;
+use App\SeguimientoSolicitudes;
+use Ramsey\Uuid\Uuid;
 use DB;
 use Illuminate\Http\Request;
 
@@ -17,6 +19,15 @@ class SolicitudUsuarioController extends Controller
     {
 
         $get_all = DB::table('solicitud_tickets')->get();
+
+        return  $get_all;
+    }
+
+    public function indexSeguimiento($uuid)
+    {
+        $get_all = DB::table('seguimiento_solicitudes')
+            ->where('uuid', '=', $uuid)
+            ->get();
 
         return  $get_all;
     }
@@ -47,19 +58,46 @@ class SolicitudUsuarioController extends Controller
      */
     public function store(Request $request)
     {
+        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+        $out->writeln("Hola c:");
         $solicitud = new SolicitudTickets();
-        $solicitud->id_user = 2;
+        $seguimiento = new SeguimientoSolicitudes();
+        /* $solicitud->id_user = 2;
         $solicitud->id_estado = 1;
         $solicitud->id_edificio = $request->idEdificio;
         $solicitud->id_servicio = $request->idServicio;
         $solicitud->id_ubicacionEx = $request->idUnidadEsp;
         $solicitud->id_tipoReparacion = $request->idTipoRep;
-        $solicitud->tituloP = $request->valorTitulo;
-        $solicitud->descripcionP = $request->areaT;
+        $solicitud->tituloP = $request->idTipoRep;
+        $solicitud->descripcionP = $request->areaT; */
         //$solicitud->user_id = auth()->id();
-        $solicitud->save();
+        $uuid = Uuid::uuid4();
+        $solicitud = array(
+            'uuid' => $uuid->toString(),
+            'id_user' => 2,
+            'id_estado' => 1,
+            'id_edificio' => $request->idEdificio,
+            'id_servicio' => $request->idServicio,
+            'id_ubicacionEx' => $request->idUnidadEsp,
+            'id_tipoReparacion' => $request->idTipoRep,
+            'tituloP' => $request->valorTitulo,
+            'descripcionP' => $request->areaT,
+        );
 
-        return $solicitud;
+        $variable = "Solicitud creada";
+
+        $seguimiento = array(
+            'uuid' => $uuid->toString(),
+            'id_user' => 2,
+            'descripcionSeguimiento' => $variable,
+
+        );
+
+        $response = DB::table('solicitud_tickets')->insert($solicitud);
+        $response = DB::table('seguimiento_solicitudes')->insert($seguimiento);
+        //$solicitud->save();
+
+        return $response;
         //
     }
 

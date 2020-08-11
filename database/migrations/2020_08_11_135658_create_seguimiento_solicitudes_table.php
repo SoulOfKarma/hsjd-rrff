@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSolicitudTicketsTable extends Migration
+class CreateSeguimientoSolicitudesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,12 @@ class CreateSolicitudTicketsTable extends Migration
      */
     public function up()
     {
-        Schema::create('solicitud_tickets', function (Blueprint $table) {
+        Schema::create('seguimiento_solicitudes', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid');
+            //$table->bigInteger('id_solicitud');
             $table->bigInteger('id_user');
-            $table->bigInteger('id_estado');
-            $table->bigInteger('id_edificio');
-            $table->bigInteger('id_servicio');
-            $table->bigInteger('id_ubicacionEx');
-            $table->bigInteger('id_tipoReparacion');
-            $table->string('tituloP');
-            $table->text('descripcionP');
+            $table->text('descripcionSeguimiento');
             $table->timestamps();
         });
     }
@@ -35,6 +30,6 @@ class CreateSolicitudTicketsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('solicitud_tickets');
+        Schema::dropIfExists('seguimiento_solicitudes');
     }
 }

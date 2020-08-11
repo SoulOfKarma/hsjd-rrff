@@ -39,3 +39,7 @@ Route::get('/Usuario/GetSolicitud', ['middleware' => 'cors', 'uses' => 'Solicitu
 Route::get('/Usuario/TraerSolicitud/{id}', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@indexEspecifico']);
 //Guardar Solicitud
 Route::post('/Usuario/PostSolicitud', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@store']);
+//Traer seguimiento
+Route::get('/Usuario/TraerSeguimiento/{uuid}', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@indexSeguimiento']);
+//Guardar Seguimiento
+Route::post('/Usuario/GuardarSeguimiento/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoController@store']);

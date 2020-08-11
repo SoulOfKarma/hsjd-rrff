@@ -192,7 +192,6 @@ export default {
                 )
                 .then(res => {
                     const solicitudServer = res.data;
-                    alert("Data Enviada y guardada");
                     console.log("Data Enviada y guardada");
                 });
         }

@@ -33,7 +33,12 @@
                         <vs-button
                             color="warning"
                             class="mb-2"
-                            @click="detalleSolicitud(data[indextr].id)"
+                            @click="
+                                detalleSolicitud(
+                                    data[indextr].id,
+                                    data[indextr].uuid
+                                )
+                            "
                             >Ir</vs-button
                         >
                     </vs-td>
@@ -60,11 +65,12 @@ export default {
                 this.solicitudes = res.data;
             });
         },
-        detalleSolicitud(id) {
+        detalleSolicitud(id, uuid) {
             this.$router.push({
                 name: "InformacionSolicitud",
                 params: {
-                    id: `${id}`
+                    id: `${id}`,
+                    uuid: `${uuid}`
                 }
             });
         }

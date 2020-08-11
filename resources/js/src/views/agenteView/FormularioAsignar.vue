@@ -9,30 +9,30 @@
         <div class="vx-row">
             <div class="vx-col md:w-1/2 w-full mt-5">
                 <vs-select
-                    v-model="city"
                     class="w-full select-large"
                     label="Edificio"
+                    v-model="solicitud.idEdificio"
                 >
                     <vs-select-item
                         :key="index"
-                        :value="item.value"
-                        :text="item.text"
-                        v-for="(item, index) in cityOptions"
+                        :value="item.id"
+                        :text="item.descripcionEdificio"
+                        v-for="(item, index) in listadoEdificios"
                         class="w-full"
                     />
                 </vs-select>
             </div>
             <div class="vx-col md:w-1/2 w-full mt-5">
                 <vs-select
-                    v-model="city"
                     class="w-full select-large"
                     label="Servicio"
+                    v-model="solicitud.idServicio"
                 >
                     <vs-select-item
                         :key="index"
-                        :value="item.value"
-                        :text="item.text"
-                        v-for="(item, index) in cityOptions"
+                        :value="item.id"
+                        :text="item.descripcionServicio"
+                        v-for="(item, index) in listadoServicios"
                         class="w-full"
                     />
                 </vs-select>
@@ -41,30 +41,30 @@
         <div class="vx-row">
             <div class="vx-col md:w-1/2 w-full mt-5">
                 <vs-select
-                    v-model="city"
                     class="w-full select-large"
-                    label="Ubicacion Especifica"
+                    label="Unidad Especifica"
+                    v-model="solicitud.idUnidadEsp"
                 >
                     <vs-select-item
                         :key="index"
-                        :value="item.value"
-                        :text="item.text"
-                        v-for="(item, index) in cityOptions"
+                        :value="item.id"
+                        :text="item.descripcionUnidadEsp"
+                        v-for="(item, index) in listadoUnidadEsp"
                         class="w-full"
                     />
                 </vs-select>
             </div>
             <div class="vx-col md:w-1/2 w-full mt-5">
                 <vs-select
-                    v-model="city"
                     class="w-full select-large"
                     label="Especialidad"
+                    v-model="solicitud.idTipoRep"
                 >
                     <vs-select-item
                         :key="index"
-                        :value="item.value"
-                        :text="item.text"
-                        v-for="(item, index) in cityOptions"
+                        :value="item.id"
+                        :text="item.descripcionTipoReparacion"
+                        v-for="(item, index) in listadoTipoRep"
                         class="w-full"
                     />
                 </vs-select>
@@ -236,6 +236,7 @@ import "flatpickr/dist/flatpickr.css";
 import { FormWizard, TabContent } from "vue-form-wizard";
 import "vue-form-wizard/dist/vue-form-wizard.min.css";
 import moment from "moment";
+import axios from "axios";
 
 export default {
     data: () => ({
@@ -244,7 +245,7 @@ export default {
         horasCalculadas: 0,
         diaCalculado: 0,
         format: "d MMMM yyyy",
-        city: "new-york",
+        city: "1",
         fromDate: null,
         toDate: null,
         fecha1: moment()
@@ -274,7 +275,21 @@ export default {
             enableTime: true,
             enableSeconds: true,
             noCalendar: true
-        }
+        },
+        listadoEdificios: [],
+        listadoServicios: [],
+        listadoUnidadEsp: [],
+        listadoTipoRep: [],
+        solicitud: {
+            areaT: "",
+            valorTitulo: "",
+            idEdificio: 2,
+            idServicio: 2,
+            idUnidadEsp: 3,
+            idTipoRep: 3,
+            idEstado: 1
+        },
+        localVal: "http://127.0.0.1:8000"
     }),
     computed: {
         calcularHorasTrabajo() {
@@ -299,7 +314,33 @@ export default {
         },
         onToChange(selectedDates, dateStr, instance) {
             this.$set(this.configFromdateTimePicker, "maxDate", dateStr);
+        },
+        cargarEdificios() {
+            axios.get(this.localVal + "/api/Usuario/GetEdificios").then(res => {
+                this.listadoEdificios = res.data;
+            });
+        },
+        cargarServicios() {
+            axios.get(this.localVal + "/api/Usuario/GetServicios").then(res => {
+                this.listadoServicios = res.data;
+            });
+        },
+        cargarUnidadEsp() {
+            axios.get(this.localVal + "/api/Usuario/GetUnidadEsp").then(res => {
+                this.listadoUnidadEsp = res.data;
+            });
+        },
+        cargarTipoRep() {
+            axios.get(this.localVal + "/api/Usuario/GetTipoRep").then(res => {
+                this.listadoTipoRep = res.data;
+            });
         }
+    },
+    beforeMount() {
+        this.cargarEdificios();
+        this.cargarServicios();
+        this.cargarUnidadEsp();
+        this.cargarTipoRep();
     },
     components: {
         flatPickr
