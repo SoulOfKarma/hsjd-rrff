@@ -15,6 +15,8 @@ class CreateSupervisoresTable extends Migration
     {
         Schema::create('supervisores', function (Blueprint $table) {
             $table->id();
+            $table->text('sup_nombre_apellido');
+            $table->text('especialidad');
             $table->timestamps();
         });
     }

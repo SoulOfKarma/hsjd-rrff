@@ -91,10 +91,28 @@ export default {
     }),
     methods: {
         asignarSolicitud() {
-            router.push("/agenteView/FormularioAsignar");
+            let id = this.$route.params.id;
+            let uuid = this.$route.params.uuid;
+            // router.push(`/agenteView/FormularioAsignar/${id}`);
+            this.$router.push({
+                name: "AsignarSolicitudAgente",
+                params: {
+                    id: `${id}`,
+                    uuid: `${uuid}`
+                }
+            });
         },
         modificarSolicitud() {
-            router.push("/agenteView/FormularioModificar");
+            let id = this.$route.params.id;
+            let uuid = this.$route.params.uuid;
+            //router.push(`/agenteView/FormularioModificar/${id}`);
+            this.$router.push({
+                name: "ModificarSolicitudAgente",
+                params: {
+                    id: `${id}`,
+                    uuid: `${uuid}`
+                }
+            });
         },
         cargaSolicitudEspecifica() {
             let id = this.$route.params.id;

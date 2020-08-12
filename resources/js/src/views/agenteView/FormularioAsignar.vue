@@ -11,7 +11,7 @@
                 <vs-select
                     class="w-full select-large"
                     label="Edificio"
-                    v-model="solicitud.idEdificio"
+                    v-model="datosSolicitud.id_edificio"
                 >
                     <vs-select-item
                         :key="index"
@@ -26,7 +26,7 @@
                 <vs-select
                     class="w-full select-large"
                     label="Servicio"
-                    v-model="solicitud.idServicio"
+                    v-model="datosSolicitud.id_servicio"
                 >
                     <vs-select-item
                         :key="index"
@@ -43,7 +43,7 @@
                 <vs-select
                     class="w-full select-large"
                     label="Unidad Especifica"
-                    v-model="solicitud.idUnidadEsp"
+                    v-model="datosSolicitud.id_ubicacionEx"
                 >
                     <vs-select-item
                         :key="index"
@@ -58,7 +58,7 @@
                 <vs-select
                     class="w-full select-large"
                     label="Especialidad"
-                    v-model="solicitud.idTipoRep"
+                    v-model="datosSolicitud.id_tipoReparacion"
                 >
                     <vs-select-item
                         :key="index"
@@ -73,15 +73,15 @@
         <div class="vx-row">
             <div class="vx-col md:w-1/2 w-full mt-5">
                 <vs-select
-                    v-model="city"
+                    v-model="datosSolicitud.id_estado"
                     class="w-full select-large"
                     label="Estado"
                 >
                     <vs-select-item
                         :key="index"
-                        :value="item.value"
-                        :text="item.text"
-                        v-for="(item, index) in cityOptions"
+                        :value="item.id"
+                        :text="item.descripcionEstado"
+                        v-for="(item, index) in listadoEstado"
                         class="w-full"
                     />
                 </vs-select>
@@ -93,60 +93,60 @@
         <div class="vx-row">
             <div class="vx-col md:w-1/2 w-full mt-5">
                 <vs-select
-                    v-model="city"
+                    v-model="gestionTicket.idSupervisor"
                     class="w-full select-large"
                     label="Supervisor"
                 >
                     <vs-select-item
                         :key="index"
-                        :value="item.value"
-                        :text="item.text"
-                        v-for="(item, index) in cityOptions"
+                        :value="item.id"
+                        :text="item.sup_nombre_apellido"
+                        v-for="(item, index) in listadoSupervisores"
                         class="w-full"
                     />
                 </vs-select>
             </div>
             <div class="vx-col md:w-1/2 w-full mt-5">
                 <vs-select
-                    v-model="city"
+                    v-model="gestionTicket.idTrabajador"
                     class="w-full select-large"
                     label="Tecnico a Asignar"
                 >
                     <vs-select-item
                         :key="index"
-                        :value="item.value"
-                        :text="item.text"
-                        v-for="(item, index) in cityOptions"
+                        :value="item.id"
+                        :text="item.tra_nombre_apellido"
+                        v-for="(item, index) in listadoTrabajadores"
                         class="w-full"
                     />
                 </vs-select>
             </div>
             <div class="vx-col md:w-1/2 w-full mt-5">
                 <vs-select
-                    v-model="city"
+                    v-model="gestionTicket.idApoyo1"
                     class="w-full select-large"
                     label="Apoyo 1"
                 >
                     <vs-select-item
                         :key="index"
-                        :value="item.value"
-                        :text="item.text"
-                        v-for="(item, index) in cityOptions"
+                        :value="item.id"
+                        :text="item.tra_nombre_apellido"
+                        v-for="(item, index) in listadoApoyo1"
                         class="w-full"
                     />
                 </vs-select>
             </div>
             <div class="vx-col md:w-1/2 w-full mt-5">
                 <vs-select
-                    v-model="city"
+                    v-model="gestionTicket.idApoyo2"
                     class="w-full select-large"
                     label="Apoyo 2"
                 >
                     <vs-select-item
                         :key="index"
-                        :value="item.value"
-                        :text="item.text"
-                        v-for="(item, index) in cityOptions"
+                        :value="item.id"
+                        :text="item.tra_nombre_apellido"
+                        v-for="(item, index) in listadoApoyo2"
                         class="w-full"
                     />
                 </vs-select>
@@ -155,15 +155,15 @@
         <div class="vx-row">
             <div class="vx-col md:w-1/2 w-full mt-5">
                 <vs-select
-                    v-model="city"
+                    v-model="gestionTicket.idApoyo3"
                     class="w-full select-large"
                     label="Apoyo 3"
                 >
                     <vs-select-item
                         :key="index"
-                        :value="item.value"
-                        :text="item.text"
-                        v-for="(item, index) in cityOptions"
+                        :value="item.id"
+                        :text="item.tra_nombre_apellido"
+                        v-for="(item, index) in listadoApoyo3"
                         class="w-full"
                     />
                 </vs-select>
@@ -176,26 +176,26 @@
             <div class="vx-col md:w-1/2 w-full mt-5">
                 <flat-pickr
                     :config="configFromdateTimePicker"
-                    v-model="fromDate"
+                    v-model="gestionTicket.fromDate"
                     placeholder="Fecha Inicio"
                     @on-change="onFromChange"
                 />
                 <flat-pickr
                     :config="configdateTimePicker"
-                    v-model="time1"
+                    v-model="gestionTicket.time1"
                     placeholder="Seleccione Hora"
                 />
             </div>
             <div class="vx-col md:w-1/2 w-full mt-5">
                 <flat-pickr
                     :config="configTodateTimePicker"
-                    v-model="toDate"
+                    v-model="gestionTicket.toDate"
                     placeholder="Fecha Termino"
                     @on-change="onToChange"
                 />
                 <flat-pickr
                     :config="configdateTimePicker"
-                    v-model="time2"
+                    v-model="gestionTicket.time2"
                     placeholder="Seleccione Hora"
                 />
             </div>
@@ -222,7 +222,9 @@
 
         <div class="vx-row">
             <div class="vx-col w-full">
-                <vs-button class="mr-3 mb-2">Enviar</vs-button>
+                <vs-button class="mr-3 mb-2" @click="guardarFormulario"
+                    >Enviar</vs-button
+                >
                 <vs-button color="warning" class="mb-2">Limpiar</vs-button>
             </div>
         </div>
@@ -240,14 +242,10 @@ import axios from "axios";
 
 export default {
     data: () => ({
-        textarea: "",
-        value1: "",
         horasCalculadas: 0,
         diaCalculado: 0,
         format: "d MMMM yyyy",
-        city: "1",
-        fromDate: null,
-        toDate: null,
+
         fecha1: moment()
             .startOf("day")
             .fromNow(),
@@ -263,48 +261,64 @@ export default {
         configTodateTimePicker: {
             minDate: null
         },
-        cityOptions: [
-            { text: "New York", value: "new-york" },
-            { text: "Chicago", value: "chicago" },
-            { text: "San Francisco", value: "san-francisco" },
-            { text: "Boston", value: "boston" }
-        ],
-        time1: null,
-        time2: null,
+
         configdateTimePicker: {
             enableTime: true,
             enableSeconds: true,
             noCalendar: true
         },
         listadoEdificios: [],
+        datosSolicitud: [],
         listadoServicios: [],
         listadoUnidadEsp: [],
         listadoTipoRep: [],
-        solicitud: {
-            areaT: "",
-            valorTitulo: "",
+        listadoSupervisores: [],
+        listadoTrabajadores: [],
+        listadoApoyo1: [],
+        listadoApoyo2: [],
+        listadoApoyo3: [],
+        listadoEstado: [],
+        gestionTicket: {
+            uuid: "",
+            idSolicitud: 0,
             idEdificio: 2,
             idServicio: 2,
             idUnidadEsp: 3,
             idTipoRep: 3,
-            idEstado: 1
+            idEstado: 1,
+            idSupervisor: 4,
+            idTrabajador: 5,
+            idApoyo1: 5,
+            idApoyo2: 5,
+            idApoyo3: 5,
+            fromDate: null,
+            toDate: null,
+            time1: null,
+            time2: null,
+            horasCalculadas: 0,
+            diaCalculado: 0
         },
+        variablePrueba: 0,
+
         localVal: "http://127.0.0.1:8000"
     }),
     computed: {
         calcularHorasTrabajo() {
-            this.hora1 = moment(this.time1, "HH:mm");
-            this.hora2 = moment(this.time2, "HH:mm");
-            this.horaCalculada = moment
+            this.hora1 = moment(this.gestionTicket.time1, "HH:mm");
+            this.hora2 = moment(this.gestionTicket.time2, "HH:mm");
+            this.gestionTicket.horasCalculadas = moment
                 .duration(this.hora2 - this.hora1)
-                .humanize();
-            return this.horaCalculada;
+                .asHours();
+            return this.gestionTicket.horasCalculadas;
         },
         diasCalculados() {
-            this.fecha1 = moment(this.fromDate);
-            this.fecha2 = moment(this.toDate);
-            this.diaCalculado = this.fecha2.diff(this.fecha1, "days");
-            return this.diaCalculado;
+            this.fecha1 = moment(this.gestionTicket.fromDate);
+            this.fecha2 = moment(this.gestionTicket.toDate);
+            this.gestionTicket.diaCalculado = this.fecha2.diff(
+                this.fecha1,
+                "days"
+            );
+            return this.gestionTicket.diaCalculado;
             // this.diaCalculado = this.fromDate - this.toDate;
         }
     },
@@ -334,6 +348,90 @@ export default {
             axios.get(this.localVal + "/api/Usuario/GetTipoRep").then(res => {
                 this.listadoTipoRep = res.data;
             });
+        },
+        cargarSupervisores() {
+            axios
+                .get(this.localVal + "/api/Agente/GetSupervisores")
+                .then(res => {
+                    this.listadoSupervisores = res.data;
+                });
+        },
+        cargarTrabajadores() {
+            axios
+                .get(this.localVal + "/api/Agente/GetTrabajadores")
+                .then(res => {
+                    this.listadoTrabajadores = res.data;
+                });
+        },
+        cargarApoyo1() {
+            axios
+                .get(this.localVal + "/api/Agente/GetTrabajadores")
+                .then(res => {
+                    this.listadoApoyo1 = res.data;
+                });
+        },
+        cargarApoyo2() {
+            axios
+                .get(this.localVal + "/api/Agente/GetTrabajadores")
+                .then(res => {
+                    this.listadoApoyo2 = res.data;
+                });
+        },
+        cargarApoyo3() {
+            axios
+                .get(this.localVal + "/api/Agente/GetTrabajadores")
+                .then(res => {
+                    this.listadoApoyo3 = res.data;
+                });
+        },
+        cargarEstado() {
+            axios.get(this.localVal + "/api/Agente/GetEstado").then(res => {
+                this.listadoEstado = res.data;
+            });
+        },
+        cargaSolicitudEspecifica() {
+            let id = this.$route.params.id;
+            axios
+                .get(this.localVal + `/api/Usuario/TraerSolicitud/${id}`)
+                .then(res => {
+                    this.datosSolicitud = res.data;
+                });
+        },
+        guardarFormulario() {
+            //this.variablePrueba = this.gestionTicket.idEdificio;
+            console.log(this.gestionTicket);
+            let uuid = this.$route.params.uuid;
+            this.gestionTicket.uuid = uuid;
+            let id = this.$route.params.id;
+            this.gestionTicket.idSolicitud = id;
+            const ticket = this.gestionTicket;
+            console.log(ticket);
+            /*   this.gestionTicket = {
+                uuid: "",
+                idSolicitud: 0,
+                idEdificio: 2,
+                idServicio: 2,
+                idUnidadEsp: 3,
+                idTipoRep: 3,
+                idEstado: 1,
+                idSupervisor: 4,
+                idTrabajador: 5,
+                idApoyo1: 5,
+                idApoyo2: 5,
+                idApoyo3: 5,
+                fromDate: null,
+                toDate: null,
+                time1: null,
+                time2: null,
+                horasCalculadas: 0,
+                diaCalculado: 0
+            }; */
+            axios
+                .post(this.localVal + "/api/Agente/PostTicket", ticket)
+                .then(res => {
+                    const ticketServer = res.data;
+                    console.log("Data Enviada y guardada");
+                });
         }
     },
     beforeMount() {
@@ -341,6 +439,13 @@ export default {
         this.cargarServicios();
         this.cargarUnidadEsp();
         this.cargarTipoRep();
+        this.cargarSupervisores();
+        this.cargarTrabajadores();
+        this.cargarEstado();
+        this.cargarApoyo1();
+        this.cargarApoyo2();
+        this.cargarApoyo3();
+        this.cargaSolicitudEspecifica();
     },
     components: {
         flatPickr

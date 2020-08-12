@@ -43,3 +43,13 @@ Route::post('/Usuario/PostSolicitud', ['middleware' => 'cors', 'uses' => 'Solici
 Route::get('/Usuario/TraerSeguimiento/{uuid}', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@indexSeguimiento']);
 //Guardar Seguimiento
 Route::post('/Usuario/GuardarSeguimiento/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoController@store']);
+
+//Gestion Agentes
+//Traer supervisores
+Route::get('/Agente/GetSupervisores', ['middleware' => 'cors', 'uses' => 'SupervisorController@index']);
+//Traer Trabajadores
+Route::get('/Agente/GetTrabajadores', ['middleware' => 'cors', 'uses' => 'TrabajadorController@index']);
+//Traer Estado
+Route::get('/Agente/GetEstado', ['middleware' => 'cors', 'uses' => 'EstadoController@index']);
+//Guardar Ticket
+Route::post('/Agente/PostTicket', ['middleware' => 'cors', 'uses' => 'GestionTicketController@store']);

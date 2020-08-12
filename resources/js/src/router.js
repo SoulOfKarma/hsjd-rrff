@@ -101,14 +101,14 @@ const router = new Router({
                         import ('./views/agenteView/InformacionSolicitud.vue')
                 },
                 {
-                    path: '/agenteView/FormularioAsignar',
-                    name: 'Asignar Solicitud ',
+                    path: '/agenteView/FormularioAsignar/:id,:uuid',
+                    name: 'AsignarSolicitudAgente',
                     component: () =>
                         import ('./views/agenteView/FormularioAsignar.vue')
                 },
                 {
-                    path: '/agenteView/FormularioModificar',
-                    name: 'Modificar Solicitud ',
+                    path: '/agenteView/FormularioModificar/:id,:uuid',
+                    name: 'ModificarSolicitudAgente',
                     component: () =>
                         import ('./views/agenteView/FormularioModificar.vue')
                 }
