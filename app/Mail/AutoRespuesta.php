@@ -5,21 +5,22 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use App\User;
+use App\SeguimientoSolicitudes;
 use Illuminate\Queue\SerializesModels;
 
 class AutoRespuesta extends Mailable
 {
     use Queueable, SerializesModels;
-    public $distressCall;
+
+    public $seguimiento;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(User $distressCall)
+    public function __construct(SeguimientoSolicitudes $seguimiento)
     {
-        $this->distressCall = $distressCall;
+        $this->seguimiento = $seguimiento;
     }
 
     /**

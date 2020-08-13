@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\LoginCollection;
 use App\Login;
 use DB;
+use App\permiso_usuario;
 use SebastianBergmann\Environment\Console;
 
 class LoginController extends Controller
@@ -26,11 +27,14 @@ class LoginController extends Controller
     return $get_all;
   }
 
-  /*   public function adminPr(Request $request)
+  public function adminPr(Request $request)
   {
     $run = str_replace('.', '', $request->input('rut'));
     $run = strtoupper($run);
-    $salida = PermisoUsuario::where('run_usuario', '=', $run)->get(['run_usuario', 'permiso_usuario', 'estado_login']);
+    $salida = DB::table('tbl_permiso_usuarios')
+      ->where('run_usuario', '=', $run)
+      ->get(['run_usuario', 'permiso_usuario', 'estado_login']);
+    // $salida = permiso_usuario::where('run_usuario', '=', $run)->get(['run_usuario', 'permiso_usuario', 'estado_login']);
     foreach ($salida as $p) {
       if ($p->estado_login == 1) {
         $request->session()->put('login', '1');
@@ -39,5 +43,5 @@ class LoginController extends Controller
       }
     }
     return $salida;
-  } */
+  }
 }

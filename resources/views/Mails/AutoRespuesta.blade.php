@@ -6,12 +6,12 @@
     <title>Llamado de emergencia</title>
 </head>
 <body>
-    <p>Hola! Se ha reportado un nuevo caso de emergencia a las 5</p>
+    <p>Hola! Se ha reportado un nuevo Ticket a las{{ $seguimiento->created_at }}.</p>
     <p>Estos son los datos del usuario que ha realizado la denuncia:</p>
     <ul>
-        <li>Nombre: Plata</li>
-        <li>Teléfono: Oro</li>
-        <li>DNI: Bronce</li>
+        <li>ID: {{ $seguimiento->id_user }}</li>
+        <li>Descripcion: {{ $seguimiento->descripcionSeguimiento }}</li>
+
     </ul>
 </body>
 </html>

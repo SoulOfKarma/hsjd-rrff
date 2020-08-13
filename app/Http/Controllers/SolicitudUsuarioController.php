@@ -23,20 +23,33 @@ class SolicitudUsuarioController extends Controller
         return  $get_all;
     }
 
-    public function indexSeguimiento($uuid)
+    public function getSolicitudUsuariosJoin()
     {
-        $get_all = DB::table('seguimiento_solicitudes')
-            ->where('uuid', '=', $uuid)
+
+        $users = DB::table('solicitud_tickets')
+            ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
+            ->select('solicitud_tickets.*', 'users.nombre')
             ->get();
 
-        return  $get_all;
+        return  $users;
+    }
+
+    public function indexSeguimiento($uuid)
+    {
+
+        $users = DB::table('seguimiento_solicitudes')
+            ->join('users', 'seguimiento_solicitudes.id_user', '=', 'users.id')
+            ->select('seguimiento_solicitudes.*', 'users.nombre')
+            ->where('seguimiento_solicitudes.uuid', '=', $uuid)
+            ->get();
+
+        return  $users;
     }
 
     public function indexEspecifico($id)
     {
 
         $get_all = SolicitudTickets::find($id);
-
         return  $get_all;
     }
 

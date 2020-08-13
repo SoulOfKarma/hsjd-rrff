@@ -113,7 +113,7 @@ export default {
                 var sw = 0;
                 var pr = 0;
                 var permiso_usuario = "";
-                console.log("Llegaste aca");
+
                 await axios
                     .post(this.localVal + "/api/Login/GetUsers", {
                         rut: this.run,
@@ -121,73 +121,73 @@ export default {
                     })
                     .then(function(response) {
                         if (response.data.length > 0) {
-                            console.log("Llegaste aca 2");
                             localStorage.setItem(
                                 "nombre",
                                 response.data[0].nombre
                             );
-                            localStorage.setItem("run", response.data[0].rut);
-                            console.log(response.data[0].nombre);
+                            localStorage.setItem("run", response.data[0].run);
                             sw = 1;
-
-                            if (response.data[0].estado_login == 1) {
-                                pr = 3;
-                            }
-                            if (response.data[0].estado_login == 2) {
-                                pr = 4;
-                            }
                         } else {
-                            console.log("No tuviste suerte prro");
                             pr = 1;
                         }
-                    });
-                /* .catch((error) => console.log(error));
-        if (sw == 1) {
-          await axios
-            .post("http://127.0.0.1:8000/api/Login/getpr", {
-              rut: this.run,
-              pasword: this.password,
-            })
-            .then(function (response2) {
-              if (response2.data.length > 0) {
-                if (response2.data[0].estado_login == 1) {
-                  localStorage.setItem(
-                    "permiso_usuario",
-                    response2.data[0].permiso_usuario
-                  );
-                  //router.push('/home');
-                  pr = 3;
-                } else {
-                  pr = 2;
+                    })
+                    .catch(error => console.log(error));
+                if (sw == 1) {
+                    await axios
+                        .post(this.localVal + "/api/Login/getpr", {
+                            rut: this.run,
+                            pasword: this.password
+                        })
+                        .then(function(response2) {
+                            if (response2.data.length > 0) {
+                                if (response2.data[0].estado_login == 1) {
+                                    localStorage.setItem(
+                                        "permiso_usuario",
+                                        response2.data[0].permiso_usuario
+                                    );
+                                    if (
+                                        response2.data[0].permiso_usuario == 1
+                                    ) {
+                                        pr = 3;
+                                    }
+                                    if (
+                                        response2.data[0].permiso_usuario == 2
+                                    ) {
+                                        pr = 4;
+                                    }
+                                    //router.push('/home');
+                                    //pr = 3;
+                                } else {
+                                    pr = 2;
+                                }
+                            }
+                        });
                 }
-              }
-            }); */
+                if (pr == 1) {
+                    this.$vs.notify({
+                        color: "danger",
+                        title: "Login",
+                        text: "Usuario y/o Contraseña Incorrectos."
+                    });
+                }
+                if (pr == 2) {
+                    this.$vs.notify({
+                        color: "danger",
+                        title: "Login",
+                        text: "Usted no posee acceso a la plataforma."
+                    });
+                }
+                if (pr == 3) {
+                    //localStorage.setItem('run',response2.data[0].permiso_usuario);
+                    router.push("/agenteView/HomeAgente");
+                }
+                if (pr == 4) {
+                    //localStorage.setItem('run',response2.data[0].permiso_usuario);
+                    router.push("/home");
+                } else {
+                    this.val_run = true;
+                }
             }
-            if (pr == 1) {
-                this.$vs.notify({
-                    color: "danger",
-                    title: "Login",
-                    text: "Usuario y/o Contraseña Incorrectos."
-                });
-            }
-            if (pr == 2) {
-                this.$vs.notify({
-                    color: "danger",
-                    title: "Login",
-                    text: "Usted no posee acceso a la plataforma."
-                });
-            }
-            if (pr == 3) {
-                //localStorage.setItem('run',response2.data[0].permiso_usuario);
-                router.push("/agenteView/HomeAgente");
-            }
-            if (pr == 4) {
-                //localStorage.setItem('run',response2.data[0].permiso_usuario);
-                router.push("/home");
-            }
-            // } else {
-            //   this.val_run = true;
-            // }
         }
     }
 };

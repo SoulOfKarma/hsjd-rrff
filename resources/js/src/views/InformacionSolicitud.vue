@@ -27,7 +27,7 @@
             <template>
                 <vs-list :key="indextr" v-for="(tr, indextr) in seguimiento">
                     <vs-list-item
-                        :title="tr.id_user.toString()"
+                        :title="tr.nombre"
                         :subtitle="tr.descripcionSeguimiento"
                     ></vs-list-item>
                 </vs-list>
@@ -86,7 +86,6 @@ export default {
                 )
                 .then(res => {
                     const seguimientoServer = res.data;
-                    console.log("Data Enviada y guardada");
                     this.cargaSeguimiento();
                 });
         }

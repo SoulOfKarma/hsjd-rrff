@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\SeguimientoSolicitudes;
+use App\Mail\AutoRespuesta;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+
 
 class SeguimientoController extends Controller
 {
@@ -40,6 +43,10 @@ class SeguimientoController extends Controller
         $seguimiento->uuid = $uuid;
         $seguimiento->id_user = 2;
         $seguimiento->descripcionSeguimiento = $request->descripcionSeguimiento;
+
+        $receivers = 'gomez.soto.ricardo@gmail.com';
+        Mail::to($receivers)->send(new AutoRespuesta($seguimiento));
+
         $seguimiento->save();
         //
     }

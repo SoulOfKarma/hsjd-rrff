@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\SeguimientoSolicitudes;
+use App\Mail\AutoRespuesta;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::post('/Login/GetUsers', ['middleware' => 'cors', 'uses' => 'LoginController@getUsuarios']);
-Route::post('/Login/getpr', 'LoginController@adminPr');
+Route::post('/Login/getpr', ['middleware' => 'cors', 'uses' => 'LoginController@adminPr']);
 
 //Retorna Edificios
 Route::get('/Usuario/GetEdificios', ['middleware' => 'cors', 'uses' => 'EdificioController@index']);
@@ -31,6 +33,8 @@ Route::get('/Usuario/GetUnidadEsp', ['middleware' => 'cors', 'uses' => 'UnidadEx
 //Retorna Tipo Reparacion
 Route::get('/Usuario/GetTipoRep', ['middleware' => 'cors', 'uses' => 'TipoReparacionController@index']);
 //Route::get('/Usuario/GetEdificios', 'TipoReparacionController@index');
+//Retornar Usuarios Join
+Route::get('/Usuario/GetUsuarios', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getSolicitudUsuariosJoin']);
 
 //Solicitud Usuario
 //Traer Datos para el listado de tickets
