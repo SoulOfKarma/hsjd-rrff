@@ -16,13 +16,13 @@ export default [{
     },
     {
         url: '/agenteView/CalendarioSolicitudes',
-        name: 'Calendario Solicitudes',
+        name: 'Calendario',
         slug: 'CalendarioSolicitudes',
         icon: 'FileIcon'
     },
     {
         url: '/agenteView/ListadoSolicitudes',
-        name: 'Listado Solicitudes',
+        name: 'Listado Tickets',
         slug: 'ListadoSolicitudes',
         icon: 'FileIcon'
     }

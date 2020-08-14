@@ -106,11 +106,7 @@
                                     <vs-dropdown-menu class="w-32">
                                         <vs-dropdown-item>
                                             <div
-                                                @click="
-                                                    $router
-                                                        .push('/pages/profile')
-                                                        .catch(() => {})
-                                                "
+                                                @click="salir"
                                                 class="flex items-center"
                                             >
                                                 <feather-icon
@@ -193,7 +189,8 @@ export default {
             navbarType: themeConfig.navbarType || "floating",
             navMenuItems,
             routerTransition: themeConfig.routerTransition || "none",
-            routeTitle: this.$route.meta.pageTitle
+            routeTitle: this.$route.meta.pageTitle,
+            localVal: "http://127.0.0.1:8000"
         };
     },
     watch: {
@@ -257,6 +254,15 @@ export default {
         }
     },
     methods: {
+        async salir() {
+            await axios.post(this.localVal + "/api/Login/Salir", {
+                rut: ""
+            });
+            localStorage.setItem("nombre", "");
+            localStorage.setItem("run", "");
+            localStorage.setItem("permiso_usuario", "");
+            router.push("/pages/login");
+        },
         changeRouteTitle(title) {
             this.routeTitle = title;
         },
@@ -300,6 +306,14 @@ export default {
         if (aux.length == 0) {
             router.push("/pages/login");
         } else if (aux == 0) {
+            router.push("/pages/login");
+        }
+
+        var aux2 = localStorage.getItem("permiso_usuario");
+
+        if (aux2 == 2) {
+            console.log("Acceso Correcto");
+        } else {
             router.push("/pages/login");
         }
 

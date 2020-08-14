@@ -12,6 +12,7 @@
                     class="w-full select-large"
                     label="Edificio"
                     v-model="datosSolicitud.id_edificio"
+                    @change="cambioEdificio"
                 >
                     <vs-select-item
                         :key="index"
@@ -27,6 +28,7 @@
                     class="w-full select-large"
                     label="Servicio"
                     v-model="datosSolicitud.id_servicio"
+                    @change="cambioServicio"
                 >
                     <vs-select-item
                         :key="index"
@@ -74,6 +76,7 @@
             <div class="vx-col md:w-1/2 w-full mt-5">
                 <vs-select
                     v-model="datosSolicitud.id_estado"
+                    :options="listadoEstado"
                     class="w-full select-large"
                     label="Estado"
                 >
@@ -271,6 +274,8 @@ export default {
         datosSolicitud: [],
         listadoServicios: [],
         listadoUnidadEsp: [],
+        listadoTemporalServicios: [],
+        listadoTemporalUnidadEsp: [],
         listadoTipoRep: [],
         listadoSupervisores: [],
         listadoTrabajadores: [],
@@ -323,6 +328,40 @@ export default {
         }
     },
     methods: {
+        cambioEdificio() {
+            var datoidServicio = this.datosSolicitud.id_servicio;
+            var datoidEdificio = this.datosSolicitud.id_edificio;
+            var datoidUbicacion = this.datosSolicitud.id_ubicacionEx;
+            let c = this.listadoTemporalServicios;
+            let b = [];
+            var a = 0;
+
+            c.forEach((value, index) => {
+                a = value.id_edificio;
+                if (a == datoidEdificio) {
+                    b.push(value);
+                }
+            });
+            this.listadoServicios = b;
+            this.listadoUnidadEsp = [];
+        },
+        cambioServicio() {
+            var datoidServicio = this.datosSolicitud.id_servicio;
+            var datoidEdificio = this.datosSolicitud.id_edificio;
+            var datoidUbicacion = this.datosSolicitud.id_ubicacionEx;
+            let c = this.listadoTemporalUnidadEsp;
+            let b = [];
+            var a = 0;
+
+            c.forEach((value, index) => {
+                a = value.id_servicio;
+                if (a == datoidServicio) {
+                    b.push(value);
+                }
+            });
+
+            this.listadoUnidadEsp = b;
+        },
         onFromChange(selectedDates, dateStr, instance) {
             this.$set(this.configTodateTimePicker, "minDate", dateStr);
         },
@@ -337,11 +376,13 @@ export default {
         cargarServicios() {
             axios.get(this.localVal + "/api/Usuario/GetServicios").then(res => {
                 this.listadoServicios = res.data;
+                this.listadoTemporalServicios = res.data;
             });
         },
         cargarUnidadEsp() {
             axios.get(this.localVal + "/api/Usuario/GetUnidadEsp").then(res => {
                 this.listadoUnidadEsp = res.data;
+                this.listadoTemporalUnidadEsp = res.data;
             });
         },
         cargarTipoRep() {

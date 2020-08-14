@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::post('/Login/GetUsers', ['middleware' => 'cors', 'uses' => 'LoginController@getUsuarios']);
 Route::post('/Login/getpr', ['middleware' => 'cors', 'uses' => 'LoginController@adminPr']);
+Route::post('/Login/Salir', ['middleware' => 'cors', 'uses' => 'LoginController@salir']);
 
 //Retorna Edificios
 Route::get('/Usuario/GetEdificios', ['middleware' => 'cors', 'uses' => 'EdificioController@index']);
@@ -44,7 +45,7 @@ Route::get('/Usuario/TraerSolicitud/{id}', ['middleware' => 'cors', 'uses' => 'S
 //Guardar Solicitud
 Route::post('/Usuario/PostSolicitud', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@store']);
 //Traer seguimiento
-Route::get('/Usuario/TraerSeguimiento/{uuid}', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@indexSeguimiento']);
+Route::get('/Usuario/TraerSeguimiento/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoController@indexSeguimiento']);
 //Guardar Seguimiento
 Route::post('/Usuario/GuardarSeguimiento/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoController@store']);
 
@@ -57,3 +58,11 @@ Route::get('/Agente/GetTrabajadores', ['middleware' => 'cors', 'uses' => 'Trabaj
 Route::get('/Agente/GetEstado', ['middleware' => 'cors', 'uses' => 'EstadoController@index']);
 //Guardar Ticket
 Route::post('/Agente/PostTicket', ['middleware' => 'cors', 'uses' => 'GestionTicketController@store']);
+//Traer Tickets con sus usuarios
+Route::get('/Agente/GetTickets', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getSolicitudUsuariosJoin']);
+//Traer seguimiento de tickets
+Route::get('/Agente/TraerSeguimiento/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoController@indexSeguimiento']);
+//Traer datos especificos
+Route::get('/Agente/TraerSolicitud/{id}', ['middleware' => 'cors', 'uses' => 'SeguimientoController@indexEspecifico']);
+//Guardar seguimiento agente
+Route::post('/Agente/GuardarSeguimiento/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoController@store']);

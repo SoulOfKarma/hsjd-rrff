@@ -10,19 +10,19 @@
 
 export default [{
         url: '/home',
-        name: 'Home',
+        name: 'Inicio',
         slug: 'home',
         icon: 'HomeIcon'
     },
     {
         url: '/Listadosolicitudes',
-        name: 'Listado solicitudes',
+        name: 'Listado Tickets',
         slug: 'Listadosolicitudes',
         icon: 'FileIcon'
     },
     {
         url: '/GenerarSolicitud',
-        name: 'Generar Solicitud',
+        name: 'Generar Ticket',
         slug: 'GenerarSolicitud',
         icon: 'FileIcon'
     }

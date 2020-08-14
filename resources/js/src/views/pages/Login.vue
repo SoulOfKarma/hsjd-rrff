@@ -126,6 +126,7 @@ export default {
                                 response.data[0].nombre
                             );
                             localStorage.setItem("run", response.data[0].run);
+                            localStorage.setItem("id", response.data[0].id);
                             sw = 1;
                         } else {
                             pr = 1;

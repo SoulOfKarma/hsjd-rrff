@@ -44,4 +44,12 @@ class LoginController extends Controller
     }
     return $salida;
   }
+
+  public function salir(Request $request)
+  {
+    $request->session()->forget('login');
+    $request->session()->forget('run_usuario');
+    $request->session()->forget('permiso_usuario');
+    $request->session()->flush();
+  }
 }

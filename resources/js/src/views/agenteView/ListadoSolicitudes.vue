@@ -19,7 +19,7 @@
                     </vs-td>
 
                     <vs-td :data="data[indextr].id_user">
-                        {{ data[indextr].id_user }}
+                        {{ data[indextr].nombre }}
                     </vs-td>
 
                     <vs-td :data="data[indextr].tituloP">
@@ -61,7 +61,7 @@ export default {
     },
     methods: {
         cargarSolicitudes() {
-            axios.get(this.localVal + "/api/Usuario/GetSolicitud").then(res => {
+            axios.get(this.localVal + "/api/Agente/GetTickets").then(res => {
                 this.solicitudes = res.data;
             });
         },

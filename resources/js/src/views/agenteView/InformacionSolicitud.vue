@@ -1,48 +1,61 @@
 <template>
     <div>
-        <h4>
-            <vs-divider>Solicitud N° {{ solicitudes.id }}</vs-divider>
-        </h4>
-        <vs-row vs-justify="center">
-            <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="6">
-                <vs-card class="cardx" color="primary" type="border">
-                    <div>
-                        <vs-input
-                            label-placeholder="Usuario Solicitante"
-                            v-model="solicitudes.id_user"
-                            disabled="true"
-                            fixed-height
-                        />
-                        <br />
-                        <vs-input
-                            label-placeholder="Edificio"
-                            v-model="solicitudes.id_edificio"
-                            disabled="true"
-                            fixed-height
-                        />
-                    </div>
-                </vs-card>
-            </vs-col>
-            <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="6">
-                <vs-card class="cardx" color="dark" type="border">
-                    <div>
-                        <vs-input
-                            label-placeholder="Servicio"
-                            v-model="solicitudes.id_servicio"
-                            disabled="true"
-                            fixed-height
-                        />
-                        <br />
-                        <vs-input
-                            label-placeholder="Unidad Especifica"
-                            v-model="solicitudes.id_ubicacionEx"
-                            disabled="true"
-                            fixed-height
-                        />
-                    </div>
-                </vs-card>
-            </vs-col>
-        </vs-row>
+        <div :key="index" v-for="(i, index) in solicitudes">
+            <h4>
+                <vs-divider>Solicitud N° {{ i.id }}</vs-divider>
+            </h4>
+            <vs-row vs-justify="center">
+                <vs-col
+                    type="flex"
+                    vs-justify="center"
+                    vs-align="center"
+                    vs-w="6"
+                >
+                    <vs-card class="cardx" color="primary" type="border">
+                        <div>
+                            <vs-input
+                                label-placeholder="Usuario Solicitante"
+                                v-model="i.nombre"
+                                disabled="true"
+                                fixed-height
+                            />
+                            <br />
+                            <vs-input
+                                label-placeholder="Edificio"
+                                v-model="i.descripcionEdificio"
+                                disabled="true"
+                                fixed-height
+                            />
+                        </div>
+                    </vs-card>
+                </vs-col>
+                <vs-col
+                    type="flex"
+                    vs-justify="center"
+                    vs-align="center"
+                    vs-w="6"
+                >
+                    <vs-card class="cardx" color="dark" type="border">
+                        <div>
+                            <vs-input
+                                label-placeholder="Servicio"
+                                v-model="i.descripcionServicio"
+                                disabled="true"
+                                fixed-height
+                            />
+                            <br />
+                            <vs-input
+                                label-placeholder="Unidad Especifica"
+                                v-model="i.descripcionUnidadEsp"
+                                disabled="true"
+                                fixed-height
+                            />
+                        </div>
+                    </vs-card>
+                </vs-col>
+            </vs-row>
+        </div>
+
         <vs-card>
             <vs-button color="success" type="filled" @click="asignarSolicitud"
                 >Asignar Solicitud</vs-button
@@ -56,15 +69,20 @@
         </h4>
         <vs-card fixedHeight>
             <br />
-            <vs-textarea label="Actualizar seguimiento" v-model="textarea" />
-            <vs-button type="gradient">Actualizar</vs-button>
+            <vs-textarea
+                label="Actualizar seguimiento"
+                v-model="seguimientos.descripcionSeguimiento"
+            />
+            <vs-button type="gradient" @click="guardarSeguimiento"
+                >Actualizar</vs-button
+            >
         </vs-card>
 
         <vs-card>
             <template>
                 <vs-list :key="indextr" v-for="(tr, indextr) in seguimiento">
                     <vs-list-item
-                        :title="tr.id_user.toString()"
+                        :title="tr.nombre"
                         :subtitle="tr.descripcionSeguimiento"
                     ></vs-list-item>
                 </vs-list>
@@ -115,9 +133,9 @@ export default {
             });
         },
         cargaSolicitudEspecifica() {
-            let id = this.$route.params.id;
+            let id = this.$route.params.uuid;
             axios
-                .get(this.localVal + `/api/Usuario/TraerSolicitud/${id}`)
+                .get(this.localVal + `/api/Agente/TraerSolicitud/${id}`)
                 .then(res => {
                     this.solicitudes = res.data;
                 });
@@ -125,9 +143,35 @@ export default {
         cargaSeguimiento() {
             let uuid = this.$route.params.uuid;
             axios
-                .get(this.localVal + `/api/Usuario/TraerSeguimiento/${uuid}`)
+                .get(this.localVal + `/api/Agente/TraerSeguimiento/${uuid}`)
                 .then(res => {
                     this.seguimiento = res.data;
+                });
+        },
+        guardarSeguimiento() {
+            let uuid = this.$route.params.uuid;
+
+            var idusuario = localStorage.getItem("id");
+
+            this.seguimientos.id_user = idusuario;
+
+            if (this.seguimientos.descripcionSeguimiento.trim() === "") {
+                alert("Debes completar todos los campos antes de guardar");
+                return;
+            }
+            const seguimientoNuevo = this.seguimientos;
+            this.seguimientos = {
+                descripcionSeguimiento: "",
+                id_user: idusuario
+            };
+            axios
+                .post(
+                    this.localVal + `/api/Agente/GuardarSeguimiento/${uuid}`,
+                    seguimientoNuevo
+                )
+                .then(res => {
+                    const seguimientoServer = res.data;
+                    this.cargaSeguimiento();
                 });
         }
     },

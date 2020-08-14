@@ -4,8 +4,8 @@
         v-if="activeUserInfo.displayName"
     >
         <div class="text-right leading-tight hidden sm:block">
-            <p class="font-semibold">{{ activeUserInfo.displayName }}</p>
-            <small>Available</small>
+            <p class="font-semibold">{{ nombre }}</p>
+            <small>Disponible</small>
         </div>
 
         <vs-dropdown vs-custom-content vs-trigger-click class="cursor-pointer">
@@ -25,6 +25,7 @@
                 <ul style="min-width: 9rem">
                     <li
                         class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white"
+                        @click="salir"
                     >
                         <feather-icon icon="UserIcon" svgClasses="w-4 h-4" />
                         <span class="ml-2">Cerrar Sesion</span>
@@ -36,9 +37,14 @@
 </template>
 
 <script>
+import axios from "axios";
+import router from "@/router";
 export default {
     data() {
-        return {};
+        return {
+            localVal: "http://127.0.0.1:8000",
+            nombre: localStorage.getItem("nombre")
+        };
     },
     computed: {
         activeUserInfo() {
@@ -46,9 +52,14 @@ export default {
         }
     },
     methods: {
-        logout() {
-            // This is just for demo Purpose. If user clicks on logout -> redirect
-            this.$router.push("/pages/login").catch(() => {});
+        async salir() {
+            await axios.post(this.localVal + "/api/Login/Salir", {
+                rut: ""
+            });
+            localStorage.setItem("nombre", "");
+            localStorage.setItem("run", "");
+            localStorage.setItem("permiso_usuario", "");
+            router.push("/pages/login");
         }
     }
 };
