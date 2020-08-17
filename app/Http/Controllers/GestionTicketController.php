@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\GestionSolicitudes;
+use App\SeguimientoSolicitudes;
+use App\SolicitudTickets;
+use App\Mail\AutoRespuesta;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use DB;
 
 class GestionTicketController extends Controller
@@ -55,7 +59,30 @@ class GestionTicketController extends Controller
             'idApoyo2' => $request->idApoyo2,
             'idApoyo3' => $request->idApoyo3,
         );
-        $response = DB::table('gestion_solicitudes')->insert($ticket);
+
+
+        $modificar = new SolicitudTickets();
+        $modificar = array(
+            'id_estado' => $request->idEstado,
+            'id_edificio' => $request->idEdificio,
+            'id_servicio' => $request->idServicio,
+            'id_ubicacionEx' => $request->idUnidadEsp,
+            'id_tipoReparacion' => $request->idTipoRep
+        );
+
+        $response = DB::table('solicitud_tickets')
+            ->where('uuid', '=',  $request->uuid)
+            ->update($modificar);
+        $response = DB::table('gestion_solicitudes')->updateOrInsert($ticket);
+
+        $seguimiento = new SeguimientoSolicitudes();
+
+        $seguimiento->uuid = $request->uuid;
+        $seguimiento->id_user = $request->idSolicitud;
+        $seguimiento->descripcionSeguimiento = "Mensaje enviado";
+
+        $receivers = 'gomez.soto.ricardo@gmail.com';
+        Mail::to($receivers)->send(new AutoRespuesta($seguimiento));
     }
 
     /**
