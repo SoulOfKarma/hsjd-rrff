@@ -45,8 +45,15 @@ class SeguimientoController extends Controller
         $seguimiento->id_user = $request->id_user;
         $seguimiento->descripcionSeguimiento = $request->descripcionSeguimiento;
 
+        $seguimiento2 = new SeguimientoSolicitudes();
+        $seguimiento2->uuid = $uuid;
+        $seguimiento2->id_user = $request->id_user;
+        $seguimiento2->descripcionSeguimiento = $request->descripcionSeguimiento;
+        $seguimiento2->id = $request->id;
+        $seguimiento2->nombre = $request->nombre;
+
         $receivers = 'gomez.soto.ricardo@gmail.com';
-        Mail::to($receivers)->send(new AutoRespuesta($seguimiento));
+        Mail::to($receivers)->send(new AutoRespuesta($seguimiento2));
 
         $seguimiento->save();
         //

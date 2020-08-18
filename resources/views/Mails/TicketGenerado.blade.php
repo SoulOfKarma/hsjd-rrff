@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
-    <title>Ticket N° {{ $seguimiento->id }}</title>
+    <title>Nuevo Ticket Generado</title>
 </head>
 <body>
-    <p>Hola {{ $seguimiento->nombre }}</p>
-    <p>ha respondido al Ticket N°: {{ $seguimiento->id }}</p>   
-    <p>Descripcion: {{ $seguimiento->descripcionSeguimiento }}</p>   
+    <p>Hola {{ $data->nombre }}</p>
+    <p>Se ha generado el Ticket N°: {{ $data->id }}</p>   
+    <p>Descripcion: {{ $data->descripcionP }}</p>  
+    <p>Esto sera atendido por un agente lo mas pronto posible</p> 
     <p>Este correo es informativo, favor no responder a esta dirección de correo, ya que no se encuentra habilitada para recibir mensajes. 
         Si requiere mayor información sobre el contenido de este mensaje.
         Para cualquier duda o consulta favor comunicarse al correo 

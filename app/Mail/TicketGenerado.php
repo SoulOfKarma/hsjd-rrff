@@ -5,22 +5,24 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use App\SeguimientoSolicitudes;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
+use App\SolicitudTickets;
 
-class AutoRespuesta extends Mailable
+
+class TicketGenerado extends Mailable
 {
     use Queueable, SerializesModels;
+    public $data;
 
-    public $seguimiento;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(SeguimientoSolicitudes $seguimiento)
+    public function __construct(SolicitudTickets $data)
     {
-        $this->seguimiento = $seguimiento;
+        $this->data = $data;
     }
 
     /**
@@ -30,6 +32,6 @@ class AutoRespuesta extends Mailable
      */
     public function build()
     {
-        return $this->subject('Sistema de Gestion de Tickets RRFF - Auto Respuesta')->view('mails.AutoRespuesta');
+        return $this->subject('Sistema de Gestion de Tickets RRFF - Auto Respuesta')->view('mails.TicketGenerado');
     }
 }

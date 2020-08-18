@@ -13,64 +13,46 @@
         </h4>
         <div class="vx-row">
             <div class="vx-col md:w-1/2 w-full mt-5">
-                <vs-select
+                <v-select
+                    v-model="seleccionEdificio"
+                    placeholder="Seleccione Edificio"
                     class="w-full select-large"
-                    label="Edificio"
-                    v-model="solicitud.idEdificio"
+                    label="descripcionEdificio"
+                    :options="listadoEdificios"
                 >
-                    <vs-select-item
-                        :key="index"
-                        :value="item.id"
-                        :text="item.descripcionEdificio"
-                        v-for="(item, index) in listadoEdificios"
-                        class="w-full"
-                    />
-                </vs-select>
+                </v-select>
             </div>
             <div class="vx-col md:w-1/2 w-full mt-5">
-                <vs-select
+                <v-select
+                    v-model="seleccionServicio"
+                    placeholder="Seleccione Servicio"
                     class="w-full select-large"
-                    label="Servicio"
-                    v-model="solicitud.idServicio"
+                    label="descripcionServicio"
+                    :options="listadoServicios"
+                    @input="cargaSegunServicio"
                 >
-                    <vs-select-item
-                        :key="index"
-                        :value="item.id"
-                        :text="item.descripcionServicio"
-                        v-for="(item, index) in listadoServicios"
-                        class="w-full"
-                    />
-                </vs-select>
+                </v-select>
             </div>
             <div class="vx-col md:w-1/2 w-full mt-5">
-                <vs-select
+                <v-select
+                    v-model="seleccionUnidadEsp"
+                    placeholder="Seleccione Unidad Especifica"
                     class="w-full select-large"
-                    label="Unidad Especifica"
-                    v-model="solicitud.idUnidadEsp"
+                    label="descripcionUnidadEsp"
+                    :options="listadoUnidadEsp"
+                    @input="cargaSegunUnidadEsp"
                 >
-                    <vs-select-item
-                        :key="index"
-                        :value="item.id"
-                        :text="item.descripcionUnidadEsp"
-                        v-for="(item, index) in listadoUnidadEsp"
-                        class="w-full"
-                    />
-                </vs-select>
+                </v-select>
             </div>
             <div class="vx-col md:w-1/2 w-full mt-5">
-                <vs-select
+                <v-select
+                    v-model="seleccionReparacion"
+                    placeholder="Seleccione Tipo de Reparacion"
                     class="w-full select-large"
-                    label="Tipo de Reparacion"
-                    v-model="solicitud.idTipoRep"
+                    label="descripcionTipoReparacion"
+                    :options="listadoTipoRep"
                 >
-                    <vs-select-item
-                        :key="index"
-                        :value="item.id"
-                        :text="item.descripcionTipoReparacion"
-                        v-for="(item, index) in listadoTipoRep"
-                        class="w-full"
-                    />
-                </vs-select>
+                </v-select>
             </div>
         </div>
 
@@ -100,7 +82,9 @@
                 <vs-button class="mr-3 mb-2" @click="guardarSolicitud"
                     >Enviar</vs-button
                 >
-                <vs-button color="warning" class="mb-2">Limpiar</vs-button>
+                <vs-button color="warning" class="mb-2" @click="probando"
+                    >Limpiar</vs-button
+                >
             </div>
         </div>
     </div>
@@ -113,6 +97,7 @@ import "flatpickr/dist/flatpickr.css";
 import { FormWizard, TabContent } from "vue-form-wizard";
 import "vue-form-wizard/dist/vue-form-wizard.min.css";
 import axios from "axios";
+import vSelect from "vue-select";
 
 export default {
     data: () => ({
@@ -120,8 +105,10 @@ export default {
         listadoServicios: [],
         listadoUnidadEsp: [],
         listadoTipoRep: [],
+        listadoCorreo: [],
         localVal: "http://127.0.0.1:8000",
-        name: "Rick S.",
+        uuidC: "",
+        name: localStorage.getItem("nombre"),
         solicitud: {
             areaT: "",
             valorTitulo: "",
@@ -130,7 +117,27 @@ export default {
             idUnidadEsp: 0,
             idTipoRep: 0
         },
-        city: "Seleccione Edificio"
+        datosCorreo: {
+            nombre: "",
+            descripcionP: "",
+            id: 0
+        },
+        seleccionEdificio: {
+            id: 0,
+            descripcionEdificio: "Seleccione Edificio"
+        },
+        seleccionServicio: {
+            id: 0,
+            descripcionServicio: "Seleccione Servicio"
+        },
+        seleccionUnidadEsp: {
+            id: 0,
+            descripcionUnidadEsp: "Seleccione Unidad Especifica"
+        },
+        seleccionReparacion: {
+            id: 0,
+            descripcionTipoReparacion: "Seleccione Tipo de Reparacion"
+        }
     }),
     computed: {
         csrf_token() {
@@ -139,6 +146,77 @@ export default {
         }
     },
     methods: {
+        cargaSegunUnidadEsp() {
+            var idGeneral = this.seleccionUnidadEsp.id;
+
+            let c = this.listadoUnidadEsp;
+            let b = [];
+            var a = 0;
+
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == idGeneral) {
+                    b.push(value);
+                }
+            });
+            this.seleccionUnidadEsp = b;
+            idGeneral = 0;
+            idGeneral = this.seleccionUnidadEsp[0].id_servicio;
+            b = [];
+
+            c = this.listadoServicios;
+
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == idGeneral) {
+                    b.push(value);
+                }
+            });
+
+            this.seleccionServicio = b;
+            idGeneral = 0;
+            idGeneral = this.seleccionServicio[0].id_edificio;
+            b = [];
+            c = this.listadoEdificios;
+
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == idGeneral) {
+                    b.push(value);
+                }
+            });
+
+            this.seleccionEdificio = b;
+        },
+        cargaSegunServicio() {
+            var idGeneral = this.seleccionServicio.id;
+
+            let c = this.listadoServicios;
+            let b = [];
+            var a = 0;
+
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == idGeneral) {
+                    b.push(value);
+                }
+            });
+            this.seleccionServicio = b;
+            idGeneral = 0;
+            idGeneral = this.seleccionServicio[0].id_edificio;
+            b = [];
+
+            c = this.listadoEdificios;
+
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == idGeneral) {
+                    b.push(value);
+                }
+            });
+
+            this.seleccionEdificio = b;
+        },
         cargarEdificios() {
             this.csrf_token;
 
@@ -167,32 +245,120 @@ export default {
                 this.listadoTipoRep = res.data;
             });
         },
+        errorDrop(mensajeError) {
+            this.$vs.notify({
+                title: "Falto seleccionar " + mensajeError,
+                text: "Seleccione " + mensajeError,
+                color: "danger",
+                position: "top-right",
+                fixed: true
+            });
+        },
+        errorTitulo(mensajeError) {
+            this.$vs.notify({
+                title: mensajeError,
+                text: "Debe escribir un titulo superior a 10 caracteres",
+                color: "danger",
+                position: "top-right",
+                fixed: true
+            });
+        },
+        errorDescripcion(mensajeError) {
+            this.$vs.notify({
+                title: mensajeError,
+                text: "Debe escribir una descripcion superior a 15 caracteres",
+                color: "danger",
+                position: "top-right",
+                fixed: true
+            });
+        },
         guardarSolicitud() {
             if (
                 this.solicitud.areaT.trim() === "" ||
-                this.solicitud.valorTitulo.trim() === ""
+                this.solicitud.areaT.length < 15
             ) {
-                alert("Debes completar todos los campos antes de guardar");
-                return;
+                this.mensajeError =
+                    "La descripcion no supera los 15 caracteres";
+                this.errorDescripcion(this.mensajeError);
+            } else if (
+                this.solicitud.valorTitulo.trim() === "" ||
+                this.solicitud.valorTitulo.length < 10
+            ) {
+                this.mensajeError = "el titulo no supera los 10 caracteres";
+                this.errorTitulo(this.mensajeError);
+            } else if (this.seleccionEdificio.id == 0) {
+                this.mensajeError = "el Edificio";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionServicio.id == 0) {
+                this.mensajeError = "el servicio";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionUnidadEsp.id == 0) {
+                this.mensajeError = "la Unidad especifica";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionReparacion.id == 0) {
+                this.mensajeError = "el tipo de reparacion";
+                this.errorDrop(this.mensajeError);
+            } else {
+                this.solicitud.idEdificio = this.seleccionEdificio[0].id;
+                this.solicitud.idServicio = this.seleccionServicio[0].id;
+                this.solicitud.idUnidadEsp = this.seleccionUnidadEsp[0].id;
+                this.solicitud.idTipoRep = this.seleccionReparacion.id;
+                const solicitudNueva = this.solicitud;
+                this.solicitud = {
+                    areaT: "",
+                    valorTitulo: "",
+                    idEdificio: 0,
+                    idServicio: 0,
+                    idUnidadEsp: 0,
+                    idTipoRep: 0
+                };
+                axios
+                    .post(
+                        this.localVal + "/api/Usuario/PostSolicitud",
+                        solicitudNueva
+                    )
+                    .then(res => {
+                        const solicitudServer = res.data;
+                        //console.log(res.data);
+                        this.enviarCorreos(solicitudServer);
+                    });
             }
-            const solicitudNueva = this.solicitud;
-            this.solicitud = {
-                areaT: "",
-                valorTitulo: "",
-                idEdificio: 0,
-                idServicio: 0,
-                idUnidadEsp: 0,
-                idTipoRep: 0
-            };
-            console.log(solicitudNueva);
+        },
+        probando() {
+            this.solicitud.idEdificio = this.seleccionEdificio[0].id;
+            this.solicitud.idServicio = this.seleccionServicio[0].id;
+            this.solicitud.idUnidadEsp = this.seleccionUnidadEsp[0].id;
+            this.solicitud.idTipoRep = this.seleccionReparacion.id;
+            console.log(this.solicitud);
+        },
+        enviarCorreos(id) {
             axios
-                .post(
-                    this.localVal + "/api/Usuario/PostSolicitud",
-                    solicitudNueva
-                )
-                .then(res => {
-                    const solicitudServer = res.data;
-                    console.log("Data Enviada y guardada");
+                .get(this.localVal + `/api/Usuario/GetDataCorreo/${id}`)
+                .then(res2 => {
+                    if (res2.data.length > 0) {
+                        this.listadoCorreo = res2.data;
+                        this.datosCorreo.nombre = this.listadoCorreo[0].nombre;
+                        this.datosCorreo.descripcionP = this.listadoCorreo[0].descripcionP;
+                        this.datosCorreo.id = this.listadoCorreo[0].id;
+                        const dataCorreo = this.datosCorreo;
+                        this.datosCorreo = {
+                            nombre: "",
+                            descripcionP: "",
+                            id: 0
+                        };
+                        axios
+                            .post(
+                                this.localVal + "/api/Usuario/enviarCorreo",
+                                dataCorreo
+                            )
+                            .then(res3 => {
+                                if (res3.data.length > 0) {
+                                    console.log("Funciono");
+                                } else {
+                                    console.log("Rip");
+                                }
+                            });
+                    }
                 });
         }
     },
@@ -201,6 +367,9 @@ export default {
         this.cargarServicios();
         this.cargarUnidadEsp();
         this.cargarTipoRep();
+    },
+    components: {
+        "v-select": vSelect
     }
 };
 </script>

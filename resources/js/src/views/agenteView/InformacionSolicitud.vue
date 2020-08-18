@@ -2,7 +2,7 @@
     <div>
         <div :key="index" v-for="(i, index) in solicitudes">
             <h4>
-                <vs-divider>Solicitud N° {{ i.id }}</vs-divider>
+                <vs-divider>Ticket N° {{ i.id }}</vs-divider>
             </h4>
             <vs-row vs-justify="center">
                 <vs-col
@@ -58,10 +58,10 @@
 
         <vs-card>
             <vs-button color="success" type="filled" @click="asignarSolicitud"
-                >Asignar Solicitud</vs-button
+                >Asignar Ticket</vs-button
             >
             <vs-button color="warning" type="filled" @click="modificarSolicitud"
-                >Modificar Solicitud</vs-button
+                >Modificar Ticket</vs-button
             >
         </vs-card>
         <h4>
@@ -104,7 +104,9 @@ export default {
 
         seguimientos: {
             descripcionSeguimiento: "",
-            id_user: 1
+            id: 0,
+            nombre: "",
+            id_user: 0
         }
     }),
     methods: {
@@ -112,13 +114,28 @@ export default {
             let id = this.$route.params.id;
             let uuid = this.$route.params.uuid;
             // router.push(`/agenteView/FormularioAsignar/${id}`);
-            this.$router.push({
-                name: "AsignarSolicitudAgente",
-                params: {
-                    id: `${id}`,
-                    uuid: `${uuid}`
-                }
-            });
+            axios
+                .get(this.localVal + `/api/Agente/GetTicketAsignado/${uuid}`)
+                .then(res => {
+                    if (res.data.length > 0) {
+                        this.$vs.notify({
+                            title: "Ticket ya asignado ",
+                            text:
+                                "Si necesita modificarlo vaya a Modificar Ticket ",
+                            color: "danger",
+                            position: "top-right",
+                            fixed: true
+                        });
+                    } else {
+                        this.$router.push({
+                            name: "AsignarSolicitudAgente",
+                            params: {
+                                id: `${id}`,
+                                uuid: `${uuid}`
+                            }
+                        });
+                    }
+                });
         },
         modificarSolicitud() {
             let id = this.$route.params.id;
@@ -151,18 +168,31 @@ export default {
         guardarSeguimiento() {
             let uuid = this.$route.params.uuid;
 
-            var idusuario = localStorage.getItem("id");
-
-            this.seguimientos.id_user = idusuario;
-
-            if (this.seguimientos.descripcionSeguimiento.trim() === "") {
-                alert("Debes completar todos los campos antes de guardar");
+            if (
+                this.seguimientos.descripcionSeguimiento.trim() === "" ||
+                this.seguimientos.descripcionSeguimiento < 15
+            ) {
+                this.$vs.notify({
+                    title: "Error en la descripcion",
+                    text: "Esta vacio o no supera los 15 caracteres",
+                    color: "danger",
+                    position: "top-right",
+                    fixed: true
+                });
                 return;
             }
+            var aux = localStorage.getItem("nombre");
+            this.seguimientos.nombre = aux;
+            var id = this.solicitudes[0].id;
+            this.seguimientos.id = id;
+            var iduser = localStorage.getItem("id");
+            this.seguimientos.id_user = iduser;
             const seguimientoNuevo = this.seguimientos;
             this.seguimientos = {
                 descripcionSeguimiento: "",
-                id_user: idusuario
+                id: 0,
+                nombre: "",
+                id_user: 0
             };
             axios
                 .post(

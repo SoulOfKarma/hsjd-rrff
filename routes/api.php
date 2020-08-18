@@ -48,6 +48,10 @@ Route::post('/Usuario/PostSolicitud', ['middleware' => 'cors', 'uses' => 'Solici
 Route::get('/Usuario/TraerSeguimiento/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoController@indexSeguimiento']);
 //Guardar Seguimiento
 Route::post('/Usuario/GuardarSeguimiento/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoController@store']);
+//Traer data especifica para generar correo
+Route::get('/Usuario/GetDataCorreo/{id}', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getDataCorreo']);
+//Envio de data para el correo
+Route::post('/Usuario/enviarCorreo', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@enviarCorreo']);
 
 //Gestion Agentes
 //Traer supervisores
@@ -66,3 +70,11 @@ Route::get('/Agente/TraerSeguimiento/{uuid}', ['middleware' => 'cors', 'uses' =>
 Route::get('/Agente/TraerSolicitud/{id}', ['middleware' => 'cors', 'uses' => 'SeguimientoController@indexEspecifico']);
 //Guardar seguimiento agente
 Route::post('/Agente/GuardarSeguimiento/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoController@store']);
+//Traer data especifica para correo Asignado
+Route::get('/Agente/GetDataCorreo/{uuid}', ['middleware' => 'cors', 'uses' => 'GestionTicketController@getDataCorreo']);
+//Envio de data para el correo
+Route::post('/Agente/enviarCorreo', ['middleware' => 'cors', 'uses' => 'GestionTicketController@enviarCorreo']);
+//Validar Existencia de ticket asignado
+Route::get('/Agente/GetTicketAsignado/{uuid}', ['middleware' => 'cors', 'uses' => 'GestionTicketController@GetTicketAsignado']);
+//Guardar Ticket
+Route::post('/Agente/PutTicket', ['middleware' => 'cors', 'uses' => 'GestionTicketController@modificarTicket']);

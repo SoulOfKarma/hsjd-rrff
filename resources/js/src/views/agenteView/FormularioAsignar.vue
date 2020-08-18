@@ -1,7 +1,7 @@
 <template>
     <div>
         <h4>
-            <vs-divider>Asignar Solicitud</vs-divider>
+            <vs-divider>Asignar Ticket</vs-divider>
         </h4>
         <h4>
             <vs-divider>Lugar del problema</vs-divider>
@@ -293,10 +293,15 @@
 
         <div class="vx-row">
             <div class="vx-col w-full">
-                <vs-button class="mr-3 mb-2" @click="guardarFormulario"
+                <vs-button
+                    class="mr-3 mb-2"
+                    color="success"
+                    @click="guardarFormulario"
                     >Enviar</vs-button
                 >
-                <vs-button color="warning" class="mb-2">Limpiar</vs-button>
+                <vs-button color="warning" class="mb-2" @click="probando"
+                    >Limpiar</vs-button
+                >
             </div>
         </div>
     </div>
@@ -352,6 +357,7 @@ export default {
         listadoApoyo2: [],
         listadoApoyo3: [],
         listadoEstado: [],
+        listadoCorreo: [],
         gestionTicket: {
             uuid: "",
             idSolicitud: 0,
@@ -401,16 +407,27 @@ export default {
             tra_nombre_apellido: "Seleccione al Trabajador"
         },
         seleccionApoyo1: {
-            id: 0,
-            tra_nombre_apellido: "Seleccione al Apoyo"
+            id: 4,
+            tra_nombre_apellido: "Sin Asignar"
         },
         seleccionApoyo2: {
-            id: 0,
-            tra_nombre_apellido: "Seleccione al Apoyo"
+            id: 4,
+            tra_nombre_apellido: "Sin Asignar"
         },
         seleccionApoyo3: {
-            id: 0,
-            tra_nombre_apellido: "Seleccione al Apoyo"
+            id: 4,
+            tra_nombre_apellido: "Sin Asignar"
+        },
+        datosCorreo: {
+            nombreUsuario: "",
+            descripcionP: "",
+            idTicket: 0,
+            nombreTra: "",
+            nombreSupervisor: "",
+            fechaInicio: "",
+            horaInicio: "",
+            fechaTermino: "",
+            horaTermino: ""
         },
         variablePrueba: 0,
         mensajeError: "",
@@ -575,6 +592,18 @@ export default {
                     this.cargarInicial();
                 });
         },
+        cargaTicketAsignado() {
+            let id = this.$route.params.id;
+            axios
+                .get(this.localVal + `/api/Agente/TraerTicket/${uuid}`)
+                .then(res => {
+                    this.datosSolicitud = res.data;
+                    /* this.cargaEstado();
+                    this.cargaTipoReparacion();
+                    this.cargarUSE(); */
+                    this.cargarInicial();
+                });
+        },
         errorDrop(mensajeError) {
             this.$vs.notify({
                 title: "Falto seleccionar " + mensajeError,
@@ -599,7 +628,7 @@ export default {
             } else if (this.seleccionReparacion[0].id == 0) {
                 this.mensajeError = "el tipo de reparacion";
                 this.errorDrop(this.mensajeError);
-            } else if (this.seleccionEstado[0].id == 0) {
+            } else if (this.seleccionEstado.id == 0) {
                 this.mensajeError = "el estado";
                 this.errorDrop(this.mensajeError);
             } else if (this.seleccionSupervisor.id == 0) {
@@ -644,7 +673,7 @@ export default {
                 this.gestionTicket.idServicio = this.seleccionServicio[0].id;
                 this.gestionTicket.idUnidadEsp = this.seleccionUnidadEsp[0].id;
                 this.gestionTicket.idTipoRep = this.seleccionReparacion[0].id;
-                this.gestionTicket.idEstado = this.seleccionEstado[0].id;
+                this.gestionTicket.idEstado = this.seleccionEstado.id;
                 this.gestionTicket.idSupervisor = this.seleccionSupervisor.id;
                 this.gestionTicket.idTrabajador = this.seleccionTrabajador.id;
                 this.gestionTicket.idApoyo1 = this.seleccionApoyo1.id;
@@ -652,7 +681,7 @@ export default {
                 this.gestionTicket.idApoyo3 = this.seleccionApoyo3.id;
 
                 const ticket = this.gestionTicket;
-                console.log(ticket);
+
                 /*   this.gestionTicket = {
                 uuid: "",
                 idSolicitud: 0,
@@ -677,9 +706,51 @@ export default {
                     .post(this.localVal + "/api/Agente/PostTicket", ticket)
                     .then(res => {
                         const ticketServer = res.data;
-                        console.log("baia baia");
+                        this.enviarCorreos(uuid);
                     });
             }
+        },
+        enviarCorreos(uuid) {
+            axios
+                .get(this.localVal + `/api/Agente/GetDataCorreo/${uuid}`)
+                .then(res2 => {
+                    if (res2.data.length > 0) {
+                        this.listadoCorreo = res2.data;
+                        this.datosCorreo.nombreUsuario = this.listadoCorreo[0].nombre;
+                        this.datosCorreo.descripcionP = this.listadoCorreo[0].descripcionP;
+                        this.datosCorreo.idTicket = this.listadoCorreo[0].id_solicitud;
+                        this.datosCorreo.nombreTra = this.listadoCorreo[0].tra_nombre_apellido;
+                        this.datosCorreo.nombreSupervisor = this.listadoCorreo[0].sup_nombre_apellido;
+                        this.datosCorreo.fechaInicio = this.listadoCorreo[0].fechaInicio;
+                        this.datosCorreo.horaInicio = this.listadoCorreo[0].horaInicio;
+                        this.datosCorreo.fechaTermino = this.listadoCorreo[0].fechaTermino;
+                        this.datosCorreo.horaTermino = this.listadoCorreo[0].horaTermino;
+                        const dataCorreo = this.datosCorreo;
+                        this.datosCorreo = {
+                            nombreUsuario: "",
+                            descripcionP: "",
+                            idTicket: 0,
+                            nombreTra: "",
+                            nombreSupervisor: "",
+                            fechaInicio: "",
+                            horaInicio: "",
+                            fechaTermino: "",
+                            horaTermino: ""
+                        };
+                        axios
+                            .post(
+                                this.localVal + "/api/Agente/enviarCorreo",
+                                dataCorreo
+                            )
+                            .then(res3 => {
+                                if (res3.data.length > 0) {
+                                    console.log("Funciono");
+                                } else {
+                                    console.log("Rip");
+                                }
+                            });
+                    }
+                });
         },
         cargaEstado() {
             var datoidEstado = this.datosSolicitud.id_estado;
@@ -748,10 +819,17 @@ export default {
 
             this.seleccionEdificio = b;
         },
+
         cargarInicial() {
             this.cargaEstado();
             this.cargaTipoReparacion();
             this.cargarUSE();
+        },
+        probando() {
+            console.log(this.seleccionEstado);
+            console.log(this.seleccionApoyo1);
+            console.log(this.seleccionApoyo2);
+            console.log(this.seleccionApoyo3);
         }
     },
     created() {

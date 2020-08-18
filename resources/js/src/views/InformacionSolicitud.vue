@@ -47,7 +47,9 @@ export default {
         localVal: "http://127.0.0.1:8000",
         seguimientos: {
             descripcionSeguimiento: "",
-            id_user: 2
+            id: 0,
+            nombre: "",
+            id_user: 0
         }
     }),
     methods: {
@@ -70,24 +72,43 @@ export default {
         guardarSeguimiento() {
             let uuid = this.$route.params.uuid;
             console.log(uuid);
-            if (this.seguimientos.descripcionSeguimiento.trim() === "") {
-                alert("Debes completar todos los campos antes de guardar");
-                return;
-            }
-            const seguimientoNuevo = this.seguimientos;
-            this.seguimientos = {
-                descripcionSeguimiento: "",
-                id_user: 2
-            };
-            axios
-                .post(
-                    this.localVal + `/api/Usuario/GuardarSeguimiento/${uuid}`,
-                    seguimientoNuevo
-                )
-                .then(res => {
-                    const seguimientoServer = res.data;
-                    this.cargaSeguimiento();
+            if (
+                this.seguimientos.descripcionSeguimiento.trim() === "" ||
+                this.seguimientos.descripcionSeguimiento < 15
+            ) {
+                this.$vs.notify({
+                    title: "Error en la descripcion",
+                    text: "Esta vacio o no supera los 15 caracteres",
+                    color: "danger",
+                    position: "top-right",
+                    fixed: true
                 });
+                return;
+            } else {
+                var aux = localStorage.getItem("nombre");
+                this.seguimientos.nombre = aux;
+                var id = this.solicitudes.id;
+                this.seguimientos.id = id;
+                var iduser = localStorage.getItem("id");
+                this.seguimientos.id_user = iduser;
+                const seguimientoNuevo = this.seguimientos;
+                this.seguimientos = {
+                    descripcionSeguimiento: "",
+                    id: 0,
+                    nombre: "",
+                    id_user: 0
+                };
+                axios
+                    .post(
+                        this.localVal +
+                            `/api/Usuario/GuardarSeguimiento/${uuid}`,
+                        seguimientoNuevo
+                    )
+                    .then(res => {
+                        const seguimientoServer = res.data;
+                        this.cargaSeguimiento();
+                    });
+            }
         }
     },
     beforeMount() {

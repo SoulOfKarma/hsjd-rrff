@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\TicketGenerado;
 use App\SolicitudTickets;
 use App\SeguimientoSolicitudes;
 use Ramsey\Uuid\Uuid;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 class SolicitudUsuarioController extends Controller
 {
@@ -21,6 +24,29 @@ class SolicitudUsuarioController extends Controller
         $get_all = DB::table('solicitud_tickets')->get();
 
         return  $get_all;
+    }
+
+    public function getDataCorreo($id)
+    {
+
+        $users = DB::table('solicitud_tickets')
+            ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
+            ->select('solicitud_tickets.*', 'users.nombre')
+            ->where('solicitud_tickets.id', '=', $id)
+            ->get();
+
+        return  $users;
+    }
+
+    public function enviarCorreo(Request $request)
+    {
+        $data = new SolicitudTickets();
+        $data->nombre = $request->nombre;
+        $data->descripcionP = $request->descripcionP;
+        $data->id = $request->id;
+        Log::info($data);
+        $receivers = 'gomez.soto.ricardo@gmail.com';
+        Mail::to($receivers)->send(new TicketGenerado($data));
     }
 
     public function getSolicitudUsuariosJoin()
@@ -71,8 +97,8 @@ class SolicitudUsuarioController extends Controller
      */
     public function store(Request $request)
     {
-        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-        $out->writeln("Hola c:");
+        // $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+        // $out->writeln("Hola c:");
         $solicitud = new SolicitudTickets();
         $seguimiento = new SeguimientoSolicitudes();
         /* $solicitud->id_user = 2;
@@ -106,8 +132,19 @@ class SolicitudUsuarioController extends Controller
 
         );
 
-        $response = DB::table('solicitud_tickets')->insert($solicitud);
-        $response = DB::table('seguimiento_solicitudes')->insert($seguimiento);
+        $response = DB::table('solicitud_tickets')->insertGetId([
+            'uuid' => $uuid->toString(),
+            'id_user' => 2,
+            'id_estado' => 1,
+            'id_edificio' => $request->idEdificio,
+            'id_servicio' => $request->idServicio,
+            'id_ubicacionEx' => $request->idUnidadEsp,
+            'id_tipoReparacion' => $request->idTipoRep,
+            'tituloP' => $request->valorTitulo,
+            'descripcionP' => $request->areaT,
+        ]);
+        //$response = SolicitudTickets::create($solicitud);
+        $response2 = DB::table('seguimiento_solicitudes')->insert($seguimiento);
         //$solicitud->save();
 
         return $response;
