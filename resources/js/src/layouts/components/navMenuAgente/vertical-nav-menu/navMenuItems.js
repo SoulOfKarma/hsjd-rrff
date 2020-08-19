@@ -25,6 +25,12 @@ export default [{
         name: 'Listado Tickets',
         slug: 'ListadoSolicitudes',
         icon: 'FileIcon'
+    },
+    {
+        url: '/agenteView/GenerarTicket',
+        name: 'Generar Ticket',
+        slug: 'GenerarTicket',
+        icon: 'FileIcon'
     }
 
 ]

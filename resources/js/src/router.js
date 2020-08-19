@@ -83,6 +83,12 @@ const router = new Router({
                         import ('./views/agenteView/HomeAgente.vue')
                 },
                 {
+                    path: '/agenteView/GenerarTicket',
+                    name: 'GenerarTicket',
+                    component: () =>
+                        import ('./views/agenteView/GenerarTicket.vue')
+                },
+                {
                     path: '/agenteView/CalendarioSolicitudes',
                     name: 'Calendario Solicitudes',
                     component: () =>

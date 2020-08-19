@@ -78,3 +78,5 @@ Route::post('/Agente/enviarCorreo', ['middleware' => 'cors', 'uses' => 'GestionT
 Route::get('/Agente/GetTicketAsignado/{uuid}', ['middleware' => 'cors', 'uses' => 'GestionTicketController@GetTicketAsignado']);
 //Guardar Ticket
 Route::post('/Agente/PutTicket', ['middleware' => 'cors', 'uses' => 'GestionTicketController@modificarTicket']);
+//Guardar Nuevo Ticket
+Route::post('/Agente/PostNuevoTicket', ['middleware' => 'cors', 'uses' => 'GestionTicketController@NuevoTicket']);

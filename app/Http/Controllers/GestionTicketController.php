@@ -131,6 +131,50 @@ class GestionTicketController extends Controller
         Mail::to($receivers)->send(new AutoRespuesta($seguimiento));
     }
 
+    public function NuevoTicket(Request $request)
+    {
+        //Insertando Ticket
+        $ticket = new GestionSolicitudes();
+        $ticket = array(
+            'id_trabajador' => $request->idTrabajador,
+            'id_supervisor' => $request->idSupervisor,
+            'horaInicio' => $request->time1,
+            'horaTermino' => $request->time2,
+            'fechaInicio' => $request->fromDate,
+            'fechaTermino' => $request->toDate,
+            'diasEjecucion' => $request->diaCalculado,
+            'horasEjecucion' => $request->horasCalculadas,
+            'idApoyo1' => $request->idApoyo1,
+            'idApoyo2' => $request->idApoyo2,
+            'idApoyo3' => $request->idApoyo3,
+        );
+
+
+        $insertarGestion = new SolicitudTickets();
+        $insertarGestion = array(
+            'id_estado' => $request->idEstado,
+            'id_edificio' => $request->idEdificio,
+            'id_servicio' => $request->idServicio,
+            'id_ubicacionEx' => $request->idUnidadEsp,
+            'id_tipoReparacion' => $request->idTipoRep
+        );
+
+        $response = DB::table('solicitud_tickets')
+            ->insert($insertarGestion);
+        $response = DB::table('gestion_solicitudes')->updateOrInsert($ticket);
+
+        return $response;
+
+        $seguimiento = new SeguimientoSolicitudes();
+
+        $seguimiento->uuid = $request->uuid;
+        $seguimiento->id_user = $request->idSolicitud;
+        $seguimiento->descripcionSeguimiento = "Mensaje enviado";
+
+        $receivers = 'derek.carvajal@redsalud.gob.cl';
+        Mail::to($receivers)->send(new AutoRespuesta($seguimiento));
+    }
+
     /**
      * Display the specified resource.
      *

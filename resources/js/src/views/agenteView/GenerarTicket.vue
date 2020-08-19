@@ -1,7 +1,7 @@
 <template>
   <div>
     <h4>
-      <vs-divider>Modificar Ticket</vs-divider>
+      <vs-divider>Generar Nuevo Ticket</vs-divider>
     </h4>
     <h4>
       <vs-divider>Lugar del problema</vs-divider>
@@ -231,20 +231,20 @@
       </div>
     </div>
     <h4>
-      <vs-divider>Reasignar Fecha y Hora de visita</vs-divider>
+      <vs-divider>Asignar Fecha y Hora de visita</vs-divider>
     </h4>
     <div class="vx-row">
       <div class="vx-col md:w-1/2 w-full mt-5">
         <flat-pickr
           :config="configFromdateTimePicker"
           v-model="gestionTicket.fromDate"
-          placeholder="Fecha A Cambiar"
+          placeholder="Fecha Inicio"
           @on-change="onFromChange"
         />
         <flat-pickr
           :config="configdateTimePicker"
           v-model="gestionTicket.time1"
-          placeholder="Seleccione Hora a Cambiar"
+          placeholder="Seleccione Hora"
         />
       </div>
       <div class="vx-col md:w-1/2 w-full mt-5">
@@ -279,8 +279,8 @@
 
     <div class="vx-row">
       <div class="vx-col w-full">
-        <vs-button class="mr-3 mb-2" color="warning" @click="ModificarFormulario">Modificar</vs-button>
-        <vs-button color="primary" class="mb-2" @click="probando">Limpiar</vs-button>
+        <vs-button class="mr-3 mb-2" color="success" @click="guardarFormulario">Enviar</vs-button>
+        <vs-button color="warning" class="mb-2">Limpiar</vs-button>
       </div>
     </div>
   </div>
@@ -321,7 +321,6 @@ export default {
     },
     listadoEdificios: [],
     datosSolicitud: [],
-    datosTicketAsignado: [],
     listadoServicios: [],
     listadoUnidadEsp: [],
     listadoTemporalServicios: [],
@@ -335,8 +334,6 @@ export default {
     listadoEstado: [],
     listadoCorreo: [],
     gestionTicket: {
-      uuid: "",
-      idSolicitud: 0,
       idEdificio: 2,
       idServicio: 2,
       idUnidadEsp: 3,
@@ -383,15 +380,15 @@ export default {
       tra_nombre_apellido: "Seleccione al Trabajador",
     },
     seleccionApoyo1: {
-      id: 5,
+      id: 4,
       tra_nombre_apellido: "Sin Asignar",
     },
     seleccionApoyo2: {
-      id: 5,
+      id: 4,
       tra_nombre_apellido: "Sin Asignar",
     },
     seleccionApoyo3: {
-      id: 5,
+      id: 4,
       tra_nombre_apellido: "Sin Asignar",
     },
     datosCorreo: {
@@ -549,18 +546,6 @@ export default {
         this.listadoEstado = res.data;
       });
     },
-    cargaSolicitudEspecifica() {
-      let id = this.$route.params.id;
-      axios
-        .get(this.localVal + `/api/Usuario/TraerSolicitud/${id}`)
-        .then((res) => {
-          this.datosSolicitud = res.data;
-          /* this.cargaEstado();
-                    this.cargaTipoReparacion();
-                    this.cargarUSE(); */
-          this.cargarInicial();
-        });
-    },
     errorDrop(mensajeError) {
       this.$vs.notify({
         title: "Falto seleccionar " + mensajeError,
@@ -570,19 +555,19 @@ export default {
         fixed: true,
       });
     },
-    ModificarFormulario() {
+    guardarFormulario() {
       var hoy = new Date();
 
-      if (this.seleccionEdificio[0].id == 0) {
+      if (this.seleccionEdificio.id == 0) {
         this.mensajeError = "el Edificio";
         this.errorDrop(this.mensajeError);
-      } else if (this.seleccionServicio[0].id == 0) {
+      } else if (this.seleccionServicio.id == 0) {
         this.mensajeError = "el servicio";
         this.errorDrop(this.mensajeError);
-      } else if (this.seleccionUnidadEsp[0].id == 0) {
+      } else if (this.seleccionUnidadEsp.id == 0) {
         this.mensajeError = "la Unidad especifica";
         this.errorDrop(this.mensajeError);
-      } else if (this.seleccionReparacion[0].id == 0) {
+      } else if (this.seleccionReparacion.id == 0) {
         this.mensajeError = "el tipo de reparacion";
         this.errorDrop(this.mensajeError);
       } else if (this.seleccionEstado.id == 0) {
@@ -622,17 +607,13 @@ export default {
         this.mensajeError = "Los dias calculados no pueden ser 0";
         this.errorDrop(this.mensajeError);
       } else {
-        let uuid = this.$route.params.uuid;
-        this.gestionTicket.uuid = uuid;
-        let id = this.$route.params.id;
-        this.gestionTicket.idSolicitud = id;
-        this.gestionTicket.idEdificio = this.seleccionEdificio[0].id;
-        this.gestionTicket.idServicio = this.seleccionServicio[0].id;
-        this.gestionTicket.idUnidadEsp = this.seleccionUnidadEsp[0].id;
-        this.gestionTicket.idTipoRep = this.seleccionReparacion[0].id;
-        this.gestionTicket.idEstado = this.seleccionEstado[0].id;
-        this.gestionTicket.idSupervisor = this.seleccionSupervisor[0].id;
-        this.gestionTicket.idTrabajador = this.seleccionTrabajador[0].id;
+        this.gestionTicket.idEdificio = this.seleccionEdificio.id;
+        this.gestionTicket.idServicio = this.seleccionServicio.id;
+        this.gestionTicket.idUnidadEsp = this.seleccionUnidadEsp.id;
+        this.gestionTicket.idTipoRep = this.seleccionReparacion.id;
+        this.gestionTicket.idEstado = this.seleccionEstado.id;
+        this.gestionTicket.idSupervisor = this.seleccionSupervisor.id;
+        this.gestionTicket.idTrabajador = this.seleccionTrabajador.id;
         this.gestionTicket.idApoyo1 = this.seleccionApoyo1.id;
         this.gestionTicket.idApoyo2 = this.seleccionApoyo2.id;
         this.gestionTicket.idApoyo3 = this.seleccionApoyo3.id;
@@ -660,10 +641,9 @@ export default {
                 diaCalculado: 0
             }; */
         axios
-          .post(this.localVal + "/api/Agente/PutTicket", ticket)
+          .post(this.localVal + "/api/Agente/PostNuevoTicket", ticket)
           .then((res) => {
             const ticketServer = res.data;
-            this.enviarCorreos(uuid);
           });
       }
     },
@@ -706,172 +686,6 @@ export default {
           }
         });
     },
-    cargaEstado() {
-      var datoidEstado = this.datosSolicitud.id_estado;
-      let c = this.listadoEstado;
-      let b = [];
-      var a = 0;
-      c.forEach((value, index) => {
-        a = value.id;
-        if (a == datoidEstado) {
-          b.push(value);
-        }
-      });
-      this.seleccionEstado = b;
-    },
-
-    cargaTipoReparacion() {
-      var datoidRep = this.datosSolicitud.id_tipoReparacion;
-      let c = this.listadoTipoRep;
-      let b = [];
-      var a = 0;
-      c.forEach((value, index) => {
-        a = value.id;
-        if (a == datoidRep) {
-          b.push(value);
-        }
-      });
-      this.seleccionReparacion = b;
-    },
-    cargarUSE() {
-      var datoidServicio = this.datosSolicitud.id_servicio;
-      var datoidEdificio = this.datosSolicitud.id_edificio;
-      var datoidUbicacion = this.datosSolicitud.id_ubicacionEx;
-      let c = this.listadoUnidadEsp;
-      let b = [];
-      var a = 0;
-      c.forEach((value, index) => {
-        a = value.id;
-
-        if (a == datoidUbicacion) {
-          b.push(value);
-        }
-      });
-
-      this.seleccionUnidadEsp = b;
-
-      b = [];
-      c = this.listadoServicios;
-
-      c.forEach((value, index) => {
-        a = value.id;
-        if (a == datoidServicio) {
-          b.push(value);
-        }
-      });
-
-      this.seleccionServicio = b;
-
-      c = this.listadoEdificios;
-      b = [];
-      c.forEach((value, index) => {
-        a = value.id;
-        if (a == datoidEdificio) {
-          b.push(value);
-        }
-      });
-
-      this.seleccionEdificio = b;
-    },
-    cargaTicketAsignado() {
-      let uuid = this.$route.params.uuid;
-      axios
-        .get(this.localVal + `/api/Agente/GetTicketAsignado/${uuid}`)
-        .then((res) => {
-          this.datosTicketAsignado = res.data;
-          /* this.cargaEstado();
-                    this.cargaTipoReparacion();
-                    this.cargarUSE(); */
-          this.cargarSTA();
-        });
-    },
-    cargarSTA() {
-      var datoidSupervisor = this.datosTicketAsignado[0].id_supervisor;
-      var datoidTrabajador = this.datosTicketAsignado[0].id_trabajador;
-      var datoidApoyo1 = this.datosTicketAsignado[0].idApoyo1;
-      var datoidApoyo2 = this.datosTicketAsignado[0].idApoyo2;
-      var datoidApoyo3 = this.datosTicketAsignado[0].idApoyo3;
-      let c = this.listadoSupervisores;
-      let b = [];
-      var a = 0;
-      c.forEach((value, index) => {
-        a = value.id;
-
-        if (a == datoidSupervisor) {
-          b.push(value);
-        }
-      });
-
-      this.seleccionSupervisor = b;
-
-      b = [];
-      c = this.listadoTrabajadores;
-
-      c.forEach((value, index) => {
-        a = value.id;
-        if (a == datoidTrabajador) {
-          b.push(value);
-        }
-      });
-
-      this.seleccionTrabajador = b;
-
-      c = this.listadoApoyo1;
-      b = [];
-
-      c.forEach((value, index) => {
-        a = value.id;
-        if (a == datoidApoyo1) {
-          b.push(value);
-        }
-      });
-      if (b.length <= 0) {
-      } else {
-        this.seleccionApoyo1 = b;
-      }
-
-      c = this.listadoApoyo2;
-      b = [];
-      console.log(datoidApoyo2);
-      c.forEach((value, index) => {
-        a = value.id;
-        if (a == datoidApoyo2) {
-          b.push(value);
-        }
-      });
-
-      if (b.length <= 0) {
-      } else {
-        this.seleccionApoyo2 = b;
-      }
-
-      this.seleccionApoyo2 = b;
-
-      c = this.listadoApoyo3;
-      b = [];
-      c.forEach((value, index) => {
-        a = value.id;
-        if (a == datoidApoyo3) {
-          b.push(value);
-        }
-      });
-
-      if (b.length <= 0) {
-      } else {
-        this.seleccionApoyo3 = b;
-      }
-    },
-    cargarInicial() {
-      this.cargaEstado();
-      this.cargaTipoReparacion();
-      this.cargarUSE();
-    },
-    probando() {
-      console.log(this.seleccionEstado);
-      console.log(this.seleccionApoyo1);
-      console.log(this.seleccionApoyo2);
-      console.log(this.seleccionApoyo3);
-    },
   },
   created() {
     this.cargarEdificios();
@@ -881,8 +695,6 @@ export default {
     this.cargarSupervisores();
     this.cargarTrabajadores();
     this.cargarEstado();
-    this.cargaSolicitudEspecifica();
-    this.cargaTicketAsignado();
   },
   async beforeMount() {},
   components: {
