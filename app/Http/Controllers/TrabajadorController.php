@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Trabajadores;
 use DB;
 
 class TrabajadorController extends Controller
@@ -15,7 +16,7 @@ class TrabajadorController extends Controller
     public function index()
     {
         //Traer todo de trabajadores
-        $get_all = DB::table('trabajadores')->get();
+        $get_all = Trabajadores::all();
 
         return  $get_all;
     }

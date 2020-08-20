@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Supervisores;
 use DB;
 
 class SupervisorController extends Controller
@@ -15,7 +16,7 @@ class SupervisorController extends Controller
     public function index()
     {
         //Traer todo de supervisores
-        $get_all = DB::table('supervisores')->get();
+        $get_all = Supervisores::all();
 
         return  $get_all;
     }

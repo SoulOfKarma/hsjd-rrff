@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Servicio extends Model
+class tblPermisoUsuarios extends Model
 {
     //
 }

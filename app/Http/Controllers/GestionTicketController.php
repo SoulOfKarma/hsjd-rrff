@@ -10,6 +10,7 @@ use App\Mail\AutoRespuesta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
+use Ramsey\Uuid\Uuid;
 use DB;
 
 class GestionTicketController extends Controller
@@ -22,6 +23,15 @@ class GestionTicketController extends Controller
     public function index()
     {
         //
+    }
+
+    public function getUsuarios()
+    {
+        //Traer a todos los usuarios
+        $users = DB::table('users')->get();
+
+
+        return  $users;
     }
 
     public function getDataCorreo($uuid)
@@ -135,6 +145,7 @@ class GestionTicketController extends Controller
     {
         //Insertando Ticket
         $ticket = new GestionSolicitudes();
+        $uuid = Uuid::uuid4();
         $ticket = array(
             'id_trabajador' => $request->idTrabajador,
             'id_supervisor' => $request->idSupervisor,

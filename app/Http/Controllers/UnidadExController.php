@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\UnidadEsps;
 use DB;
 
 class UnidadExController extends Controller
@@ -14,7 +15,7 @@ class UnidadExController extends Controller
      */
     public function index()
     {
-        $get_all = DB::table('unidad_esps')->get();
+        $get_all = UnidadEsps::all();
 
         return  $get_all;
         //

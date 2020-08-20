@@ -39,23 +39,19 @@ class SeguimientoController extends Controller
      */
     public function store(Request $request, $uuid)
     {
-        $seguimiento = new SeguimientoSolicitudes();
+        SeguimientoSolicitudes::create($request->all());
 
-        $seguimiento->uuid = $uuid;
-        $seguimiento->id_user = $request->id_user;
-        $seguimiento->descripcionSeguimiento = $request->descripcionSeguimiento;
 
-        $seguimiento2 = new SeguimientoSolicitudes();
-        $seguimiento2->uuid = $uuid;
-        $seguimiento2->id_user = $request->id_user;
-        $seguimiento2->descripcionSeguimiento = $request->descripcionSeguimiento;
-        $seguimiento2->id = $request->id;
-        $seguimiento2->nombre = $request->nombre;
+        $descripcionSeguimiento = $request->descripcionSeguimiento;
+        $id_solicitud = $request->id;
+        $nombre = $request->nombre;
 
-        $receivers = 'gomez.soto.ricardo@gmail.com';
-        Mail::to($receivers)->send(new AutoRespuesta($seguimiento2));
+        Mail::send('/Mails/AutoRespuesta', ['nombre' => $nombre, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento], function ($message) {
+            $message->to('ricardo.soto.g@redsalud.gob.cl', 'Ricardo Soto Gomez')->subject('Nuevo Ticket Generado');
+            $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
+        });
 
-        $seguimiento->save();
+
         //
     }
 

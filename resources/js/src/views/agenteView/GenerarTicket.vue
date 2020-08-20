@@ -4,6 +4,20 @@
       <vs-divider>Generar Nuevo Ticket</vs-divider>
     </h4>
     <h4>
+      <vs-divider>Seleccionar Usuario Solicitante</vs-divider>
+    </h4>
+    <vs-row>
+      <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
+        <v-select
+          v-model="seleccionUsuario"
+          placeholder="Seleccione al Usuario"
+          class="w-full select-large"
+          label="nombre"
+          :options="listadoUsuarios"
+        ></v-select>
+      </vs-col>
+    </vs-row>
+    <h4>
       <vs-divider>Lugar del problema</vs-divider>
     </h4>
     <div class="vx-row">
@@ -277,10 +291,26 @@
 
     <br />
 
+    <h4>
+      <vs-divider>Informacion del Problema</vs-divider>
+    </h4>
+    <div class="vx-row">
+      <div class="vx-col w-full mt-5">
+        <vs-input
+          label="Titulo problema"
+          placeholder="Ej. Falla de red en equipo x"
+          v-model="gestionTicket.titulo"
+        />
+
+        <br />
+        <vs-textarea label="Descripcion de la problematica" v-model="gestionTicket.descripcionPro" />
+      </div>
+    </div>
+
     <div class="vx-row">
       <div class="vx-col w-full">
         <vs-button class="mr-3 mb-2" color="success" @click="guardarFormulario">Enviar</vs-button>
-        <vs-button color="warning" class="mb-2">Limpiar</vs-button>
+        <vs-button color="warning" class="mb-2" @click="probando">Limpiar</vs-button>
       </div>
     </div>
   </div>
@@ -333,7 +363,9 @@ export default {
     listadoApoyo3: [],
     listadoEstado: [],
     listadoCorreo: [],
+    listadoUsuarios: [],
     gestionTicket: {
+      idUsuario: 0,
       idEdificio: 2,
       idServicio: 2,
       idUnidadEsp: 3,
@@ -350,10 +382,16 @@ export default {
       time2: null,
       horasCalculadas: 0,
       diaCalculado: 0,
+      titulo: "",
+      descripcionPro: "",
     },
     seleccionEdificio: {
       id: 0,
       descripcionEdificio: "Seleccione Edificio",
+    },
+    seleccionUsuario: {
+      id: 0,
+      nombre: "Seleccione Usuario",
     },
     seleccionServicio: {
       id: 0,
@@ -511,6 +549,11 @@ export default {
         this.listadoEdificios = res.data;
       });
     },
+    cargarUsuarios() {
+      axios.get(this.localVal + "/api/Agente/getUsuarios").then((res) => {
+        this.listadoUsuarios = res.data;
+      });
+    },
     cargarServicios() {
       axios.get(this.localVal + "/api/Usuario/GetServicios").then((res) => {
         this.listadoServicios = res.data;
@@ -555,6 +598,24 @@ export default {
         fixed: true,
       });
     },
+    errorTitulo(mensajeError) {
+      this.$vs.notify({
+        title: mensajeError,
+        text: "Debe escribir un titulo superior a 10 caracteres",
+        color: "danger",
+        position: "top-right",
+        fixed: true,
+      });
+    },
+    errorDescripcion(mensajeError) {
+      this.$vs.notify({
+        title: mensajeError,
+        text: "Debe escribir una descripcion superior a 15 caracteres",
+        color: "danger",
+        position: "top-right",
+        fixed: true,
+      });
+    },
     guardarFormulario() {
       var hoy = new Date();
 
@@ -563,6 +624,9 @@ export default {
         this.errorDrop(this.mensajeError);
       } else if (this.seleccionServicio.id == 0) {
         this.mensajeError = "el servicio";
+        this.errorDrop(this.mensajeError);
+      } else if (this.seleccionUsuario.id == 0) {
+        this.mensajeError = "el usuario";
         this.errorDrop(this.mensajeError);
       } else if (this.seleccionUnidadEsp.id == 0) {
         this.mensajeError = "la Unidad especifica";
@@ -606,7 +670,20 @@ export default {
       } else if (this.gestionTicket.diaCalculado == 0) {
         this.mensajeError = "Los dias calculados no pueden ser 0";
         this.errorDrop(this.mensajeError);
+      } else if (
+        this.gestionTicket.titulo.trim() === "" ||
+        this.gestionTicket.titulo.length < 10
+      ) {
+        this.mensajeError = "El titulo no puede ser menor a 10 caracteres";
+        this.errorTitulo(this.mensajeError);
+      } else if (
+        this.gestionTicket.descripcionPro.trim() === "" ||
+        this.gestionTicket.descripcionPro.length < 15
+      ) {
+        this.mensajeError = "La descripcion no puede ser menor a 15 caracteres";
+        this.errorDescripcion(this.mensajeError);
       } else {
+        this.gestionTicket.idUsuario = this.seleccionUsuario.id;
         this.gestionTicket.idEdificio = this.seleccionEdificio.id;
         this.gestionTicket.idServicio = this.seleccionServicio.id;
         this.gestionTicket.idUnidadEsp = this.seleccionUnidadEsp.id;
@@ -646,6 +723,9 @@ export default {
             const ticketServer = res.data;
           });
       }
+    },
+    probando() {
+      console.log(this.seleccionUsuario);
     },
     enviarCorreos(uuid) {
       axios
@@ -695,6 +775,7 @@ export default {
     this.cargarSupervisores();
     this.cargarTrabajadores();
     this.cargarEstado();
+    this.cargarUsuarios();
   },
   async beforeMount() {},
   components: {

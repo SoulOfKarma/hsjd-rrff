@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\TipoReparacions;
 use DB;
 
 class TipoReparacionController extends Controller
@@ -14,7 +15,7 @@ class TipoReparacionController extends Controller
      */
     public function index()
     {
-        $get_all = DB::table('tipo_reparacions')->get();
+        $get_all = TipoReparacions::all();
 
         return  $get_all;
         //

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Edificios;
 use DB;
 
 class EdificioController extends Controller
@@ -16,7 +17,7 @@ class EdificioController extends Controller
     {
 
 
-        $get_all = DB::table('edificios')->get();
+        $get_all = Edificios::all();
 
         return  $get_all;
 

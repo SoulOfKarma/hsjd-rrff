@@ -16,7 +16,7 @@ class CreateSeguimientoSolicitudesTable extends Migration
         Schema::create('seguimiento_solicitudes', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid');
-            //$table->bigInteger('id_solicitud');
+            $table->bigInteger('id_solicitud');
             $table->bigInteger('id_user');
             $table->text('descripcionSeguimiento');
             $table->timestamps();

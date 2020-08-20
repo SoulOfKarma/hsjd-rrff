@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Mail\TicketGenerado;
 use App\SolicitudTickets;
+use App\Users;
 use App\SeguimientoSolicitudes;
-use Ramsey\Uuid\Uuid;
+use Uuid;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -97,59 +98,25 @@ class SolicitudUsuarioController extends Controller
      */
     public function store(Request $request)
     {
-        // $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-        // $out->writeln("Hola c:");
-        $solicitud = new SolicitudTickets();
-        $seguimiento = new SeguimientoSolicitudes();
-        /* $solicitud->id_user = 2;
-        $solicitud->id_estado = 1;
-        $solicitud->id_edificio = $request->idEdificio;
-        $solicitud->id_servicio = $request->idServicio;
-        $solicitud->id_ubicacionEx = $request->idUnidadEsp;
-        $solicitud->id_tipoReparacion = $request->idTipoRep;
-        $solicitud->tituloP = $request->idTipoRep;
-        $solicitud->descripcionP = $request->areaT; */
-        //$solicitud->user_id = auth()->id();
-        $uuid = Uuid::uuid4();
-        $solicitud = array(
-            'uuid' => $uuid->toString(),
-            'id_user' => 2,
-            'id_estado' => 1,
-            'id_edificio' => $request->idEdificio,
-            'id_servicio' => $request->idServicio,
-            'id_ubicacionEx' => $request->idUnidadEsp,
-            'id_tipoReparacion' => $request->idTipoRep,
-            'tituloP' => $request->valorTitulo,
-            'descripcionP' => $request->areaT,
-        );
+        $uuid = Uuid::generate()->string;
+        $response = SolicitudTickets::create(array_merge($request->all(), ['uuid' => $uuid]));
+        SeguimientoSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $response->id, 'descripcionSeguimiento' => 'Solicitud creada']));
 
-        $variable = "Solicitud creada";
 
-        $seguimiento = array(
-            'uuid' => $uuid->toString(),
-            'id_user' => 2,
-            'descripcionSeguimiento' => $variable,
 
-        );
+        $nombre = $request->nombre;
+        $descripcionP = $request->descripcionSeguimiento;
+        $id_solicitud = $response->id;
 
-        $response = DB::table('solicitud_tickets')->insertGetId([
-            'uuid' => $uuid->toString(),
-            'id_user' => 2,
-            'id_estado' => 1,
-            'id_edificio' => $request->idEdificio,
-            'id_servicio' => $request->idServicio,
-            'id_ubicacionEx' => $request->idUnidadEsp,
-            'id_tipoReparacion' => $request->idTipoRep,
-            'tituloP' => $request->valorTitulo,
-            'descripcionP' => $request->areaT,
-        ]);
-        //$response = SolicitudTickets::create($solicitud);
-        $response2 = DB::table('seguimiento_solicitudes')->insert($seguimiento);
-        //$solicitud->save();
+        $receivers = 'gomez.soto.ricardo@gmail.com';
+        Mail::send('/Mails/TicketGenerado', ['nombre' => $nombre, 'id_solicitud' => $id_solicitud, 'descripcionP' => $descripcionP], function ($message) {
+            $message->to('ricardo.soto.g@redsalud.gob.cl', 'Ricardo Soto Gomez')->subject('Nuevo Ticket Generado');
+            $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
+        });
 
-        return $response;
-        //
+        return true;
     }
+
 
     /**
      * Display the specified resource.

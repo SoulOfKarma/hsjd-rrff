@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\EstadoSolicituds;
 use DB;
 
 class EstadoController extends Controller
@@ -14,7 +15,7 @@ class EstadoController extends Controller
      */
     public function index()
     {
-        $get_all = DB::table('estado_solicituds')->get();
+        $get_all = EstadoSolicituds::all();
 
         return  $get_all;
         //Traer todo de estados
