@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use phpDocumentor\Reflection\Types\Nullable;
 
 class CreateGestionSolicitudesTable extends Migration
 {
@@ -16,7 +15,7 @@ class CreateGestionSolicitudesTable extends Migration
     {
         Schema::create('gestion_solicitudes', function (Blueprint $table) {
             $table->id();
-            $table->uuid('uuidTicket');
+            $table->uuid('uuid');
             $table->bigInteger('id_solicitud');
             $table->bigInteger('id_trabajador');
             $table->bigInteger('id_supervisor');

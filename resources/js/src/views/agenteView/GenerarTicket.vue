@@ -113,6 +113,7 @@
           class="w-full select-large"
           label="descripcionTipoReparacion"
           :options="listadoTipoRep"
+          @input="arrayTipoReparacion(seleccionReparacion.id)"
         ></v-select>
       </div>
     </div>
@@ -124,6 +125,7 @@
           class="w-full select-large"
           label="descripcionEstado"
           :options="listadoEstado"
+          @input="arrayEstado(seleccionEstado.id)"
         ></v-select>
       </div>
     </div>
@@ -151,6 +153,7 @@
           class="w-full select-large"
           label="sup_nombre_apellido"
           :options="listadoSupervisores"
+          @input="arraySupervisores(seleccionSupervisor.id)"
         ></v-select>
       </div>
       <div class="vx-col md:w-1/2 w-full mt-5">
@@ -173,6 +176,7 @@
           class="w-full select-large"
           label="tra_nombre_apellido"
           :options="listadoTrabajadores"
+          @input="arrayTrabajadores(seleccionTrabajador.id)"
         ></v-select>
       </div>
       <div class="vx-col md:w-1/2 w-full mt-5">
@@ -195,6 +199,7 @@
           class="w-full select-large"
           label="tra_nombre_apellido"
           :options="listadoApoyo1"
+          @input="arrayApoyo1(seleccionApoyo1.id)"
         ></v-select>
       </div>
       <div class="vx-col md:w-1/2 w-full mt-5">
@@ -217,6 +222,7 @@
           class="w-full select-large"
           label="tra_nombre_apellido"
           :options="listadoApoyo2"
+          @input="arrayApoyo2(seleccionApoyo2.id)"
         ></v-select>
       </div>
     </div>
@@ -241,6 +247,7 @@
           class="w-full select-large"
           label="tra_nombre_apellido"
           :options="listadoApoyo3"
+          @input="arrayApoyo3(seleccionApoyo3.id)"
         ></v-select>
       </div>
     </div>
@@ -251,26 +258,26 @@
       <div class="vx-col md:w-1/2 w-full mt-5">
         <flat-pickr
           :config="configFromdateTimePicker"
-          v-model="gestionTicket.fromDate"
+          v-model="gestionTicket.fechaInicio"
           placeholder="Fecha Inicio"
           @on-change="onFromChange"
         />
         <flat-pickr
           :config="configdateTimePicker"
-          v-model="gestionTicket.time1"
+          v-model="gestionTicket.horaInicio"
           placeholder="Seleccione Hora"
         />
       </div>
       <div class="vx-col md:w-1/2 w-full mt-5">
         <flat-pickr
           :config="configTodateTimePicker"
-          v-model="gestionTicket.toDate"
+          v-model="gestionTicket.fechaTermino"
           placeholder="Fecha Termino"
           @on-change="onToChange"
         />
         <flat-pickr
           :config="configdateTimePicker"
-          v-model="gestionTicket.time2"
+          v-model="gestionTicket.horaTermino"
           placeholder="Seleccione Hora"
         />
       </div>
@@ -299,11 +306,11 @@
         <vs-input
           label="Titulo problema"
           placeholder="Ej. Falla de red en equipo x"
-          v-model="gestionTicket.titulo"
+          v-model="gestionTicket.tituloP"
         />
 
         <br />
-        <vs-textarea label="Descripcion de la problematica" v-model="gestionTicket.descripcionPro" />
+        <vs-textarea label="Descripcion de la problematica" v-model="gestionTicket.descripcionP" />
       </div>
     </div>
 
@@ -365,25 +372,27 @@ export default {
     listadoCorreo: [],
     listadoUsuarios: [],
     gestionTicket: {
-      idUsuario: 0,
-      idEdificio: 2,
-      idServicio: 2,
-      idUnidadEsp: 3,
-      idTipoRep: 3,
-      idEstado: 1,
-      idSupervisor: 4,
-      idTrabajador: 5,
+      id_user: 0,
+      uuid: "",
+      id_solicitud: 0,
+      id_edificio: 2,
+      id_servicio: 2,
+      id_ubicacionEx: 3,
+      id_tipoReparacion: 3,
+      id_estado: 1,
+      id_supervisor: 4,
+      id_trabajador: 5,
       idApoyo1: 5,
       idApoyo2: 5,
       idApoyo3: 5,
-      fromDate: null,
-      toDate: null,
-      time1: null,
-      time2: null,
-      horasCalculadas: 0,
-      diaCalculado: 0,
-      titulo: "",
-      descripcionPro: "",
+      fechaInicio: null,
+      fechaTermino: null,
+      horaInicio: null,
+      horaTermino: null,
+      horasEjecucion: 0,
+      diasEjecucion: 0,
+      tituloP: "",
+      descripcionP: "",
     },
     seleccionEdificio: {
       id: 0,
@@ -429,17 +438,6 @@ export default {
       id: 4,
       tra_nombre_apellido: "Sin Asignar",
     },
-    datosCorreo: {
-      nombreUsuario: "",
-      descripcionP: "",
-      idTicket: 0,
-      nombreTra: "",
-      nombreSupervisor: "",
-      fechaInicio: "",
-      horaInicio: "",
-      fechaTermino: "",
-      horaTermino: "",
-    },
     variablePrueba: 0,
     mensajeError: "",
 
@@ -447,22 +445,22 @@ export default {
   }),
   computed: {
     calcularHorasTrabajo() {
-      this.hora1 = moment(this.gestionTicket.time1, "HH:mm");
-      this.hora2 = moment(this.gestionTicket.time2, "HH:mm");
-      this.gestionTicket.horasCalculadas = moment
+      this.hora1 = moment(this.gestionTicket.horaInicio, "HH:mm");
+      this.hora2 = moment(this.gestionTicket.horaTermino, "HH:mm");
+      this.gestionTicket.horasEjecucion = moment
         .duration(this.hora2 - this.hora1)
         .asHours();
-      return this.gestionTicket.horasCalculadas;
+      return this.gestionTicket.horasEjecucion;
     },
     diasCalculados() {
-      this.fecha1 = moment(this.gestionTicket.fromDate);
-      this.fecha2 = moment(this.gestionTicket.toDate);
+      this.fecha1 = moment(this.gestionTicket.fechaInicio);
+      this.fecha2 = moment(this.gestionTicket.fechaTermino);
       this.gestionTicket.diaCalculado = this.fecha2.diff(this.fecha1, "days");
 
       if (this.fecha1.isSame(this.fecha2)) {
-        this.gestionTicket.diaCalculado = 1;
+        this.gestionTicket.diasEjecucion = 1;
       }
-      return this.gestionTicket.diaCalculado;
+      return this.gestionTicket.diasEjecucion;
       // this.diaCalculado = this.fromDate - this.toDate;
     },
   },
@@ -537,6 +535,97 @@ export default {
       });
 
       this.seleccionEdificio = b;
+    },
+    arrayEstado(id) {
+      let c = this.listadoEstado;
+      let b = [];
+      var a = 0;
+
+      c.forEach((value, index) => {
+        a = value.id;
+        if (a == id) {
+          b.push(value);
+        }
+      });
+      this.seleccionEstado = b;
+    },
+    arrayTipoReparacion(id) {
+      let c = this.listadoTipoRep;
+      let b = [];
+      var a = 0;
+
+      c.forEach((value, index) => {
+        a = value.id;
+        if (a == id) {
+          b.push(value);
+        }
+      });
+      this.seleccionReparacion = b;
+    },
+    arraySupervisores(id) {
+      let c = this.listadoSupervisores;
+      let b = [];
+      var a = 0;
+
+      c.forEach((value, index) => {
+        a = value.id;
+        if (a == id) {
+          b.push(value);
+        }
+      });
+      this.seleccionSupervisor = b;
+    },
+    arrayTrabajadores(id) {
+      let c = this.listadoTrabajadores;
+      let b = [];
+      var a = 0;
+
+      c.forEach((value, index) => {
+        a = value.id;
+        if (a == id) {
+          b.push(value);
+        }
+      });
+      this.seleccionTrabajador = b;
+    },
+    arrayApoyo1(id) {
+      let c = this.listadoApoyo1;
+      let b = [];
+      var a = 0;
+
+      c.forEach((value, index) => {
+        a = value.id;
+        if (a == id) {
+          b.push(value);
+        }
+      });
+      this.seleccionApoyo1 = b;
+    },
+    arrayApoyo2(id) {
+      let c = this.listadoApoyo2;
+      let b = [];
+      var a = 0;
+
+      c.forEach((value, index) => {
+        a = value.id;
+        if (a == id) {
+          b.push(value);
+        }
+      });
+      this.seleccionApoyo2 = b;
+    },
+    arrayApoyo3(id) {
+      let c = this.listadoApoyo3;
+      let b = [];
+      var a = 0;
+
+      c.forEach((value, index) => {
+        a = value.id;
+        if (a == id) {
+          b.push(value);
+        }
+      });
+      this.seleccionApoyo3 = b;
     },
     onFromChange(selectedDates, dateStr, instance) {
       this.$set(this.configTodateTimePicker, "minDate", dateStr);
@@ -619,104 +708,84 @@ export default {
     guardarFormulario() {
       var hoy = new Date();
 
-      if (this.seleccionEdificio.id == 0) {
+      if (this.seleccionEdificio[0].id == 0) {
         this.mensajeError = "el Edificio";
         this.errorDrop(this.mensajeError);
-      } else if (this.seleccionServicio.id == 0) {
+      } else if (this.seleccionServicio[0].id == 0) {
         this.mensajeError = "el servicio";
         this.errorDrop(this.mensajeError);
       } else if (this.seleccionUsuario.id == 0) {
         this.mensajeError = "el usuario";
         this.errorDrop(this.mensajeError);
-      } else if (this.seleccionUnidadEsp.id == 0) {
+      } else if (this.seleccionUnidadEsp[0].id == 0) {
         this.mensajeError = "la Unidad especifica";
         this.errorDrop(this.mensajeError);
-      } else if (this.seleccionReparacion.id == 0) {
+      } else if (this.seleccionReparacion[0].id == 0) {
         this.mensajeError = "el tipo de reparacion";
         this.errorDrop(this.mensajeError);
-      } else if (this.seleccionEstado.id == 0) {
+      } else if (this.seleccionEstado[0].id == 0) {
         this.mensajeError = "el estado";
         this.errorDrop(this.mensajeError);
-      } else if (this.seleccionSupervisor.id == 0) {
+      } else if (this.seleccionSupervisor[0].id == 0) {
         this.mensajeError = "el supervisor";
         this.errorDrop(this.mensajeError);
-      } else if (this.seleccionTrabajador.id == 0) {
+      } else if (this.seleccionTrabajador[0].id == 0) {
         this.mensajeError = "el trabajador";
         this.errorDrop(this.mensajeError);
-      } else if (this.seleccionApoyo1.id == 0) {
+      } else if (this.seleccionApoyo1[0].id == 0) {
         this.mensajeError = "el apoyo 1";
         this.errorDrop(this.mensajeError);
-      } else if (this.seleccionApoyo2.id == 0) {
+      } else if (this.seleccionApoyo2[0].id == 0) {
         this.mensajeError = "el apoyo 2";
         this.errorDrop(this.mensajeError);
-      } else if (this.seleccionApoyo3.id == 0) {
+      } else if (this.seleccionApoyo3[0].id == 0) {
         this.mensajeError = "el apoyo 3";
         this.errorDrop(this.mensajeError);
       } else if (
-        this.gestionTicket.fromDate == null ||
-        this.gestionTicket.fromDate < hoy.getDate()
+        this.gestionTicket.fechaInicio == null ||
+        this.gestionTicket.fechaInicio < hoy.getDate()
       ) {
         this.mensajeError = "la fecha de inicio ";
         this.errorDrop(this.mensajeError);
       } else if (
-        this.gestionTicket.toDate == null ||
-        this.gestionTicket.toDate < hoy.getDate()
+        this.gestionTicket.fechaTermino == null ||
+        this.gestionTicket.fechaTermino < hoy.getDate()
       ) {
         this.mensajeError = "la fecha de termino";
         this.errorDrop(this.mensajeError);
-      } else if (this.gestionTicket.horasCalculadas == 0) {
+      } else if (this.gestionTicket.horasEjecucion == 0) {
         this.mensajeError = "Las horas calculadas no pueden ser 0";
         this.errorDrop(this.mensajeError);
-      } else if (this.gestionTicket.diaCalculado == 0) {
+      } else if (this.gestionTicket.diasEjecucion == 0) {
         this.mensajeError = "Los dias calculados no pueden ser 0";
         this.errorDrop(this.mensajeError);
       } else if (
-        this.gestionTicket.titulo.trim() === "" ||
-        this.gestionTicket.titulo.length < 10
+        this.gestionTicket.tituloP.trim() === "" ||
+        this.gestionTicket.tituloP.length < 10
       ) {
         this.mensajeError = "El titulo no puede ser menor a 10 caracteres";
         this.errorTitulo(this.mensajeError);
       } else if (
-        this.gestionTicket.descripcionPro.trim() === "" ||
-        this.gestionTicket.descripcionPro.length < 15
+        this.gestionTicket.descripcionP.trim() === "" ||
+        this.gestionTicket.descripcionP.length < 15
       ) {
         this.mensajeError = "La descripcion no puede ser menor a 15 caracteres";
         this.errorDescripcion(this.mensajeError);
       } else {
-        this.gestionTicket.idUsuario = this.seleccionUsuario.id;
-        this.gestionTicket.idEdificio = this.seleccionEdificio.id;
-        this.gestionTicket.idServicio = this.seleccionServicio.id;
-        this.gestionTicket.idUnidadEsp = this.seleccionUnidadEsp.id;
-        this.gestionTicket.idTipoRep = this.seleccionReparacion.id;
-        this.gestionTicket.idEstado = this.seleccionEstado.id;
-        this.gestionTicket.idSupervisor = this.seleccionSupervisor.id;
-        this.gestionTicket.idTrabajador = this.seleccionTrabajador.id;
-        this.gestionTicket.idApoyo1 = this.seleccionApoyo1.id;
-        this.gestionTicket.idApoyo2 = this.seleccionApoyo2.id;
-        this.gestionTicket.idApoyo3 = this.seleccionApoyo3.id;
+        this.gestionTicket.id_user = this.seleccionUsuario.id;
+        this.gestionTicket.id_edificio = this.seleccionEdificio[0].id;
+        this.gestionTicket.id_servicio = this.seleccionServicio[0].id;
+        this.gestionTicket.id_ubicacionEx = this.seleccionUnidadEsp[0].id;
+        this.gestionTicket.id_tipoReparacion = this.seleccionReparacion[0].id;
+        this.gestionTicket.id_estado = this.seleccionEstado[0].id;
+        this.gestionTicket.id_supervisor = this.seleccionSupervisor[0].id;
+        this.gestionTicket.id_trabajador = this.seleccionTrabajador[0].id;
+        this.gestionTicket.idApoyo1 = this.seleccionApoyo1[0].id;
+        this.gestionTicket.idApoyo2 = this.seleccionApoyo2[0].id;
+        this.gestionTicket.idApoyo3 = this.seleccionApoyo3[0].id;
 
         const ticket = this.gestionTicket;
 
-        /*   this.gestionTicket = {
-                uuid: "",
-                idSolicitud: 0,
-                idEdificio: 2,
-                idServicio: 2,
-                idUnidadEsp: 3,
-                idTipoRep: 3,
-                idEstado: 1,
-                idSupervisor: 4,
-                idTrabajador: 5,
-                idApoyo1: 5,
-                idApoyo2: 5,
-                idApoyo3: 5,
-                fromDate: null,
-                toDate: null,
-                time1: null,
-                time2: null,
-                horasCalculadas: 0,
-                diaCalculado: 0
-            }; */
         axios
           .post(this.localVal + "/api/Agente/PostNuevoTicket", ticket)
           .then((res) => {
@@ -726,45 +795,6 @@ export default {
     },
     probando() {
       console.log(this.seleccionUsuario);
-    },
-    enviarCorreos(uuid) {
-      axios
-        .get(this.localVal + `/api/Agente/GetDataCorreo/${uuid}`)
-        .then((res2) => {
-          if (res2.data.length > 0) {
-            this.listadoCorreo = res2.data;
-            this.datosCorreo.nombreUsuario = this.listadoCorreo[0].nombre;
-            this.datosCorreo.descripcionP = this.listadoCorreo[0].descripcionP;
-            this.datosCorreo.idTicket = this.listadoCorreo[0].id_solicitud;
-            this.datosCorreo.nombreTra = this.listadoCorreo[0].tra_nombre_apellido;
-            this.datosCorreo.nombreSupervisor = this.listadoCorreo[0].sup_nombre_apellido;
-            this.datosCorreo.fechaInicio = this.listadoCorreo[0].fechaInicio;
-            this.datosCorreo.horaInicio = this.listadoCorreo[0].horaInicio;
-            this.datosCorreo.fechaTermino = this.listadoCorreo[0].fechaTermino;
-            this.datosCorreo.horaTermino = this.listadoCorreo[0].horaTermino;
-            const dataCorreo = this.datosCorreo;
-            this.datosCorreo = {
-              nombreUsuario: "",
-              descripcionP: "",
-              idTicket: 0,
-              nombreTra: "",
-              nombreSupervisor: "",
-              fechaInicio: "",
-              horaInicio: "",
-              fechaTermino: "",
-              horaTermino: "",
-            };
-            axios
-              .post(this.localVal + "/api/Agente/enviarCorreo", dataCorreo)
-              .then((res3) => {
-                if (res3.data.length > 0) {
-                  console.log("Funciono");
-                } else {
-                  console.log("Rip");
-                }
-              });
-          }
-        });
     },
   },
   created() {

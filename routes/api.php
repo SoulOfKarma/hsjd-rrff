@@ -82,3 +82,5 @@ Route::post('/Agente/PutTicket', ['middleware' => 'cors', 'uses' => 'GestionTick
 Route::post('/Agente/PostNuevoTicket', ['middleware' => 'cors', 'uses' => 'GestionTicketController@NuevoTicket']);
 //Traer Usuarios
 Route::get('/Agente/getUsuarios', ['middleware' => 'cors', 'uses' => 'GestionTicketController@getUsuarios']);
+//Traer el ticket especifico asignado
+Route::get('/Agente/TraerTicket/{id}', ['middleware' => 'cors', 'uses' => 'GestionTicketController@getTicketCreado']);

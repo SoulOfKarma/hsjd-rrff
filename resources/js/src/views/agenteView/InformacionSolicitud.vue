@@ -82,9 +82,10 @@ export default {
 
     seguimientos: {
       descripcionSeguimiento: "",
-      id: 0,
-      nombre: "",
-      id_user: 0,
+      id_solicitud: 0,
+      uuid: "",
+      nombre: localStorage.getItem("nombre"),
+      id_user: localStorage.getItem("id"),
     },
   }),
   methods: {
@@ -95,7 +96,7 @@ export default {
       axios
         .get(this.localVal + `/api/Agente/GetTicketAsignado/${uuid}`)
         .then((res) => {
-          if (res.data.length > 0) {
+          if (res.data) {
             this.$vs.notify({
               title: "Ticket ya asignado ",
               text: "Si necesita modificarlo vaya a Modificar Ticket ",
@@ -158,18 +159,16 @@ export default {
         });
         return;
       }
-      var aux = localStorage.getItem("nombre");
-      this.seguimientos.nombre = aux;
-      var id = this.solicitudes[0].id;
+      var id = this.solicitudes.id;
       this.seguimientos.id = id;
-      var iduser = localStorage.getItem("id");
-      this.seguimientos.id_user = iduser;
+      this.seguimientos.uuid = uuid;
       const seguimientoNuevo = this.seguimientos;
       this.seguimientos = {
         descripcionSeguimiento: "",
-        id: 0,
-        nombre: "",
-        id_user: 0,
+        id_solicitud: this.$route.params.id,
+        uuid: this.$route.params.uuid,
+        nombre: localStorage.getItem("nombre"),
+        id_user: localStorage.getItem("id"),
       };
       axios
         .post(

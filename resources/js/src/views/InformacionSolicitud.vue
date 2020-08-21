@@ -13,6 +13,7 @@
       <br />
       <vs-textarea label="Actualizar seguimiento" v-model="seguimientos.descripcionSeguimiento" />
       <vs-button type="gradient" @click="guardarSeguimiento">Actualizar</vs-button>
+      <vs-button type="gradient" @click="probando">Probando</vs-button>
     </vs-card>
 
     <vs-card>
@@ -38,8 +39,8 @@ export default {
       descripcionSeguimiento: "",
       id_solicitud: 0,
       uuid: "",
-      nombre: "",
-      id_user: 0,
+      nombre: localStorage.getItem("nombre"),
+      id_user: localStorage.getItem("id"),
     },
   }),
   methods: {
@@ -59,6 +60,9 @@ export default {
           this.seguimiento = res.data;
         });
     },
+    probando() {
+      console.log(this.seguimientos);
+    },
     guardarSeguimiento() {
       let uuid = this.$route.params.uuid;
       console.log(uuid);
@@ -75,20 +79,20 @@ export default {
         });
         return;
       } else {
-        var aux = localStorage.getItem("nombre");
-        this.seguimientos.nombre = aux;
+        /* var aux = localStorage.getItem("nombre");
+        this.seguimientos.nombre = aux; */
         var id = this.solicitudes.id;
         this.seguimientos.id = id;
         this.seguimientos.uuid = uuid;
-        var iduser = localStorage.getItem("id");
-        this.seguimientos.id_user = iduser;
+        /* var iduser = localStorage.getItem("id");
+        this.seguimientos.id_user = iduser; */
         const seguimientoNuevo = this.seguimientos;
         this.seguimientos = {
-          uuid: "",
           descripcionSeguimiento: "",
-          id: 0,
-          nombre: "",
-          id_user: 0,
+          id_solicitud: this.$route.params.id,
+          uuid: this.$route.params.uuid,
+          nombre: localStorage.getItem("nombre"),
+          id_user: localStorage.getItem("id"),
         };
         axios
           .post(
