@@ -22,43 +22,21 @@ class SolicitudUsuarioController extends Controller
     public function index()
     {
 
-        $get_all = DB::table('solicitud_tickets')->get();
+        $get_all = SolicitudTickets::all();
 
         return  $get_all;
-    }
-
-    public function getDataCorreo($id)
-    {
-
-        $users = DB::table('solicitud_tickets')
-            ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
-            ->select('solicitud_tickets.*', 'users.nombre')
-            ->where('solicitud_tickets.id', '=', $id)
-            ->get();
-
-        return  $users;
-    }
-
-    public function enviarCorreo(Request $request)
-    {
-        $data = new SolicitudTickets();
-        $data->nombre = $request->nombre;
-        $data->descripcionP = $request->descripcionP;
-        $data->id = $request->id;
-        Log::info($data);
-        $receivers = 'gomez.soto.ricardo@gmail.com';
-        Mail::to($receivers)->send(new TicketGenerado($data));
     }
 
     public function getSolicitudUsuariosJoin()
     {
 
-        $users = DB::table('solicitud_tickets')
+        $ticket = SolicitudTickets::select('solicitud_tickets.*', 'users.nombre', DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket"))
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
-            ->select('solicitud_tickets.*', 'users.nombre')
             ->get();
 
-        return  $users;
+
+
+        return  $ticket;
     }
 
     public function indexSeguimiento($uuid)

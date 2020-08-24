@@ -48,10 +48,6 @@ Route::post('/Usuario/PostSolicitud', ['middleware' => 'cors', 'uses' => 'Solici
 Route::get('/Usuario/TraerSeguimiento/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoController@indexSeguimiento']);
 //Guardar Seguimiento
 Route::post('/Usuario/GuardarSeguimiento/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoController@store']);
-//Traer data especifica para generar correo
-Route::get('/Usuario/GetDataCorreo/{id}', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getDataCorreo']);
-//Envio de data para el correo
-Route::post('/Usuario/enviarCorreo', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@enviarCorreo']);
 
 //Gestion Agentes
 //Traer supervisores
@@ -84,3 +80,5 @@ Route::post('/Agente/PostNuevoTicket', ['middleware' => 'cors', 'uses' => 'Gesti
 Route::get('/Agente/getUsuarios', ['middleware' => 'cors', 'uses' => 'GestionTicketController@getUsuarios']);
 //Traer el ticket especifico asignado
 Route::get('/Agente/TraerTicket/{id}', ['middleware' => 'cors', 'uses' => 'GestionTicketController@getTicketCreado']);
+//Traer Dato Join Calendario
+Route::get('/Agente/getDatoCalendario', ['middleware' => 'cors', 'uses' => 'GestionTicketController@GetDatoCalendario']);
