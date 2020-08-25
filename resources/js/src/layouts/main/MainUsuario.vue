@@ -19,7 +19,7 @@
     >
         <v-nav-menu
             :navMenuItems="navMenuItems"
-            title="AAAA"
+            title="SGTRRFF"
             parent=".layout--main"
         />
 

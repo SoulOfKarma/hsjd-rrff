@@ -82,3 +82,5 @@ Route::get('/Agente/getUsuarios', ['middleware' => 'cors', 'uses' => 'GestionTic
 Route::get('/Agente/TraerTicket/{id}', ['middleware' => 'cors', 'uses' => 'GestionTicketController@getTicketCreado']);
 //Traer Dato Join Calendario
 Route::get('/Agente/getDatoCalendario', ['middleware' => 'cors', 'uses' => 'GestionTicketController@GetDatoCalendario']);
+//Traer Trabajadores EX
+Route::get('/Agente/GetTrabajadoresEX', ['middleware' => 'cors', 'uses' => 'TrabajadorController@GetTrabajadoresEX']);

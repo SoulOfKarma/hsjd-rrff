@@ -21,6 +21,17 @@ class TrabajadorController extends Controller
         return  $get_all;
     }
 
+
+    public function GetTrabajadoresEX()
+    {
+        //Traer todo de trabajadores
+        $get_all = Trabajadores::select('trabajadores.*')
+            ->where('id', '!=', 999)
+            ->get();
+
+        return  $get_all;
+    }
+
     /**
      * Show the form for creating a new resource.
      *
