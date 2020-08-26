@@ -28,7 +28,7 @@
                     <p
                         class="xl:w-3/4 lg:w-4/5 md:w-2/3 w-4/5 mx-auto text-white"
                     >
-                        Sistema de notificación Tecnovigilancia -
+                        Sistema de Gestion de Tickets de RRFF-
                         <strong>Hospital San Juan de Dios</strong>.
                     </p>
                 </vx-card>
@@ -39,7 +39,7 @@
             <div class="vx-col w-full lg:w-1/4 mb-base"></div>
             <div class="vx-col w-full lg:w-1/2 mb-base">
                 <vx-card title="Manual Rápido">
-                    <ul class="activity-timeline">
+                    <ul class="activity-timeline" vx-timeline>
                         <li>
                             <div class="timeline-icon bg-primary">
                                 <feather-icon
@@ -49,11 +49,11 @@
                             </div>
                             <div class="timeline-info">
                                 <p class="font-semibold">Menú</p>
-                                <span class="activity-desc"
-                                    >Encontrarás el acceso a la pantalla de
-                                    Inicio, al formulario de Registro y
-                                    visualización de datos</span
-                                >
+                                <span class="activity-desc">
+                                    Encontrarás el acceso a la pantalla de
+                                    Inicio, el listado de tickets solicitados y
+                                    el calendario de trabajadores
+                                </span>
                             </div>
                             <small class="text-grey activity-e-time"></small>
                         </li>
@@ -65,14 +65,12 @@
                                 ></feather-icon>
                             </div>
                             <div class="timeline-info">
-                                <p class="font-semibold">Nuevo Registro</p>
-                                <span class="activity-desc"
-                                    >Te dará acceso al formulario de nuevo
-                                    registro, en el tendrás que detallar la
-                                    información del Dispositivo Medico y de su
-                                    Fabricante, Importador y/o Distribuidor,
-                                    entre otros.</span
-                                >
+                                <p class="font-semibold">Listado de tickets</p>
+                                <span class="activity-desc">
+                                    En esta seccion podras ver a los
+                                    trabajadores asignados para realizar una
+                                    solicitud con su hora y fecha de termino
+                                </span>
                             </div>
                             <small class="text-grey activity-e-time"></small>
                         </li>
@@ -84,14 +82,16 @@
                                 ></feather-icon>
                             </div>
                             <div class="timeline-info">
-                                <p class="font-semibold">Visualizar Datos</p>
-                                <span class="activity-desc"
-                                    >En esta sección podrás visulizar toda la
-                                    infromación ya ingresada anteriormente.
-                                    Ademas de porder cambiar el estado de esta,
-                                    pudiendo habilitar, deshabilitar, modificar
-                                    o eliminar</span
-                                >
+                                <p class="font-semibold">Generar Ticket</p>
+                                <span class="activity-desc">
+                                    En esta sección podrás visulizar la
+                                    informacion de las solicitudes realizadas
+                                    por los usuarios, en ella podras asignarle
+                                    tecnicos para su revision, asignarles una
+                                    hora y fecha, confirmar su ubicacion y poder
+                                    generar actualizaciones del avance del
+                                    ticket.
+                                </span>
                             </div>
                             <small class="text-grey activity-e-time"></small>
                         </li>
@@ -102,23 +102,3 @@
         </div>
     </div>
 </template>
-<script>
-import axios from "axios";
-import router from "../router";
-export default {
-    data() {
-        return {
-            solicitudes: [],
-            localVal: "http://127.0.0.1:8000"
-        };
-    },
-    methods: {
-        traerData() {
-            axios.get(this.localVal + "/api/Usuario/GetUsuarios").then(res => {
-                this.solicitudes = res.data;
-                console.log(this.solicitudes);
-            });
-        }
-    }
-};
-</script>
