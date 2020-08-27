@@ -56,10 +56,28 @@ const router = new Router({
                         import ('./views/GenerarSolicitud.vue')
                 },
                 {
+                    path: '/HomeTrabajador',
+                    name: 'Inicio',
+                    component: () =>
+                        import ('./views/trabajadorView/homeTrabajador.vue')
+                },
+                {
+                    path: '/ListadoTicketsTrabajador',
+                    name: 'ListadoTicketsTrabajador',
+                    component: () =>
+                        import ('./views/trabajadorView/ListadoTicketsTrabajador.vue')
+                },
+                {
                     path: '/InformacionSolicitud/:id,:uuid',
                     name: 'InformacionSolicitud',
                     component: () =>
                         import ('./views/InformacionSolicitud.vue')
+                },
+                {
+                    path: '/ModificarTicketUsuario/:id,:uuid',
+                    name: 'ModificarTicketUsuario',
+                    component: () =>
+                        import ('./views/ModificarTicketUsuario.vue')
                 },
 
 

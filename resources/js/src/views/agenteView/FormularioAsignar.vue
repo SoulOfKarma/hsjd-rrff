@@ -1,301 +1,217 @@
 <template>
     <div>
-        <h4>
-            <vs-divider>Asignar Ticket</vs-divider>
-        </h4>
-        <h4>
-            <vs-divider>Lugar del problema</vs-divider>
-        </h4>
-        <div class="vx-row">
-            <div class="vx-col md:w-1/2 w-full mt-5">
-                <!-- <vs-select
-                    class="w-full select-large"
-                    label="Edificio"
-                    v-model="datosSolicitud.id_edificio"
-                    @change="cambioEdificio"
+        <vs-row>
+            <div
+                class="router-header flex flex-wrap items-center mb-8"
+                style="margin-left:10px;"
+            >
+                <div
+                    class="content-area__heading pr-4 border-0 md:border-r border-solid border-grey-light"
                 >
-                    <vs-select-item
-                        :key="index"
-                        :value="item.id"
-                        :text="item.descripcionEdificio"
-                        v-for="(item, index) in listadoEdificios"
-                        class="w-full"
-                    />
-        </vs-select>-->
-                <v-select
-                    v-model="seleccionEdificio"
-                    placeholder="Seleccione Edificio"
-                    class="w-full select-large"
-                    label="descripcionEdificio"
-                    :options="listadoEdificios"
-                ></v-select>
+                    <h2 class="mb-1">Asignar Ticket</h2>
+                </div>
+                <div class="vx-breadcrumb ml-4 md:block hidden">
+                    <div
+                        class="content-area__heading pr-4 border-0 md:border-r border-solid border-grey-light"
+                    >
+                        <h3 class="mb-1">
+                            Agente:
+                            <p>{{ nombre }} - {{ run }}</p>
+                        </h3>
+                    </div>
+                </div>
             </div>
-            <div class="vx-col md:w-1/2 w-full mt-5">
-                <!-- <vs-select
-                    class="w-full select-large"
-                    label="Servicio"
-                    v-model="datosSolicitud.id_servicio"
-                    @change="cambioServicio"
-                >
-                    <vs-select-item
-                        :key="index"
-                        :value="item.id"
-                        :text="item.descripcionServicio"
-                        v-for="(item, index) in listadoServicios"
-                        class="w-full"
-                    />
-        </vs-select>-->
-                <v-select
-                    v-model="seleccionServicio"
-                    placeholder="Seleccione Servicio"
-                    class="w-full select-large"
-                    label="descripcionServicio"
-                    :options="listadoServicios"
-                    @input="cargaSegunServicio"
-                ></v-select>
+            <vs-alert
+                color="primary"
+                icon="new_releases"
+                active="true"
+                style="margin-bottom: 10px;"
+            >
+                <p>Recuerda que todos los campos son obligatorios!</p>
+            </vs-alert>
+            <!-- Ubicacion -->
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <vx-card title="1. Lugar del problema" code-toggler>
+                    <div class="vx-row mb-12">
+                        <div class="vx-col w-1/3 mt-5">
+                            <v-select
+                                v-model="seleccionEdificio"
+                                placeholder="Edificio"
+                                class="w-full select-large"
+                                label="descripcionEdificio"
+                                :options="listadoEdificios"
+                            ></v-select>
+                        </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <v-select
+                                v-model="seleccionServicio"
+                                placeholder="Servicio"
+                                class="w-full select-large"
+                                label="descripcionServicio"
+                                :options="listadoServicios"
+                                @input="cargaSegunServicio"
+                            ></v-select>
+                        </div>
+                        <div class="vx-col w-1/3 mt-5">
+                            <v-select
+                                v-model="seleccionUnidadEsp"
+                                placeholder="Unidad Especifica"
+                                class="w-full select-large"
+                                label="descripcionUnidadEsp"
+                                :options="listadoUnidadEsp"
+                                @input="cargaSegunUnidadEsp"
+                            ></v-select>
+                        </div>
+                    </div>
+                </vx-card>
             </div>
-        </div>
-        <div class="vx-row">
-            <div class="vx-col md:w-1/2 w-full mt-5">
-                <!-- <vs-select
-                    class="w-full select-large"
-                    label="Unidad Especifica"
-                    v-model="datosSolicitud.id_ubicacionEx"
-                >
-                    <vs-select-item
-                        :key="index"
-                        :value="item.id"
-                        :text="item.descripcionUnidadEsp"
-                        v-for="(item, index) in listadoUnidadEsp"
-                        class="w-full"
-                    />
-        </vs-select>-->
-                <v-select
-                    v-model="seleccionUnidadEsp"
-                    placeholder="Seleccione Unidad Especifica"
-                    class="w-full select-large"
-                    label="descripcionUnidadEsp"
-                    :options="listadoUnidadEsp"
-                    @input="cargaSegunUnidadEsp"
-                ></v-select>
+            <!-- Personal -->
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <vx-card title="2. Asignar Supervisor y Tecnico" code-toggler>
+                    <div class="vx-row mb-12">
+                        <div class="vx-col w-1/2 mt-5">
+                            <v-select
+                                v-model="seleccionSupervisor"
+                                placeholder="Seleccione al Supervisor"
+                                class="w-full select-large"
+                                label="sup_nombre_apellido"
+                                :options="listadoSupervisores"
+                            ></v-select>
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <v-select
+                                v-model="seleccionTrabajador"
+                                placeholder="Seleccione al Trabajador"
+                                class="w-full select-large"
+                                label="tra_nombre_apellido"
+                                :options="listadoTrabajadores"
+                            ></v-select>
+                        </div>
+                        <div class="vx-col w-full mt-5">
+                            <v-select
+                                v-model="seleccionApoyo1"
+                                placeholder="Seleccione al Apoyo"
+                                class="w-full select-large"
+                                label="tra_nombre_apellido"
+                                :options="listadoApoyo1"
+                            ></v-select>
+                        </div>
+                        <div class="vx-col w-full mt-5">
+                            <v-select
+                                v-model="seleccionApoyo2"
+                                placeholder="Seleccione al Apoyo"
+                                class="w-full select-large"
+                                label="tra_nombre_apellido"
+                                :options="listadoApoyo2"
+                            ></v-select>
+                        </div>
+                        <div class="vx-col w-full mt-5">
+                            <v-select
+                                v-model="seleccionApoyo3"
+                                placeholder="Seleccione al Apoyo"
+                                class="w-full select-large"
+                                label="tra_nombre_apellido"
+                                :options="listadoApoyo3"
+                            ></v-select>
+                        </div>
+                    </div>
+                </vx-card>
             </div>
-            <div class="vx-col md:w-1/2 w-full mt-5">
-                <!-- <vs-select
-                    class="w-full select-large"
-                    label="Especialidad"
-                    v-model="datosSolicitud.id_tipoReparacion"
-                >
-                    <vs-select-item
-                        :key="index"
-                        :value="item.id"
-                        :text="item.descripcionTipoReparacion"
-                        v-for="(item, index) in listadoTipoRep"
-                        class="w-full"
-                    /> 
-        </vs-select>-->
-                <v-select
-                    v-model="seleccionReparacion"
-                    placeholder="Seleccione Tipo de Reparacion"
-                    class="w-full select-large"
-                    label="descripcionTipoReparacion"
-                    :options="listadoTipoRep"
-                    @input="arrayTipoReparacion(seleccionReparacion.id)"
-                ></v-select>
+            <!-- Hora y Fecha -->
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <vx-card title="3. Asignar Hora y Fecha" code-toggler>
+                    <div class="vx-row mb-12">
+                        <div class="vx-col w-1/2 mt-5">
+                            <flat-pickr
+                                :config="configFromdateTimePicker"
+                                v-model="gestionTicket.fechaInicio"
+                                placeholder="Fecha Inicio"
+                                @on-change="onFromChange"
+                            />
+                            <flat-pickr
+                                :config="configdateTimePicker"
+                                v-model="gestionTicket.horaInicio"
+                                placeholder="Seleccione Hora"
+                            />
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <flat-pickr
+                                :config="configTodateTimePicker"
+                                v-model="gestionTicket.fechaTermino"
+                                placeholder="Fecha Termino"
+                                @on-change="onToChange"
+                            />
+                            <flat-pickr
+                                :config="configdateTimePicker"
+                                v-model="gestionTicket.horaTermino"
+                                placeholder="Seleccione Hora"
+                            />
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <vs-input
+                                disabled="true"
+                                label-placeholder="Dias Ejecucion"
+                                v-model="diasCalculados"
+                            />
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <vs-input
+                                disabled="true"
+                                label-placeholder="Horas Ejecucion"
+                                v-model="calcularHorasTrabajo"
+                            />
+                        </div>
+                    </div>
+                </vx-card>
             </div>
-        </div>
-        <div class="vx-row">
-            <div class="vx-col md:w-1/2 w-full mt-5">
-                <v-select
-                    v-model="selectEstado"
-                    placeholder="Seleccione el Estado"
-                    class="w-full select-large"
-                    label="descripcionEstado"
-                    :options="listadoEstado"
-                    @input="arrayEstado(selectEstado.id)"
-                ></v-select>
+            <!-- Informacion del problema -->
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <vx-card title="4. Problema a Resolver" code-toggler>
+                    <div class="vx-row mb-12">
+                        <div class="vx-col w-full mt-5">
+                            <v-select
+                                v-model="seleccionReparacion"
+                                placeholder="Seleccione Tipo de Reparacion"
+                                class="w-full select-large"
+                                label="descripcionTipoReparacion"
+                                :options="listadoTipoRep"
+                                @input="
+                                    arrayTipoReparacion(seleccionReparacion.id)
+                                "
+                            ></v-select>
+                            <br />
+                            <v-select
+                                v-model="seleccionEstado"
+                                placeholder="Seleccione el Estado"
+                                class="w-full select-large"
+                                label="descripcionEstado"
+                                :options="listadoEstado"
+                                @input="arrayEstado(seleccionEstado.id)"
+                            ></v-select>
+                        </div>
+                    </div>
+                </vx-card>
             </div>
-        </div>
-        <h4>
-            <vs-divider>Asignar Supervisor y Tecnico</vs-divider>
-        </h4>
-        <div class="vx-row">
-            <div class="vx-col md:w-1/2 w-full mt-5">
-                <!-- <vs-select
-                    v-model="gestionTicket.idSupervisor"
-                    class="w-full select-large"
-                    label="Supervisor"
-                >
-                    <vs-select-item
-                        :key="index"
-                        :value="item.id"
-                        :text="item.sup_nombre_apellido"
-                        v-for="(item, index) in listadoSupervisores"
-                        class="w-full"
-                    />
-        </vs-select>-->
-                <v-select
-                    v-model="seleccionSupervisor"
-                    placeholder="Seleccione al Supervisor"
-                    class="w-full select-large"
-                    label="sup_nombre_apellido"
-                    :options="listadoSupervisores"
-                ></v-select>
+            <!-- Enviar o Limpiar Formulario -->
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col sm:w-2/3 w-full ml-auto">
+                        <vs-button
+                            color="warning"
+                            class="mb-2"
+                            @click="probando"
+                            >Limpiar</vs-button
+                        >
+                        <vs-button
+                            class="mr-3 mb-2"
+                            color="success"
+                            @click="guardarFormulario"
+                            >Enviar</vs-button
+                        >
+                    </div>
+                </div>
             </div>
-            <div class="vx-col md:w-1/2 w-full mt-5">
-                <!-- <vs-select
-                    v-model="gestionTicket.idTrabajador"
-                    class="w-full select-large"
-                    label="Tecnico a Asignar"
-                >
-                    <vs-select-item
-                        :key="index"
-                        :value="item.id"
-                        :text="item.tra_nombre_apellido"
-                        v-for="(item, index) in listadoTrabajadores"
-                        class="w-full"
-                    />
-        </vs-select>-->
-                <v-select
-                    v-model="seleccionTrabajador"
-                    placeholder="Seleccione al Trabajador"
-                    class="w-full select-large"
-                    label="tra_nombre_apellido"
-                    :options="listadoTrabajadores"
-                ></v-select>
-            </div>
-            <div class="vx-col md:w-1/2 w-full mt-5">
-                <!-- <vs-select
-                    v-model="gestionTicket.idApoyo1"
-                    class="w-full select-large"
-                    label="Apoyo 1"
-                >
-                    <vs-select-item
-                        :key="index"
-                        :value="item.id"
-                        :text="item.tra_nombre_apellido"
-                        v-for="(item, index) in listadoApoyo1"
-                        class="w-full"
-                    />
-        </vs-select>-->
-                <v-select
-                    v-model="seleccionApoyo1"
-                    placeholder="Seleccione al Apoyo"
-                    class="w-full select-large"
-                    label="tra_nombre_apellido"
-                    :options="listadoApoyo1"
-                ></v-select>
-            </div>
-            <div class="vx-col md:w-1/2 w-full mt-5">
-                <!--  <vs-select
-                    v-model="gestionTicket.idApoyo2"
-                    class="w-full select-large"
-                    label="Apoyo 2"
-                >
-                    <vs-select-item
-                        :key="index"
-                        :value="item.id"
-                        :text="item.tra_nombre_apellido"
-                        v-for="(item, index) in listadoApoyo2"
-                        class="w-full"
-                    />
-        </vs-select>-->
-                <v-select
-                    v-model="seleccionApoyo2"
-                    placeholder="Seleccione al Apoyo"
-                    class="w-full select-large"
-                    label="tra_nombre_apellido"
-                    :options="listadoApoyo2"
-                ></v-select>
-            </div>
-        </div>
-        <div class="vx-row">
-            <div class="vx-col md:w-1/2 w-full mt-5">
-                <!-- <vs-select
-                    v-model="gestionTicket.idApoyo3"
-                    class="w-full select-large"
-                    label="Apoyo 3"
-                >
-                    <vs-select-item
-                        :key="index"
-                        :value="item.id"
-                        :text="item.tra_nombre_apellido"
-                        v-for="(item, index) in listadoApoyo3"
-                        class="w-full"
-                    />
-        </vs-select>-->
-                <v-select
-                    v-model="seleccionApoyo3"
-                    placeholder="Seleccione al Apoyo"
-                    class="w-full select-large"
-                    label="tra_nombre_apellido"
-                    :options="listadoApoyo3"
-                ></v-select>
-            </div>
-        </div>
-        <h4>
-            <vs-divider>Asignar Fecha y Hora de visita</vs-divider>
-        </h4>
-        <div class="vx-row">
-            <div class="vx-col md:w-1/2 w-full mt-5">
-                <flat-pickr
-                    :config="configFromdateTimePicker"
-                    v-model="gestionTicket.fechaInicio"
-                    placeholder="Fecha Inicio"
-                    @on-change="onFromChange"
-                />
-                <flat-pickr
-                    :config="configdateTimePicker"
-                    v-model="gestionTicket.horaInicio"
-                    placeholder="Seleccione Hora"
-                />
-            </div>
-            <div class="vx-col md:w-1/2 w-full mt-5">
-                <flat-pickr
-                    :config="configTodateTimePicker"
-                    v-model="gestionTicket.fechaTermino"
-                    placeholder="Fecha Termino"
-                    @on-change="onToChange"
-                />
-                <flat-pickr
-                    :config="configdateTimePicker"
-                    v-model="gestionTicket.horaTermino"
-                    placeholder="Seleccione Hora"
-                />
-            </div>
-        </div>
-        <div class="vx-row">
-            <div class="vx-col md:w-1/2 w-full mt-5">
-                <vs-input
-                    disabled="true"
-                    label-placeholder="Dias Ejecucion"
-                    v-model="diasCalculados"
-                />
-            </div>
-
-            <div class="vx-col md:w-1/2 w-full mt-5">
-                <vs-input
-                    disabled="true"
-                    label-placeholder="Horas Ejecucion"
-                    v-model="calcularHorasTrabajo"
-                />
-            </div>
-        </div>
-
-        <br />
-
-        <div class="vx-row">
-            <div class="vx-col w-full">
-                <vs-button
-                    class="mr-3 mb-2"
-                    color="success"
-                    @click="guardarFormulario"
-                    >Enviar</vs-button
-                >
-                <vs-button color="warning" class="mb-2" @click="probando"
-                    >Limpiar</vs-button
-                >
-            </div>
-        </div>
+        </vs-row>
     </div>
 </template>
 
@@ -308,13 +224,18 @@ import "vue-form-wizard/dist/vue-form-wizard.min.css";
 import moment from "moment";
 import axios from "axios";
 import vSelect from "vue-select";
+import "quill/dist/quill.core.css";
+import "quill/dist/quill.snow.css";
+import "quill/dist/quill.bubble.css";
+import { quillEditor } from "vue-quill-editor";
 
 export default {
     data: () => ({
         horasCalculadas: 0,
         diaCalculado: 0,
         format: "d MMMM yyyy",
-
+        nombre: localStorage.getItem("nombre"),
+        run: localStorage.getItem("run"),
         fecha1: moment()
             .startOf("day")
             .fromNow(),
@@ -523,7 +444,7 @@ export default {
                     b.push(value);
                 }
             });
-            this.selectEstado = b;
+            this.seleccionEstado = b;
         },
         arrayTipoReparacion(id) {
             let c = this.listadoTipoRep;
@@ -538,6 +459,7 @@ export default {
             });
             this.seleccionReparacion = b;
         },
+
         onFromChange(selectedDates, dateStr, instance) {
             this.$set(this.configTodateTimePicker, "minDate", dateStr);
         },
@@ -643,9 +565,9 @@ export default {
                 this.mensajeError = "el tipo de reparacion";
                 this.errorDrop(this.mensajeError);
             } else if (
-                this.selectEstado[0].id == 0 ||
-                this.selectEstado[0].id == null ||
-                this.selectEstado[0].id == 1
+                this.seleccionEstado[0].id == 0 ||
+                this.seleccionEstado[0].id == null ||
+                this.seleccionEstado[0].id == 1
             ) {
                 this.mensajeError = "el estado";
                 this.errorEstado(this.mensajeError);
@@ -692,7 +614,7 @@ export default {
                 this.gestionTicket.id_servicio = this.seleccionServicio[0].id;
                 this.gestionTicket.id_ubicacionEx = this.seleccionUnidadEsp[0].id;
                 this.gestionTicket.id_tipoReparacion = this.seleccionReparacion[0].id;
-                this.gestionTicket.id_estado = this.selectEstado[0].id;
+                this.gestionTicket.id_estado = this.seleccionEstado[0].id;
                 this.gestionTicket.id_supervisor = this.seleccionSupervisor.id;
                 this.gestionTicket.id_trabajador = this.seleccionTrabajador.id;
                 this.gestionTicket.idApoyo1 = this.seleccionApoyo1.id;
@@ -779,7 +701,7 @@ export default {
                     b.push(value);
                 }
             });
-            this.selectEstado = b;
+            this.seleccionEstado = b;
 
             c = this.listadoTipoRep;
             b = [];
@@ -812,7 +734,8 @@ export default {
     },
     components: {
         flatPickr,
-        "v-select": vSelect
+        "v-select": vSelect,
+        quillEditor
     }
 };
 </script>

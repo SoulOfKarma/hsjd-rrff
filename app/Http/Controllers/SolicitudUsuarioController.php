@@ -40,6 +40,23 @@ class SolicitudUsuarioController extends Controller
         return  $ticket;
     }
 
+    public function getTicketsAsignadosJoin($id)
+    {
+
+        $ticket = SolicitudTickets::select('solicitud_tickets.*', 'gestion_solicitudes.*', 'supervisores.sup_nombre_apellido', 'trabajadores.tra_nombre_apellido', 'users.nombre', 'estado_solicituds.descripcionEstado', DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket"))
+            ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
+            ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
+            ->join('gestion_solicitudes', 'solicitud_tickets.id', '=', 'gestion_solicitudes.id_solicitud')
+            ->join('supervisores', 'gestion_solicitudes.id_supervisor', '=', 'supervisores.id')
+            ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
+            ->where('gestion_solicitudes.id_trabajador', $id)
+            ->get();
+
+
+
+        return  $ticket;
+    }
+
     public function indexSeguimiento($uuid)
     {
 

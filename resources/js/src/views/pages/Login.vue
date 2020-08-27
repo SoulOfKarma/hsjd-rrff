@@ -30,7 +30,7 @@
                             <div class="p-8 login-tabs-container">
                                 <div class="vx-card__title mb-4">
                                     <h4 class="mb-4">Login</h4>
-                                    <p>Bienvenido Al ???</p>
+                                    <p>Bienvenido A SGTRRFF</p>
                                 </div>
 
                                 <div>
@@ -156,6 +156,11 @@ export default {
                                     ) {
                                         pr = 4;
                                     }
+                                    if (
+                                        response2.data[0].permiso_usuario == 3
+                                    ) {
+                                        pr = 5;
+                                    }
                                     //router.push('/home');
                                     //pr = 3;
                                 } else {
@@ -182,7 +187,7 @@ export default {
                     //localStorage.setItem('run',response2.data[0].permiso_usuario);
                     router.push("/agenteView/HomeAgente");
                 }
-                if (pr == 4) {
+                if (pr == 4 || pr == 5) {
                     //localStorage.setItem('run',response2.data[0].permiso_usuario);
                     router.push("/home");
                 } else {

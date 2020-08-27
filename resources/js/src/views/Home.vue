@@ -100,5 +100,39 @@
             </div>
             <div class="vx-col w-full lg:w-1/4 mb-base"></div>
         </div>
+        <div>
+            <quill-editor v-model="datoPrueba"></quill-editor>
+        </div>
+        <div class="vx-col md:w-1/1 w-full mb-base">
+            <div class="vx-row">
+                <div class="vx-col sm:w-2/3 w-full ml-auto">
+                    <vs-button color="warning" class="mb-2" @click="probando"
+                        >Limpiar</vs-button
+                    >
+                </div>
+            </div>
+        </div>
     </div>
 </template>
+
+<script>
+import "quill/dist/quill.core.css";
+import "quill/dist/quill.snow.css";
+import "quill/dist/quill.bubble.css";
+import { quillEditor } from "vue-quill-editor";
+export default {
+    components: {
+        quillEditor
+    },
+    data() {
+        return {
+            datoPrueba: ""
+        };
+    },
+    methods: {
+        probando() {
+            console.log(this.datoPrueba);
+        }
+    }
+};
+</script>

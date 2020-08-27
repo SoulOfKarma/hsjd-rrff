@@ -36,50 +36,118 @@
                             data[indextr].descripcionEstado
                         }}</vs-td>
                         <vs-td :data="data[indextr].id">
-                            <vs-button
-                                size="small"
-                                type="border"
-                                color="success"
-                                class="mb-2"
+                            <info-icon
+                                size="1.5x"
+                                class="custom-class"
                                 @click="
                                     detalleSolicitud(
                                         data[indextr].id,
                                         data[indextr].uuid
                                     )
                                 "
-                                >Ir</vs-button
-                            >
-                            <vs-button
-                                size="small"
-                                type="border"
-                                color="warning"
-                                class="mb-2"
-                                >Modificar</vs-button
-                            >
-                            <vs-button
-                                size="small"
-                                type="border"
-                                color="danger"
-                                class="mb-2"
-                                >Eliminar</vs-button
-                            >
+                            ></info-icon>
+                            <upload-icon
+                                size="1.5x"
+                                class="custom-class"
+                                @click="
+                                    modificarSolicitud(
+                                        data[indextr].id,
+                                        data[indextr].uuid
+                                    )
+                                "
+                            ></upload-icon>
+
+                            <trash-2-icon
+                                size="1.5x"
+                                class="custom-class"
+                                @click="
+                                    abrirPop(
+                                        data[indextr].id,
+                                        data[indextr].uuid
+                                    )
+                                "
+                            ></trash-2-icon>
                         </vs-td>
-                        <vs-td :data="data[indextr].id"> </vs-td>
                     </vs-tr>
                 </template>
             </vs-table>
         </vx-card>
+        <vs-popup
+            classContent="popup-example"
+            title="Realmente desea eliminar el ticket?"
+            :active.sync="popupActive2"
+        >
+            <vs-input
+                class="inputx mb-3"
+                placeholder="Placeholder"
+                v-model="value1"
+                hidden
+            />
+            <vs-input
+                disabled
+                class="inputx mb-3"
+                placeholder="Disabled"
+                v-model="value2"
+                hidden
+            />
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <div class="vx-row">
+                    <div class="vx-col sm:w-1/2 w-full ">
+                        <vs-button
+                            @click="
+                                eliminarSolicitud(
+                                    value1,
+                                    value2,
+                                    validaEliminar
+                                )
+                            "
+                            color="danger"
+                            type="filled"
+                            >Eliminar</vs-button
+                        >
+                    </div>
+                    <div class="vx-col sm:w-1/2 w-full ">
+                        <vs-button
+                            @click="popupActive2 = false"
+                            color="primary"
+                            type="filled"
+                            >Volver</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
+        <vs-button color="success" type="filled" @click="probar"
+            >Success</vs-button
+        >
     </div>
 </template>
 
 <script>
 import axios from "axios";
 import router from "../router";
+import { InfoIcon } from "vue-feather-icons";
+import { PlusCircleIcon } from "vue-feather-icons";
+import { Trash2Icon } from "vue-feather-icons";
+import { UploadIcon } from "vue-feather-icons";
+import moment from "moment";
 
 export default {
+    components: {
+        InfoIcon,
+        PlusCircleIcon,
+        Trash2Icon,
+        UploadIcon
+    },
     data() {
         return {
+            fechaModificar: moment().format("DD/MM/YYYY HH:mm"),
+            fechaEliminar: moment().format("DD/MM/YYYY HH:mm"),
             solicitudes: [],
+            value1: "",
+            value2: "",
+            validaEliminar: false,
+            popupActive2: false,
             localVal: "http://127.0.0.1:8000",
             nombre: localStorage.getItem("nombre"),
             run: localStorage.getItem("run")
@@ -87,9 +155,11 @@ export default {
     },
     methods: {
         cargarSolicitudes() {
-            axios.get(this.localVal + "/api/Usuario/GetUsuarios").then(res => {
-                this.solicitudes = res.data;
-            });
+            axios
+                .get(this.localVal + "/api/Usuario/GetSolicitudUsuarios")
+                .then(res => {
+                    this.solicitudes = res.data;
+                });
         },
         detalleSolicitud(id, uuid) {
             this.$router.push({
@@ -99,6 +169,65 @@ export default {
                     uuid: `${uuid}`
                 }
             });
+        },
+        abrirPop(id, uuid) {
+            this.validaEliminar = true;
+            this.value1 = id;
+            this.value2 = uuid;
+            this.popupActive2 = true;
+        },
+        modificarSolicitud(id, uuid) {
+            //router.push(`/agenteView/FormularioModificar/${id}`);
+            axios
+                .get(
+                    this.localVal + `/api/Agente/ValidarTicketAsignadoMod/${id}`
+                )
+                .then(res => {
+                    if (res.data) {
+                        this.$vs.notify({
+                            title: "Ticket no ha sido asignado ",
+                            text:
+                                "Ticket necesita ya estar asignado primero para modificarlo ",
+                            color: "danger",
+                            position: "top-right",
+                            fixed: true
+                        });
+                    } else {
+                        this.$router.push({
+                            name: "ModificarTicketUsuario",
+                            params: {
+                                id: `${id}`,
+                                uuid: `${uuid}`
+                            }
+                        });
+                    }
+                });
+        },
+        eliminarSolicitud(id, uuid, eliminar) {
+            console.log("llega?");
+            console.log(eliminar);
+            if (eliminar) {
+                axios
+                    .get(this.localVal + `/api/Agente/destroyTicket/${id}`)
+                    .then(res => {
+                        var eliminado = res.data;
+                        this.popupActive2 = false;
+                        if (eliminado) {
+                            this.$vs.notify({
+                                title: "Ticket Eliminado ",
+                                text: "Se recargara el listado ",
+                                color: "danger",
+                                position: "top-right",
+                                fixed: true
+                            });
+                            this.cargarSolicitudes();
+                        }
+                    });
+            }
+        },
+        probar() {
+            console.log(this.fechaModificar);
+            console.log(this.fechaEliminar);
         }
     },
     beforeMount() {

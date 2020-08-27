@@ -1,21 +1,42 @@
 <template>
     <div id="app">
-        <div v-if="valc">
-            <div class="flex mb-4">
-                <div class="w-1/3 bg-grid-color-secondary h-12"></div>
-                <div class="w-1/3 bg-grid-color h-12">
-                    <v-select
-                        v-model="horaSeleccionada"
-                        label="descripcionHora"
-                        :options="horas"
-                        @input="cambioCalendario(horaSeleccionada.hora)"
-                    />
-                </div>
-                <div class="w-1/3 bg-grid-color-secondary h-12"></div>
-            </div>
+        <vs-row>
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <vx-card
+                    title="1. Calendario de tickets Asignados"
+                    code-toggler
+                >
+                    <div class="vx-row mb-12">
+                        <div class="vx-col w-full mt-5">
+                            <div v-if="valc">
+                                <div class="flex mb-4">
+                                    <div
+                                        class="w-1/3 bg-grid-color-secondary h-12"
+                                    ></div>
+                                    <div class="w-1/3 bg-grid-color h-12">
+                                        <v-select
+                                            v-model="horaSeleccionada"
+                                            label="descripcionHora"
+                                            :options="horas"
+                                            @input="
+                                                cambioCalendario(
+                                                    horaSeleccionada.hora
+                                                )
+                                            "
+                                        />
+                                    </div>
+                                    <div
+                                        class="w-1/3 bg-grid-color-secondary h-12"
+                                    ></div>
+                                </div>
 
-            <GSTC :config="config" @state="onState" />
-        </div>
+                                <GSTC :config="config" @state="onState" />
+                            </div>
+                        </div>
+                    </div>
+                </vx-card>
+            </div>
+        </vs-row>
     </div>
 </template>
 
@@ -77,13 +98,6 @@ export default {
             config: {
                 height: 400,
                 plugins: [
-                    CalendarScroll({
-                        speed: 0.1,
-                        hideScroll: true,
-                        onChange(time) {
-                            console.log(time);
-                        }
-                    }),
                     Selection({
                         items: false,
                         rows: false,

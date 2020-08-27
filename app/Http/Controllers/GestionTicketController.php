@@ -39,10 +39,26 @@ class GestionTicketController extends Controller
     }
 
 
-    public function GetTicketAsignado($uuid)
+    public function ValidarTicketAsignadoMod($id)
     {
-        $users = GestionSolicitudes::firstWhere('uuid', $uuid);
-        return  $users;
+        $users = GestionSolicitudes::firstWhere('id_solicitud', $id);
+        if ($users === null) {
+            return true;
+        } else {
+            return  false;
+        }
+    }
+
+    public function ValidarTicketAsignado($id)
+    {
+        $users = GestionSolicitudes::firstWhere('id_solicitud', $id);
+        return $users;
+    }
+
+    public function GetTicketAsignado($id)
+    {
+        $users = GestionSolicitudes::firstWhere('id_solicitud', $id);
+        return $users;
     }
 
     public function GetDatoCalendario()
@@ -165,6 +181,9 @@ class GestionTicketController extends Controller
      */
     public function destroy($id)
     {
-        //
+        GestionSolicitudes::where('id_solicitud', $id)->delete();
+        SolicitudTickets::where('id', $id)->delete();
+
+        return true;
     }
 }

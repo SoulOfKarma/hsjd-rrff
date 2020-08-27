@@ -165,6 +165,7 @@ import router from "../../router";
 import BackToTop from "vue-backtotop";
 import HNavMenu from "@/layouts/components/horizontal-nav-menu/HorizontalNavMenu.vue";
 import navMenuItems from "@/layouts/components/vertical-nav-menu/navMenuItems.js";
+import navMenuItemsTrabajador from "@/layouts/components/vertical-nav-menu/navMenuItemsTrabajador.js";
 import TheNavbarHorizontal from "@/layouts/components/navbar/TheNavbarHorizontal.vue";
 import TheNavbarVertical from "@/layouts/components/navbar/TheNavbarVertical.vue";
 import TheFooter from "@/layouts/components/TheFooter.vue";
@@ -187,7 +188,7 @@ export default {
             isNavbarDark: false,
             navbarColor: themeConfig.navbarColor || "#fff",
             navbarType: themeConfig.navbarType || "floating",
-            navMenuItems,
+            navMenuItems: navMenuItems,
             routerTransition: themeConfig.routerTransition || "none",
             routeTitle: this.$route.meta.pageTitle,
             localVal: "http://127.0.0.1:8000"
@@ -312,7 +313,11 @@ export default {
         var aux2 = localStorage.getItem("permiso_usuario");
 
         if (aux2 == 2) {
-            console.log("Acceso Correcto");
+            console.log("Acceso Correcto Usuario");
+            this.navMenuItems = navMenuItems;
+        } else if (aux2 == 3) {
+            console.log("Acceso Correcto Trabajador");
+            this.navMenuItems = navMenuItemsTrabajador;
         } else {
             router.push("/pages/login");
         }

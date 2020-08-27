@@ -1,190 +1,211 @@
 <template>
-  <div>
-    <div :key="index" v-for="(i, index) in solicitudes">
-      <h4>
-        <vs-divider>Ticket N° {{ i.id }}</vs-divider>
-      </h4>
-      <vs-row vs-justify="center">
-        <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="6">
-          <vs-card class="cardx" color="primary" type="border">
-            <div>
-              <vs-input
-                label-placeholder="Usuario Solicitante"
-                v-model="i.nombre"
-                disabled="true"
-                fixed-height
-              />
-              <br />
-              <vs-input
-                label-placeholder="Edificio"
-                v-model="i.descripcionEdificio"
-                disabled="true"
-                fixed-height
-              />
+    <div>
+        <vs-row>
+            <div
+                class="router-header flex flex-wrap items-center mb-8"
+                style="margin-left:10px;"
+            >
+                <div
+                    class="content-area__heading pr-4 border-0 md:border-r border-solid border-grey-light"
+                >
+                    <h2 class="mb-1">Seguimiento Tickets</h2>
+                </div>
+                <div class="vx-breadcrumb ml-4 md:block hidden">
+                    <div
+                        class="content-area__heading pr-4 border-0 md:border-r border-solid border-grey-light"
+                    >
+                        <h3 class="mb-1">
+                            Agente:
+                            <p>{{ nombre }} - {{ run }}</p>
+                        </h3>
+                    </div>
+                </div>
             </div>
-          </vs-card>
-        </vs-col>
-        <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="6">
-          <vs-card class="cardx" color="dark" type="border">
-            <div>
-              <vs-input
-                label-placeholder="Servicio"
-                v-model="i.descripcionServicio"
-                disabled="true"
-                fixed-height
-              />
-              <br />
-              <vs-input
-                label-placeholder="Unidad Especifica"
-                v-model="i.descripcionUnidadEsp"
-                disabled="true"
-                fixed-height
-              />
+            <vs-alert
+                color="primary"
+                icon="new_releases"
+                active="true"
+                style="margin-bottom: 10px;"
+            >
+                <p>Recuerda que todos los campos son obligatorios!</p>
+            </vs-alert>
+            <!-- Informacion General Ticket -->
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <vx-card :title="titulo" code-toggler>
+                    <div class="vx-row mb-12">
+                        <div class="vx-col w-full mt-5">
+                            <vs-input
+                                label-placeholder="Usuario Solicitante"
+                                v-model="infoSeguimiento.nombre"
+                                disabled="true"
+                                class="w-full"
+                            />
+                            <br />
+                        </div>
+                        <div class="vx-col w-full mt-5">
+                            <vs-input
+                                label-placeholder="Edificio"
+                                v-model="infoSeguimiento.edificio"
+                                disabled="true"
+                                class="w-full"
+                            />
+                            <br />
+                        </div>
+                        <div class="vx-col w-full mt-5">
+                            <vs-input
+                                label-placeholder="Servicio"
+                                v-model="infoSeguimiento.servicio"
+                                disabled="true"
+                                class="w-full"
+                            />
+                            <br />
+                        </div>
+                        <div class="vx-col w-full mt-5">
+                            <vs-input
+                                label-placeholder="Unidad Especifica"
+                                v-model="infoSeguimiento.unidadEsp"
+                                disabled="true"
+                                class="w-full"
+                            />
+                        </div>
+                    </div>
+                </vx-card>
             </div>
-          </vs-card>
-        </vs-col>
-      </vs-row>
+            <!-- Actualizar Seguimiento -->
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <vx-card title="Actualizar Seguimiento" code-toggler>
+                    <div class="vx-row mb-12">
+                        <div class="vx-col w-full mt-5">
+                            <vs-textarea
+                                label="Actualizar seguimiento"
+                                v-model="seguimientos.descripcionSeguimiento"
+                            />
+                            <vs-button
+                                type="gradient"
+                                @click="guardarSeguimiento"
+                                >Actualizar</vs-button
+                            >
+
+                            <br />
+                        </div>
+                    </div>
+                </vx-card>
+            </div>
+            <!-- Lista Seguimiento -->
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <vx-card title="Respuestas Seguimiento" code-toggler>
+                    <div class="vx-row">
+                        <div class="vx-col sm:w-full w-full">
+                            <vs-list
+                                :key="indextr"
+                                v-for="(tr, indextr) in seguimiento"
+                                max-items="2"
+                                pagination
+                            >
+                                <vs-list-item
+                                    :title="tr.nombre"
+                                    :subtitle="tr.descripcionSeguimiento"
+                                ></vs-list-item>
+                            </vs-list>
+                        </div>
+                    </div>
+                </vx-card>
+            </div>
+        </vs-row>
     </div>
-
-    <vs-card>
-      <vs-button color="success" type="filled" @click="asignarSolicitud">Asignar Ticket</vs-button>
-      <vs-button color="warning" type="filled" @click="modificarSolicitud">Modificar Ticket</vs-button>
-    </vs-card>
-    <h4>
-      <vs-divider>Actualizar Informacion de la solicitud</vs-divider>
-    </h4>
-    <vs-card fixedHeight>
-      <br />
-      <vs-textarea label="Actualizar seguimiento" v-model="seguimientos.descripcionSeguimiento" />
-      <vs-button type="gradient" @click="guardarSeguimiento">Actualizar</vs-button>
-    </vs-card>
-
-    <vs-card>
-      <template>
-        <vs-list :key="indextr" v-for="(tr, indextr) in seguimiento" max-items="2" pagination>
-          <vs-list-item :title="tr.nombre" :subtitle="tr.descripcionSeguimiento"></vs-list-item>
-        </vs-list>
-      </template>
-    </vs-card>
-  </div>
 </template>
 
 <script>
 import axios from "axios";
 import router from "../../router";
 export default {
-  data: () => ({
-    textarea: "",
-    currentx: 1,
-    localVal: "http://127.0.0.1:8000",
-    solicitudes: [],
-    seguimiento: [],
-
-    seguimientos: {
-      descripcionSeguimiento: "",
-      id_solicitud: 0,
-      uuid: "",
-      nombre: localStorage.getItem("nombre"),
-      id_user: localStorage.getItem("id"),
-    },
-  }),
-  methods: {
-    asignarSolicitud() {
-      let id = this.$route.params.id;
-      let uuid = this.$route.params.uuid;
-      // router.push(`/agenteView/FormularioAsignar/${id}`);
-      axios
-        .get(this.localVal + `/api/Agente/GetTicketAsignado/${uuid}`)
-        .then((res) => {
-          if (res.data) {
-            this.$vs.notify({
-              title: "Ticket ya asignado ",
-              text: "Si necesita modificarlo vaya a Modificar Ticket ",
-              color: "danger",
-              position: "top-right",
-              fixed: true,
-            });
-          } else {
-            this.$router.push({
-              name: "AsignarSolicitudAgente",
-              params: {
-                id: `${id}`,
-                uuid: `${uuid}`,
-              },
-            });
-          }
-        });
-    },
-    modificarSolicitud() {
-      let id = this.$route.params.id;
-      let uuid = this.$route.params.uuid;
-      //router.push(`/agenteView/FormularioModificar/${id}`);
-      this.$router.push({
-        name: "ModificarSolicitudAgente",
-        params: {
-          id: `${id}`,
-          uuid: `${uuid}`,
+    data: () => ({
+        textarea: "",
+        currentx: 1,
+        localVal: "http://127.0.0.1:8000",
+        solicitudes: [],
+        seguimiento: [],
+        titulo: "",
+        infoSeguimiento: {
+            edificio: "",
+            servicio: "",
+            unidadEsp: "",
+            nombre: ""
         },
-      });
-    },
-    cargaSolicitudEspecifica() {
-      let id = this.$route.params.uuid;
-      axios
-        .get(this.localVal + `/api/Agente/TraerSolicitud/${id}`)
-        .then((res) => {
-          this.solicitudes = res.data;
-        });
-    },
-    cargaSeguimiento() {
-      let uuid = this.$route.params.uuid;
-      axios
-        .get(this.localVal + `/api/Agente/TraerSeguimiento/${uuid}`)
-        .then((res) => {
-          this.seguimiento = res.data;
-        });
-    },
-    guardarSeguimiento() {
-      let uuid = this.$route.params.uuid;
-
-      if (
-        this.seguimientos.descripcionSeguimiento.trim() === "" ||
-        this.seguimientos.descripcionSeguimiento < 15
-      ) {
-        this.$vs.notify({
-          title: "Error en la descripcion",
-          text: "Esta vacio o no supera los 15 caracteres",
-          color: "danger",
-          position: "top-right",
-          fixed: true,
-        });
-        return;
-      }
-      var id = this.solicitudes.id;
-      this.seguimientos.id = id;
-      this.seguimientos.uuid = uuid;
-      const seguimientoNuevo = this.seguimientos;
-      this.seguimientos = {
-        descripcionSeguimiento: "",
-        id_solicitud: this.$route.params.id,
-        uuid: this.$route.params.uuid,
         nombre: localStorage.getItem("nombre"),
-        id_user: localStorage.getItem("id"),
-      };
-      axios
-        .post(
-          this.localVal + `/api/Agente/GuardarSeguimiento/${uuid}`,
-          seguimientoNuevo
-        )
-        .then((res) => {
-          const seguimientoServer = res.data;
-          this.cargaSeguimiento();
-        });
+        run: localStorage.getItem("run"),
+        seguimientos: {
+            descripcionSeguimiento: "",
+            id_solicitud: 0,
+            uuid: "",
+            nombre: localStorage.getItem("nombre"),
+            id_user: localStorage.getItem("id")
+        }
+    }),
+    methods: {
+        cargaSolicitudEspecifica() {
+            let id = this.$route.params.uuid;
+            axios
+                .get(this.localVal + `/api/Agente/TraerSolicitud/${id}`)
+                .then(res => {
+                    this.solicitudes = res.data;
+                    this.titulo = "Ticket N°" + this.solicitudes[0].id;
+                    this.infoSeguimiento.nombre = this.solicitudes[0].nombre;
+                    this.infoSeguimiento.edificio = this.solicitudes[0].descripcionEdificio;
+                    this.infoSeguimiento.servicio = this.solicitudes[0].descripcionServicio;
+                    this.infoSeguimiento.unidadEsp = this.solicitudes[0].descripcionUnidadEsp;
+                });
+        },
+        cargaSeguimiento() {
+            let uuid = this.$route.params.uuid;
+            axios
+                .get(this.localVal + `/api/Agente/TraerSeguimiento/${uuid}`)
+                .then(res => {
+                    this.seguimiento = res.data;
+                });
+        },
+        guardarSeguimiento() {
+            let uuid = this.$route.params.uuid;
+
+            if (
+                this.seguimientos.descripcionSeguimiento.trim() === "" ||
+                this.seguimientos.descripcionSeguimiento < 15
+            ) {
+                this.$vs.notify({
+                    title: "Error en la descripcion",
+                    text: "Esta vacio o no supera los 15 caracteres",
+                    color: "danger",
+                    position: "top-right",
+                    fixed: true
+                });
+                return;
+            }
+            var id = this.solicitudes.id;
+            this.seguimientos.id = id;
+            this.seguimientos.uuid = uuid;
+            const seguimientoNuevo = this.seguimientos;
+            this.seguimientos = {
+                descripcionSeguimiento: "",
+                id_solicitud: this.$route.params.id,
+                uuid: this.$route.params.uuid,
+                nombre: localStorage.getItem("nombre"),
+                id_user: localStorage.getItem("id")
+            };
+            axios
+                .post(
+                    this.localVal + `/api/Agente/GuardarSeguimiento/${uuid}`,
+                    seguimientoNuevo
+                )
+                .then(res => {
+                    const seguimientoServer = res.data;
+                    this.cargaSeguimiento();
+                });
+        }
     },
-  },
-  beforeMount() {
-    this.cargaSolicitudEspecifica();
-    this.cargaSeguimiento();
-  },
+    beforeMount() {
+        this.cargaSolicitudEspecifica();
+        this.cargaSeguimiento();
+    }
 };
 </script>
 
