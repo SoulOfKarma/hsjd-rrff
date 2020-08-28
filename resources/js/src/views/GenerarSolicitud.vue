@@ -29,10 +29,13 @@
             >
                 <p>Recuerda que todos los campos son obligatorios!</p>
             </vs-alert>
+            <!-- Ubicacion -->
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <vx-card title="1. Lugar del problema" code-toggler>
                     <div class="vx-row mb-12">
                         <div class="vx-col w-1/3 mt-5">
+                            <h6>1.1 - Seleccione el Edificio</h6>
+                            <br />
                             <v-select
                                 v-model="seleccionEdificio"
                                 placeholder="Edificio"
@@ -42,6 +45,8 @@
                             ></v-select>
                         </div>
                         <div class="vx-col w-1/3 mt-5">
+                            <h6>1.2 - Seleccione el Servicio</h6>
+                            <br />
                             <v-select
                                 v-model="seleccionServicio"
                                 placeholder="Servicio"
@@ -52,6 +57,8 @@
                             ></v-select>
                         </div>
                         <div class="vx-col w-1/3 mt-5">
+                            <h6>1.3 - Seleccione la Unidad Especifica</h6>
+                            <br />
                             <v-select
                                 v-model="seleccionUnidadEsp"
                                 placeholder="Unidad Especifica"
@@ -64,10 +71,13 @@
                     </div>
                 </vx-card>
             </div>
+            <!-- Informacion del problema -->
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <vx-card title="2. Informacion del problema" code-toggler>
                     <div class="vx-row mb-12">
                         <div class="vx-col w-full mt-5">
+                            <h6>2.1 - Tipo de Reparacion</h6>
+                            <br />
                             <v-select
                                 v-model="seleccionReparacion"
                                 placeholder="Seleccione Tipo de Reparacion"
@@ -76,16 +86,22 @@
                                 :options="listadoTipoRep"
                             ></v-select>
                             <br />
+                            <h6>2.2 - Titulo del Problema</h6>
+                            <br />
                             <vs-input
-                                label="Titulo problema"
                                 placeholder="Ej. Falla de red en equipo x"
                                 v-model="solicitud.tituloP"
                                 class="w-full"
                             />
                             <br />
+                            <h6>2.3 - Descripcion del Problema</h6>
+                            <br />
                             <quill-editor
                                 v-model="solicitud.descripcionP"
-                            ></quill-editor>
+                                :options="editorOption"
+                            >
+                                <div id="toolbar" slot="toolbar"></div>
+                            </quill-editor>
                         </div>
                     </div>
                 </vx-card>
@@ -120,11 +136,28 @@ import vSelect from "vue-select";
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
+import router from "@/router";
 
 import { quillEditor } from "vue-quill-editor";
 
 export default {
     data: () => ({
+        editorOption: {
+            modules: {
+                toolbar: [
+                    ["bold", "italic", "underline", "strike"],
+                    ["blockquote", "code-block"],
+                    [{ header: 1 }, { header: 2 }],
+                    [{ list: "ordered" }, { list: "bullet" }],
+                    [{ indent: "-1" }, { indent: "+1" }],
+                    [{ direction: "rtl" }],
+                    [{ font: [] }],
+                    [{ align: [] }],
+                    ["clean"]
+                ]
+            }
+        },
+        colorLoading: "#ff8000",
         listadoEdificios: [],
         listadoServicios: [],
         listadoUnidadEsp: [],
@@ -280,8 +313,7 @@ export default {
                 title: "Falto seleccionar " + mensajeError,
                 text: "Seleccione " + mensajeError,
                 color: "danger",
-                position: "top-right",
-                fixed: true
+                position: "top-right"
             });
         },
         errorTitulo(mensajeError) {
@@ -289,8 +321,7 @@ export default {
                 title: mensajeError,
                 text: "Debe escribir un titulo superior a 10 caracteres",
                 color: "danger",
-                position: "top-right",
-                fixed: true
+                position: "top-right"
             });
         },
         errorDescripcion(mensajeError) {
@@ -298,8 +329,17 @@ export default {
                 title: mensajeError,
                 text: "Debe escribir una descripcion superior a 15 caracteres",
                 color: "danger",
-                position: "top-right",
-                fixed: true
+                position: "top-right"
+            });
+        },
+        mensajeGuardado() {
+            this.$vs.notify({
+                time: 5000,
+                title: "Ticket Creado",
+                text:
+                    "Ticket creado correctamente, Retornara a la pagina anterior",
+                color: "success",
+                position: "top-right"
             });
         },
         guardarSolicitud() {
@@ -334,6 +374,7 @@ export default {
                 this.solicitud.id_ubicacionEx = this.seleccionUnidadEsp[0].id;
                 this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
                 const solicitudNueva = this.solicitud;
+                this.openLoadingColor();
                 (this.solicitud = {
                     descripcionP: "",
                     tituloP: "",
@@ -351,43 +392,23 @@ export default {
                         )
                         .then(res => {
                             const solicitudServer = res.data;
+                            this.mensajeGuardado();
+                            setTimeout(() => {
+                                router.back();
+                            }, 5000);
                             //console.log(res.data);
                         });
             }
         },
+        openLoadingColor() {
+            this.$vs.loading({ color: this.colorLoading });
+            setTimeout(() => {
+                this.$vs.loading.close();
+            }, 2000);
+        },
         probando() {
             this.solicitud.id_user;
             console.log(this.seleccionUnidadEsp[0].id);
-        },
-        enviarCorreos(id) {
-            axios
-                .get(this.localVal + `/api/Usuario/GetDataCorreo/${id}`)
-                .then(res2 => {
-                    if (res2.data.length > 0) {
-                        this.listadoCorreo = res2.data;
-                        this.datosCorreo.nombre = this.listadoCorreo[0].nombre;
-                        this.datosCorreo.descripcionP = this.listadoCorreo[0].descripcionP;
-                        this.datosCorreo.id = this.listadoCorreo[0].id;
-                        const dataCorreo = this.datosCorreo;
-                        this.datosCorreo = {
-                            nombre: "",
-                            descripcionP: "",
-                            id: 0
-                        };
-                        axios
-                            .post(
-                                this.localVal + "/api/Usuario/enviarCorreo",
-                                dataCorreo
-                            )
-                            .then(res3 => {
-                                if (res3.data.length > 0) {
-                                    console.log("Funciono");
-                                } else {
-                                    console.log("Rip");
-                                }
-                            });
-                    }
-                });
         }
     },
     beforeMount() {

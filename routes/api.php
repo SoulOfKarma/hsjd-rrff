@@ -35,7 +35,7 @@ Route::get('/Usuario/GetUnidadEsp', ['middleware' => 'cors', 'uses' => 'UnidadEx
 Route::get('/Usuario/GetTipoRep', ['middleware' => 'cors', 'uses' => 'TipoReparacionController@index']);
 //Route::get('/Usuario/GetEdificios', 'TipoReparacionController@index');
 //Retornar Usuarios Join
-Route::get('/Usuario/GetSolicitudUsuarios', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getSolicitudUsuariosJoin']);
+Route::get('/Usuario/GetSolicitudUsuarios/{iduser}', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getSolicitudUsuariosJoin']);
 
 //Solicitud Usuario
 //Traer Datos para el listado de tickets
@@ -44,10 +44,16 @@ Route::get('/Usuario/GetSolicitud', ['middleware' => 'cors', 'uses' => 'Solicitu
 Route::get('/Usuario/TraerSolicitud/{id}', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@indexEspecifico']);
 //Guardar Solicitud
 Route::post('/Usuario/PostSolicitud', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@store']);
+//Modificar Solicitud
+Route::post('/Usuario/PutSolicitud', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@ModificarSolicitud']);
 //Traer seguimiento
 Route::get('/Usuario/TraerSeguimiento/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoController@indexSeguimiento']);
 //Guardar Seguimiento
 Route::post('/Usuario/GuardarSeguimiento/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoController@store']);
+//Traer Datos para el listado de tickets
+Route::get('/Usuario/GetSolicitudCreada/{id}', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@GetSolicitudCreada']);
+//Eliminar Ticket
+Route::get('/Usuario/destroyTicket/{id}', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@destroy']);
 
 //Gestion Agentes
 //Traer supervisores
@@ -59,7 +65,7 @@ Route::get('/Agente/GetEstado', ['middleware' => 'cors', 'uses' => 'EstadoContro
 //Guardar Ticket
 Route::post('/Agente/PostTicket', ['middleware' => 'cors', 'uses' => 'GestionTicketController@store']);
 //Traer Tickets con sus usuarios
-Route::get('/Agente/GetSolicitudTickets', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getSolicitudUsuariosJoin']);
+Route::get('/Agente/GetSolicitudTickets', ['middleware' => 'cors', 'uses' => 'GestionTicketController@getSolicitudUsuariosJoin']);
 //Traer seguimiento de tickets
 Route::get('/Agente/TraerSeguimiento/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoController@indexSeguimiento']);
 //Traer datos especificos

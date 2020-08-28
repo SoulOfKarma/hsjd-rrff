@@ -205,7 +205,7 @@
                         <vs-button
                             class="mr-3 mb-2"
                             color="success"
-                            @click="guardarFormulario"
+                            @click="validarFormulario"
                             >Enviar</vs-button
                         >
                     </div>
@@ -228,10 +228,12 @@ import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import { quillEditor } from "vue-quill-editor";
+import router from "@/router";
 
 export default {
     data: () => ({
         horasCalculadas: 0,
+        colorLoading: "#ff8000",
         diaCalculado: 0,
         format: "d MMMM yyyy",
         nombre: localStorage.getItem("nombre"),
@@ -536,8 +538,7 @@ export default {
                 title: "Falto seleccionar " + mensajeError,
                 text: "Seleccione " + mensajeError,
                 color: "danger",
-                position: "top-right",
-                fixed: true
+                position: "top-right"
             });
         },
         errorEstado(mensajeError) {
@@ -545,9 +546,126 @@ export default {
                 title: "Debe cambiar " + mensajeError,
                 text: "Debe cambiar el estado a 'en proceso' ",
                 color: "danger",
-                position: "top-right",
-                fixed: true
+                position: "top-right"
             });
+        },
+        mensajeGuardado() {
+            this.$vs.notify({
+                time: 5000,
+                title: "Ticket Asignado",
+                text:
+                    "Ticket Asignado correctamente, Retornara a la pagina anterior",
+                color: "success",
+                position: "top-right"
+            });
+        },
+        validarFormulario() {
+            var hoy = new Date();
+            try {
+                if (this.seleccionEdificio[0].id == 0) {
+                    this.mensajeError = "el Edificio";
+                    this.errorDrop(this.mensajeError);
+                } else if (this.seleccionServicio[0].id == 0) {
+                    this.mensajeError = "el servicio";
+                    this.errorDrop(this.mensajeError);
+                } else if (this.seleccionUnidadEsp[0].id == 0) {
+                    this.mensajeError = "la Unidad especifica";
+                    this.errorDrop(this.mensajeError);
+                } else if (this.seleccionReparacion[0].id == 0) {
+                    this.mensajeError = "el tipo de reparacion";
+                    this.errorDrop(this.mensajeError);
+                } else if (this.seleccionEstado[0].id == 0) {
+                    this.mensajeError = "el estado";
+                    this.errorDrop(this.mensajeError);
+                } else if (this.seleccionSupervisor[0].id == 0) {
+                    this.mensajeError = "el supervisor";
+                    this.errorDrop(this.mensajeError);
+                } else if (this.seleccionTrabajador[0].id == 0) {
+                    this.mensajeError = "el trabajador";
+                    this.errorDrop(this.mensajeError);
+                } else if (this.seleccionApoyo1[0].id == 0) {
+                    this.mensajeError = "el apoyo 1";
+                    this.errorDrop(this.mensajeError);
+                } else if (this.seleccionApoyo2[0].id == 0) {
+                    this.mensajeError = "el apoyo 2";
+                    this.errorDrop(this.mensajeError);
+                } else if (this.seleccionApoyo3[0].id == 0) {
+                    this.mensajeError = "el apoyo 3";
+                    this.errorDrop(this.mensajeError);
+                } else if (
+                    this.gestionTicket.fechaInicio == null ||
+                    this.gestionTicket.fechaInicio < hoy.getDate()
+                ) {
+                    this.mensajeError = "la fecha de inicio ";
+                    this.errorDrop(this.mensajeError);
+                } else if (
+                    this.gestionTicket.fechaTermino == null ||
+                    this.gestionTicket.fechaTermino < hoy.getDate()
+                ) {
+                    this.mensajeError = "la fecha de termino";
+                    this.errorDrop(this.mensajeError);
+                } else if (this.gestionTicket.horasEjecucion == 0) {
+                    this.mensajeError = "Las horas calculadas no pueden ser 0";
+                    this.errorDrop(this.mensajeError);
+                } else if (this.gestionTicket.diasEjecucion == 0) {
+                    this.mensajeError = "Los dias calculados no pueden ser 0";
+                    this.errorDrop(this.mensajeError);
+                } else {
+                    this.guardarFormulario();
+                }
+            } catch (error) {
+                if (this.seleccionEdificio.id == 0) {
+                    this.mensajeError = "el Edificio";
+                    this.errorDrop(this.mensajeError);
+                } else if (this.seleccionServicio.id == 0) {
+                    this.mensajeError = "el servicio";
+                    this.errorDrop(this.mensajeError);
+                } else if (this.seleccionUnidadEsp.id == 0) {
+                    this.mensajeError = "la Unidad especifica";
+                    this.errorDrop(this.mensajeError);
+                } else if (this.seleccionReparacion.id == 0) {
+                    this.mensajeError = "el tipo de reparacion";
+                    this.errorDrop(this.mensajeError);
+                } else if (this.seleccionEstado.id == 0) {
+                    this.mensajeError = "el estado";
+                    this.errorDrop(this.mensajeError);
+                } else if (this.seleccionSupervisor.id == 0) {
+                    this.mensajeError = "el supervisor";
+                    this.errorDrop(this.mensajeError);
+                } else if (this.seleccionTrabajador.id == 0) {
+                    this.mensajeError = "el trabajador";
+                    this.errorDrop(this.mensajeError);
+                } else if (this.seleccionApoyo1.id == 0) {
+                    this.mensajeError = "el apoyo 1";
+                    this.errorDrop(this.mensajeError);
+                } else if (this.seleccionApoyo2.id == 0) {
+                    this.mensajeError = "el apoyo 2";
+                    this.errorDrop(this.mensajeError);
+                } else if (this.seleccionApoyo3.id == 0) {
+                    this.mensajeError = "el apoyo 3";
+                    this.errorDrop(this.mensajeError);
+                } else if (
+                    this.gestionTicket.fechaInicio == null ||
+                    this.gestionTicket.fechaInicio < hoy.getDate()
+                ) {
+                    this.mensajeError = "la fecha de inicio ";
+                    this.errorDrop(this.mensajeError);
+                } else if (
+                    this.gestionTicket.fechaTermino == null ||
+                    this.gestionTicket.fechaTermino < hoy.getDate()
+                ) {
+                    this.mensajeError = "la fecha de termino";
+                    this.errorDrop(this.mensajeError);
+                } else if (this.gestionTicket.horasEjecucion == 0) {
+                    this.mensajeError = "Las horas calculadas no pueden ser 0";
+                    this.errorDrop(this.mensajeError);
+                } else if (this.gestionTicket.diasEjecucion == 0) {
+                    this.mensajeError = "Los dias calculados no pueden ser 0";
+                    this.errorDrop(this.mensajeError);
+                } else {
+                    this.guardarFormulario();
+                }
+            }
         },
         guardarFormulario() {
             var hoy = new Date();
@@ -622,7 +740,7 @@ export default {
                 this.gestionTicket.idApoyo3 = this.seleccionApoyo3.id;
                 console.log(this.gestionTicket);
                 const ticket = this.gestionTicket;
-
+                this.openLoadingColor();
                 /*   this.gestionTicket = {
                 uuid: "",
                 idSolicitud: 0,
@@ -647,8 +765,18 @@ export default {
                     .post(this.localVal + "/api/Agente/PostTicket", ticket)
                     .then(res => {
                         const ticketServer = res.data;
+                        this.mensajeGuardado();
+                        setTimeout(() => {
+                            router.back();
+                        }, 5000);
                     });
             }
+        },
+        openLoadingColor() {
+            this.$vs.loading({ color: this.colorLoading });
+            setTimeout(() => {
+                this.$vs.loading.close();
+            }, 2000);
         },
         cargarUSE(
             datoidServicio,

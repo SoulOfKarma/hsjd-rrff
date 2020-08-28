@@ -2,31 +2,33 @@
     <vs-row>
         <div class="vx-col md:w-1/1 w-full mb-base">
             <vx-card :title="titulo" code-toggler>
-                <div class="vx-row mb-12">
+                <div class="vx-row mb-4">
                     <div class="vx-col w-full ">
-                        <vs-list>
-                            <vs-list-item
-                                :title="solicitudes.tituloP"
-                                :subtitle="solicitudes.descripcionP"
-                            ></vs-list-item>
-                        </vs-list>
+                        <vx-card
+                            :title="solicitudes.tituloP"
+                            title-color="success"
+                        >
+                            <p v-html="solicitudes.descripcionP">
+                                {{ solicitudes.descripcionP }}
+                            </p>
+                        </vx-card>
                     </div>
                 </div>
             </vx-card>
         </div>
         <div class="vx-col md:w-1/1 w-full mb-base">
-            <vx-card title="Actualizar Seguimiento" code-toggler>
+            <vx-card title="2. Actualizar Seguimiento" code-toggler>
                 <div class="vx-row mb-12">
                     <div class="vx-col w-full mt-5">
-                        <vs-textarea
-                            label="Actualizar seguimiento"
+                        <quill-editor
                             v-model="seguimientos.descripcionSeguimiento"
-                        />
+                            :options="editorOption"
+                        >
+                            <div id="toolbar" slot="toolbar"></div>
+                        </quill-editor>
+                        <br />
                         <vs-button type="gradient" @click="guardarSeguimiento"
                             >Actualizar</vs-button
-                        >
-                        <vs-button type="gradient" @click="probando"
-                            >Probando</vs-button
                         >
                         <br />
                     </div>
@@ -34,17 +36,18 @@
             </vx-card>
         </div>
         <div class="vx-col md:w-1/1 w-full mb-base">
-            <vx-card title="Respuestas Seguimiento" code-toggler>
+            <vx-card title="3. Respuestas Seguimiento" code-toggler>
                 <div class="vx-row">
                     <div class="vx-col sm:w-full w-full">
                         <vs-list
                             :key="indextr"
                             v-for="(tr, indextr) in seguimiento"
                         >
-                            <vs-list-item
-                                :title="tr.nombre"
-                                :subtitle="tr.descripcionSeguimiento"
-                            ></vs-list-item>
+                            <vx-card :title="tr.nombre" title-color="primary">
+                                <p v-html="tr.descripcionSeguimiento">
+                                    {{ tr.descripcionSeguimiento }}
+                                </p>
+                            </vx-card>
                         </vs-list>
                     </div>
                 </div>
@@ -56,9 +59,34 @@
 <script>
 import axios from "axios";
 import router from "../router";
+import "quill/dist/quill.core.css";
+import "quill/dist/quill.snow.css";
+import "quill/dist/quill.bubble.css";
+import { quillEditor } from "vue-quill-editor";
 
 export default {
+    components: {
+        quillEditor
+    },
     data: () => ({
+        types: ["default"],
+        activeLoading: false,
+        colorLoading: "#ff8000",
+        editorOption: {
+            modules: {
+                toolbar: [
+                    ["bold", "italic", "underline", "strike"],
+                    ["blockquote", "code-block"],
+                    [{ header: 1 }, { header: 2 }],
+                    [{ list: "ordered" }, { list: "bullet" }],
+                    [{ indent: "-1" }, { indent: "+1" }],
+                    [{ direction: "rtl" }],
+                    [{ font: [] }],
+                    [{ align: [] }],
+                    ["clean"]
+                ]
+            }
+        },
         solicitudes: [],
         seguimiento: [],
         localVal: "http://127.0.0.1:8000",
@@ -72,13 +100,20 @@ export default {
         }
     }),
     methods: {
+        openLoadingColor() {
+            this.$vs.loading({ color: this.colorLoading });
+            setTimeout(() => {
+                this.$vs.loading.close();
+            }, 2000);
+        },
         cargaSolicitudEspecifica() {
             let id = this.$route.params.id;
             axios
                 .get(this.localVal + `/api/Usuario/TraerSolicitud/${id}`)
                 .then(res => {
                     this.solicitudes = res.data;
-                    this.titulo = "Seguimiento Ticket N°" + this.solicitudes.id;
+                    this.titulo =
+                        "1. Seguimiento Ticket N°" + this.solicitudes.id;
                 });
         },
         cargaSeguimiento() {
@@ -89,8 +124,15 @@ export default {
                     this.seguimiento = res.data;
                 });
         },
-        probando() {
-            console.log(this.seguimientos);
+        mensajeGuardado() {
+            this.$vs.notify({
+                time: 4000,
+                title: "Nuevo Comentario",
+                text:
+                    "A sido guardado correctamente, se actualizara el listado",
+                color: "success",
+                position: "top-right"
+            });
         },
         guardarSeguimiento() {
             let uuid = this.$route.params.uuid;
@@ -116,6 +158,7 @@ export default {
                 /* var iduser = localStorage.getItem("id");
         this.seguimientos.id_user = iduser; */
                 const seguimientoNuevo = this.seguimientos;
+                this.openLoadingColor();
                 this.seguimientos = {
                     descripcionSeguimiento: "",
                     id_solicitud: this.$route.params.id,
@@ -130,6 +173,7 @@ export default {
                         seguimientoNuevo
                     )
                     .then(res => {
+                        this.mensajeGuardado();
                         const seguimientoServer = res.data;
                         this.cargaSeguimiento();
                     });
@@ -142,3 +186,35 @@ export default {
     }
 };
 </script>
+<style lang="scss">
+.fill-row-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    .loading-example {
+        width: 120px;
+        float: left;
+        height: 120px;
+        box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.05);
+        border-radius: 10px;
+        margin: 8px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        &:hover {
+            box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.05);
+            transform: translate(0, 4px);
+        }
+        h4 {
+            z-index: 40000;
+            position: relative;
+            text-align: center;
+            padding: 10px;
+        }
+        &.activeLoading {
+            opacity: 0 !important;
+            transform: scale(0.5);
+        }
+    }
+}
+</style>

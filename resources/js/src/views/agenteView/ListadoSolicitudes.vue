@@ -30,9 +30,11 @@
                             data[indextr].tituloP
                         }}</vs-td>
 
-                        <vs-td :data="data[indextr].descripcionP">{{
-                            data[indextr].descripcionP
-                        }}</vs-td>
+                        <vs-td
+                            :data="data[indextr].descripcionP"
+                            v-html="data[indextr].descripcionP"
+                            >{{ data[indextr].descripcionP }}</vs-td
+                        >
                         <vs-td :data="data[indextr].descripcionP">{{
                             data[indextr].descripcionEstado
                         }}</vs-td>
@@ -193,8 +195,7 @@ export default {
                             text:
                                 "Si necesita modificarlo vaya a Modificar Ticket ",
                             color: "danger",
-                            position: "top-right",
-                            fixed: true
+                            position: "top-right"
                         });
                     } else {
                         this.$router.push({
@@ -220,8 +221,7 @@ export default {
                             text:
                                 "Ticket necesita ya estar asignado primero para modificarlo ",
                             color: "danger",
-                            position: "top-right",
-                            fixed: true
+                            position: "top-right"
                         });
                     } else {
                         this.$router.push({
@@ -248,8 +248,7 @@ export default {
                                 title: "Ticket Eliminado ",
                                 text: "Se recargara el listado ",
                                 color: "danger",
-                                position: "top-right",
-                                fixed: true
+                                position: "top-right"
                             });
                             this.cargarSolicitudes();
                         }

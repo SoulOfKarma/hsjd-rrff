@@ -29,9 +29,11 @@
                             data[indextr].tituloP
                         }}</vs-td>
 
-                        <vs-td :data="data[indextr].descripcionP">{{
-                            data[indextr].descripcionP
-                        }}</vs-td>
+                        <vs-td
+                            :data="data[indextr].descripcionP"
+                            v-html="data[indextr].descripcionP"
+                            >{{ data[indextr].descripcionP }}</vs-td
+                        >
                         <vs-td :data="data[indextr].descripcionP">{{
                             data[indextr].descripcionEstado
                         }}</vs-td>

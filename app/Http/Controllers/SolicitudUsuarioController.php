@@ -27,16 +27,22 @@ class SolicitudUsuarioController extends Controller
         return  $get_all;
     }
 
-    public function getSolicitudUsuariosJoin()
+    public function GetSolicitudCreada($id)
     {
+        $get_all = SolicitudTickets::find($id);
+        return  $get_all;
+    }
 
-        $ticket = SolicitudTickets::select('solicitud_tickets.*', 'users.nombre', 'estado_solicituds.descripcionEstado', DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket"))
+    public function getSolicitudUsuariosJoin($iduser)
+    {
+        $estadoEliminado = 7;
+
+        $ticket = SolicitudTickets::select('solicitud_tickets.*', 'users.nombre', 'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'), DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket"))
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
+            ->where('solicitud_tickets.id_user', $iduser)
+            ->where('solicitud_tickets.id_estado', '!=', $estadoEliminado)
             ->get();
-
-
-
         return  $ticket;
     }
 
@@ -55,6 +61,22 @@ class SolicitudUsuarioController extends Controller
 
 
         return  $ticket;
+    }
+
+    public function ModificarSolicitud(Request $request)
+    {
+        $response2 = SolicitudTickets::where('uuid', $request->uuid)
+            ->where('id', $request->id)
+            ->update([
+                'id_edificio' => $request->id_edificio, 'id_servicio' => $request->id_servicio,
+                'id_ubicacionEx' => $request->id_ubicacionEx, 'id_tipoReparacion' => $request->id_tipoReparacion,
+                'id_estado' => $request->id_estado, 'descripcionP' => $request->descripcionP, 'tituloP' => $request->tituloP
+            ]);
+
+        $response = SeguimientoSolicitudes::create($request->all());
+
+
+        return $response2;
     }
 
     public function indexSeguimiento($uuid)
@@ -157,6 +179,11 @@ class SolicitudUsuarioController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $estadoEliminado = 7;
+        $ticket = SolicitudTickets::find($id);
+        $ticket->id_estado = $estadoEliminado;
+        $ticket->save();
+
+        return true;
     }
 }

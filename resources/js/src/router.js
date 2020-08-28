@@ -57,7 +57,7 @@ const router = new Router({
                 },
                 {
                     path: '/HomeTrabajador',
-                    name: 'Inicio',
+                    name: 'InicioTrabajador',
                     component: () =>
                         import ('./views/trabajadorView/homeTrabajador.vue')
                 },

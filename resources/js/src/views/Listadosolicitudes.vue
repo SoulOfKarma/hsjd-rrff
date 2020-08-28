@@ -1,6 +1,6 @@
 <template>
     <div>
-        <vx-card title="Listado de Tickets" code-toggler>
+        <vx-card title="1. Listado de Tickets" code-toggler>
             <vs-alert active="true" color="success">
                 Listado de tickets creados por: {{ nombre }} - {{ run }}
             </vs-alert>
@@ -29,44 +29,82 @@
                             data[indextr].tituloP
                         }}</vs-td>
 
-                        <vs-td :data="data[indextr].descripcionP">{{
-                            data[indextr].descripcionP
-                        }}</vs-td>
+                        <vs-td
+                            :data="data[indextr].descripcionP"
+                            v-html="data[indextr].descripcionP"
+                            >{{ data[indextr].descripcionP }}</vs-td
+                        >
                         <vs-td :data="data[indextr].descripcionP">{{
                             data[indextr].descripcionEstado
                         }}</vs-td>
                         <vs-td :data="data[indextr].id">
-                            <info-icon
-                                size="1.5x"
-                                class="custom-class"
-                                @click="
-                                    detalleSolicitud(
-                                        data[indextr].id,
-                                        data[indextr].uuid
-                                    )
-                                "
-                            ></info-icon>
-                            <upload-icon
-                                size="1.5x"
-                                class="custom-class"
-                                @click="
-                                    modificarSolicitud(
-                                        data[indextr].id,
-                                        data[indextr].uuid
-                                    )
-                                "
-                            ></upload-icon>
+                            <div v-if="data[indextr].Horas < 1">
+                                <info-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        detalleSolicitud(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                ></info-icon>
+                                <upload-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        modificarSolicitud(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                ></upload-icon>
 
-                            <trash-2-icon
-                                size="1.5x"
-                                class="custom-class"
-                                @click="
-                                    abrirPop(
-                                        data[indextr].id,
-                                        data[indextr].uuid
-                                    )
-                                "
-                            ></trash-2-icon>
+                                <trash-2-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        abrirPop(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                ></trash-2-icon>
+                            </div>
+                            <div v-else-if="data[indextr].Horas < 8">
+                                <info-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        detalleSolicitud(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                ></info-icon>
+                                <upload-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        modificarSolicitud(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                ></upload-icon>
+                            </div>
+                            <div v-else>
+                                <info-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        detalleSolicitud(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                ></info-icon>
+                            </div>
                         </vs-td>
                     </vs-tr>
                 </template>
@@ -117,9 +155,6 @@
                 </div>
             </div>
         </vs-popup>
-        <vs-button color="success" type="filled" @click="probar"
-            >Success</vs-button
-        >
     </div>
 </template>
 
@@ -155,8 +190,12 @@ export default {
     },
     methods: {
         cargarSolicitudes() {
+            var iduser = localStorage.getItem("id");
             axios
-                .get(this.localVal + "/api/Usuario/GetSolicitudUsuarios")
+                .get(
+                    this.localVal +
+                        `/api/Usuario/GetSolicitudUsuarios/${iduser}`
+                )
                 .then(res => {
                     this.solicitudes = res.data;
                 });
@@ -179,20 +218,9 @@ export default {
         modificarSolicitud(id, uuid) {
             //router.push(`/agenteView/FormularioModificar/${id}`);
             axios
-                .get(
-                    this.localVal + `/api/Agente/ValidarTicketAsignadoMod/${id}`
-                )
+                .get(this.localVal + `/api/Usuario/GetSolicitudCreada/${id}`)
                 .then(res => {
                     if (res.data) {
-                        this.$vs.notify({
-                            title: "Ticket no ha sido asignado ",
-                            text:
-                                "Ticket necesita ya estar asignado primero para modificarlo ",
-                            color: "danger",
-                            position: "top-right",
-                            fixed: true
-                        });
-                    } else {
                         this.$router.push({
                             name: "ModificarTicketUsuario",
                             params: {
@@ -204,21 +232,19 @@ export default {
                 });
         },
         eliminarSolicitud(id, uuid, eliminar) {
-            console.log("llega?");
-            console.log(eliminar);
             if (eliminar) {
                 axios
-                    .get(this.localVal + `/api/Agente/destroyTicket/${id}`)
+                    .get(this.localVal + `/api/Usuario/destroyTicket/${id}`)
                     .then(res => {
                         var eliminado = res.data;
                         this.popupActive2 = false;
                         if (eliminado) {
                             this.$vs.notify({
                                 title: "Ticket Eliminado ",
+                                time: 4000,
                                 text: "Se recargara el listado ",
                                 color: "danger",
-                                position: "top-right",
-                                fixed: true
+                                position: "top-right"
                             });
                             this.cargarSolicitudes();
                         }
