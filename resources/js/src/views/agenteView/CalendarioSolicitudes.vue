@@ -36,6 +36,18 @@
                     </div>
                 </vx-card>
             </div>
+            <vs-popup
+                class="holamundo"
+                title="Lorem ipsum dolor sit amet"
+                :active.sync="popupActive"
+            >
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                    sed do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                </p>
+            </vs-popup>
         </vs-row>
     </div>
 </template>
@@ -43,10 +55,12 @@
 <script>
 import GSTC from "vue-gantt-schedule-timeline-calendar";
 import axios from "axios";
+import router from "@/router";
 import moment from "moment";
 import CalendarScroll from "gantt-schedule-timeline-calendar/dist/CalendarScroll.plugin.js";
 import Selection from "gantt-schedule-timeline-calendar/dist/Selection.plugin.js";
 import vSelect from "vue-select";
+import ItemHold from "gantt-schedule-timeline-calendar/dist/ItemHold.plugin.js";
 
 let subs = [];
 
@@ -60,8 +74,10 @@ export default {
         return {
             value1: 50,
             valc: false,
+            popupActive: false,
             listadoTrabajadores: [],
             listadoHoraFecha: [],
+            listadoTickets: [],
             localVal: "http://127.0.0.1:8000",
             horaSeleccionada: {
                 id: 3,
@@ -96,11 +112,11 @@ export default {
                 }
             ],
             config: {
-                height: 400,
+                height: 423,
                 plugins: [
                     Selection({
-                        items: false,
-                        rows: false,
+                        items: true,
+                        rows: true,
                         grid: true, // select only grid cells
                         rectStyle: { opacity: "0.0" }, // hide selecting rectangle
                         // if there is an item in the current selected cell - do not select that cell
@@ -109,6 +125,7 @@ export default {
                                 // check if there is any item that lives inside current cell
                                 return currentlySelecting.filter(selected => {
                                     if (!selected.row.canSelect) return false;
+
                                     for (const item of selected.row._internal
                                         .items) {
                                         if (
@@ -148,13 +165,20 @@ export default {
                             return [];
                         },
                         selecting(data, type) {
-                            //console.log(`selecting ${type}`, data);
+                            console.log(`selecting ${type}`, data);
                         },
                         deselecting(data, type) {
                             //console.log(`deselecting ${type}`, data);
                         },
                         selected(data, type) {
-                            //console.log(`selected ${type}`, data);
+                            console.log(`selected ${type}`, data);
+                            this.$vs.notify({
+                                title: "Ticket ya asignado ",
+                                text:
+                                    "Si necesita modificarlo vaya a Modificar Ticket ",
+                                color: "danger",
+                                position: "top-right"
+                            });
                         },
                         deselected(data, type) {
                             //console.log(`deselected ${type}`, data);
@@ -189,19 +213,12 @@ export default {
                     ]
                 },
                 list: {
-                    rows: {
-                        id: {
-                            id: "",
-                            label: ""
-                        }
-                    },
-                    rowHeight: 40,
+                    rows: {},
+
                     columns: {
                         percent: 100,
                         resizer: {
-                            width: 10,
-                            inRealTime: true,
-                            dots: 6
+                            inRealTime: true
                         },
                         minWidth: 50,
                         data: {
@@ -215,8 +232,10 @@ export default {
                             },
                             label: {
                                 id: "label",
-                                data: "tra_nombre_apellido",
-                                width: 200,
+                                data: "label",
+                                width: 230,
+                                expander: true,
+                                isHTML: false,
                                 header: {
                                     content: "Trabajador"
                                 }
@@ -493,15 +512,31 @@ export default {
                     },
                     items: {},
                     spacing: 1
-                }
+                },
+                actions: {}
             }
         };
     },
     methods: {
+        clickAction(vido, props) {
+            const { html, update } = vido;
+
+            let name = "John";
+            const onClickHandler = event => {
+                name = "Jack";
+                update();
+            };
+
+            return () =>
+                html`
+                    <div class="clickAction" @click=${onClickHanlder}>
+                        Hello ${name}
+                    </div>
+                `;
+        },
         onState(state) {
             this.state = state;
             let GSTCState = GSTC;
-            console.log(GSTCState);
         },
         cambioCalendario(tipoHora) {
             console.log(tipoHora);
@@ -512,17 +547,62 @@ export default {
                 .get(this.localVal + "/api/Agente/GetTrabajadoresEX")
                 .then(res => {
                     this.listadoTrabajadores = res.data;
-
                     let c = this.listadoTrabajadores;
 
                     let arregloTra = [];
                     var va = {};
                     arregloTra.push(va);
                     c.forEach((value, index) => {
-                        arregloTra.push(value);
+                        let objeto = {
+                            id: 0,
+                            label: "",
+                            expanded: true
+                        };
+
+                        objeto.id = value.id;
+                        objeto.label = value.tra_nombre_apellido;
+                        arregloTra.push(objeto);
                     });
 
                     this.config.list.rows = arregloTra;
+                    // this.cargaListadoTickets(this.listadoTrabajadores);
+                });
+        },
+        cargaListadoTickets() {
+            axios
+                .get(this.localVal + "/api/Agente/GetTicketAsignados")
+                .then(res => {
+                    this.listadoTickets = res.data;
+                    let listadoRow = this.config.list.rows;
+                    let c = this.listadoTickets;
+                    let contador = listadoRow.length;
+                    let objeto = {
+                        id: 0,
+                        label: "",
+                        parentId: 0,
+                        expanded: false,
+                        id_solicitud: 0
+                    };
+                    listadoRow.push(objeto);
+
+                    c.forEach((value, index) => {
+                        objeto = {
+                            id: 0,
+                            label: "",
+                            parentId: 0,
+                            expanded: false,
+                            id_solicitud: 0
+                        };
+                        contador = contador + 1;
+                        objeto.id = contador;
+
+                        objeto.label = value.tra_nombre_apellido;
+                        objeto.parentId = value.id_trabajador;
+                        objeto.id_solicitud = value.id_solicitud;
+                        listadoRow.push(objeto);
+                    });
+
+                    this.config.list.rows = listadoRow;
                 });
         },
         cargarHoraFechaCalendario() {
@@ -532,6 +612,8 @@ export default {
                     this.listadoHoraFecha = res.data;
 
                     let c = this.listadoHoraFecha;
+                    let listadoRow = this.config.list.rows;
+
                     var f = {
                         id: "",
                         rowId: "",
@@ -554,55 +636,168 @@ export default {
                     let a = 0;
                     b.push(f);
                     c.forEach((value, index) => {
-                        f = {
-                            id: "",
-                            rowId: "",
-                            label: "",
-                            time: {
-                                start: new Date().getTime(),
-                                end: new Date().getTime() + 24 * 60 * 60 * 1000
-                            },
-                            style: {
-                                background:
-                                    "#" +
-                                    ((Math.random() * 0xffffff) << 0).toString(
-                                        16
-                                    )
+                        listadoRow.forEach((element, indexv2) => {
+                            if (
+                                element.parentId == value.id_trabajador &&
+                                element.id_solicitud == value.id
+                            ) {
+                                f = {
+                                    id: "",
+                                    rowId: "",
+                                    label: "",
+
+                                    time: {
+                                        start: new Date().getTime(),
+                                        end:
+                                            new Date().getTime() +
+                                            24 * 60 * 60 * 1000
+                                    },
+                                    style: {
+                                        background:
+                                            "#" +
+                                            (
+                                                (Math.random() * 0xffffff) <<
+                                                0
+                                            ).toString(16)
+                                    }
+                                };
+                                fecha = {
+                                    start: moment(),
+                                    end: moment()
+                                };
+
+                                f.id = value.id;
+                                f.rowId = element.id;
+                                f.label = value.tra_nombre_apellido;
+
+                                fecha.start = new Date(
+                                    value.fechaInicio + " " + value.horaInicio
+                                ).getTime();
+                                fecha.end =
+                                    new Date(
+                                        value.fechaTermino +
+                                            " " +
+                                            value.horaTermino
+                                    ).getTime() +
+                                    24 * 60 * 60 * 1000;
+
+                                f.time = fecha;
+
+                                b.push(f);
                             }
-                        };
-                        fecha = {
-                            start: moment(),
-                            end: moment()
-                        };
-
-                        f.id = value.id;
-                        f.rowId = value.id_trabajador;
-                        f.label = value.tra_nombre_apellido;
-                        fecha.start = new Date(
-                            value.fechaInicio + " " + value.horaInicio
-                        ).getTime();
-                        fecha.end =
-                            new Date(
-                                value.fechaTermino + " " + value.horaTermino
-                            ).getTime() +
-                            24 * 60 * 60 * 1000;
-
-                        f.time = fecha;
-
-                        b.push(f);
+                        });
                     });
 
+                    let action = {
+                        "chart-timeline-items-row-item": [this.clickAction]
+                    };
+                    /* let plugins = [
+                        Selection({
+                            items: true,
+                            rows: true,
+                            grid: true, // select only grid cells
+                            rectStyle: { opacity: "0.0" }, // hide selecting rectangle
+                            // if there is an item in the current selected cell - do not select that cell
+                            canSelect(type, currentlySelecting) {
+                                if (type === "chart-timeline-grid-row-block") {
+                                    // check if there is any item that lives inside current cell
+                                    return currentlySelecting.filter(
+                                        selected => {
+                                            if (!selected.row.canSelect)
+                                                return false;
+
+                                            for (const item of selected.row
+                                                ._internal.items) {
+                                                if (
+                                                    (item.time.start >=
+                                                        selected.time
+                                                            .leftGlobal &&
+                                                        item.time.start <=
+                                                            selected.time
+                                                                .rightGlobal) ||
+                                                    (item.time.end >=
+                                                        selected.time
+                                                            .leftGlobal &&
+                                                        item.time.end <=
+                                                            selected.time
+                                                                .rightGlobal) ||
+                                                    (item.time.start <=
+                                                        selected.time
+                                                            .leftGlobal &&
+                                                        item.time.end >=
+                                                            selected.time
+                                                                .rightGlobal)
+                                                ) {
+                                                    return false;
+                                                }
+                                            }
+                                            return true;
+                                        }
+                                    );
+                                }
+                                return currentlySelecting;
+                            },
+                            canDeselect(type, currently, all) {
+                                if (type === "chart-timeline-grid-row-blocks") {
+                                    // if we are selecting we can clear previous selection by returning [] else if
+                                    // we are not selecting but something is already selected let it be selected - currently
+                                    return all.selecting[
+                                        "chart-timeline-grid-row-blocks"
+                                    ].length
+                                        ? []
+                                        : currently;
+                                }
+                                return [];
+                            },
+                            selecting(data, type) {
+                                console.log(`selecting ${type}`, data);
+                            },
+                            deselecting(data, type) {
+                                //console.log(`deselecting ${type}`, data);
+                            },
+                            selected(data, type) {
+                                console.log(`selected ${type}`, data);
+                                this.$vs.notify({
+                                    title: "Ticket ya asignado ",
+                                    text:
+                                        "Si necesita modificarlo vaya a Modificar Ticket ",
+                                    color: "danger",
+                                    position: "top-right"
+                                });
+                            },
+                            deselected(data, type) {
+                                //console.log(`deselected ${type}`, data);
+                            }
+                        }),
+                        ItemHold({
+                            time: 1000,
+                            movementThreshold: 2,
+                            action(element, item) {
+                                this.popupActive = true;
+                                this.mensaje();
+                            }
+                        })
+                    ];
+
+                    this.config.plugins = plugins; */
+                    this.config.actions = action;
+
                     this.config.chart.items = b;
-                    console.log(this.config);
+
                     this.valc = true;
                 });
         }
     },
     created() {
         this.cargarTrabajadores();
-        this.cargarHoraFechaCalendario();
+
+        this.cargaListadoTickets();
     },
-    beforeMount() {},
+    beforeMount() {
+        setTimeout(() => {
+            this.cargarHoraFechaCalendario();
+        }, 2000);
+    },
     mounted() {
         setTimeout(() => {}, 2000);
     },

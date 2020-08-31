@@ -58,6 +58,8 @@ Route::get('/Usuario/destroyTicket/{id}', ['middleware' => 'cors', 'uses' => 'So
 //Gestion Agentes
 //Traer supervisores
 Route::get('/Agente/GetSupervisores', ['middleware' => 'cors', 'uses' => 'SupervisorController@index']);
+//Traer Todos los tickets asignados
+Route::get('/Agente/GetTicketAsignados', ['middleware' => 'cors', 'uses' => 'GestionTicketController@index']);
 //Traer Trabajadores
 Route::get('/Agente/GetTrabajadores', ['middleware' => 'cors', 'uses' => 'TrabajadorController@index']);
 //Traer Estado

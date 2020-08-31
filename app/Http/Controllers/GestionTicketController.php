@@ -23,7 +23,10 @@ class GestionTicketController extends Controller
      */
     public function index()
     {
-        //
+        $users = GestionSolicitudes::select('gestion_solicitudes.id', 'gestion_solicitudes.id_trabajador', 'trabajadores.tra_nombre_apellido', 'gestion_solicitudes.id_solicitud')
+            ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
+            ->get();
+        return $users;
     }
 
     public function getTicketCreado($id)
@@ -193,8 +196,12 @@ class GestionTicketController extends Controller
      */
     public function destroy($id)
     {
-        GestionSolicitudes::where('id_solicitud', $id)->delete();
-        SolicitudTickets::where('id', $id)->delete();
+        /* GestionSolicitudes::where('id_solicitud', $id)->delete();
+        SolicitudTickets::where('id', $id)->delete(); */
+        $estadoEliminado = 7;
+        $ticket = SolicitudTickets::find($id);
+        $ticket->id_estado = $estadoEliminado;
+        $ticket->save();
 
         return true;
     }

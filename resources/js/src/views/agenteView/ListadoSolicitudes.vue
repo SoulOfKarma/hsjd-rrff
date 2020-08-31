@@ -235,8 +235,6 @@ export default {
                 });
         },
         eliminarSolicitud(id, uuid, eliminar) {
-            console.log("llega?");
-            console.log(eliminar);
             if (eliminar) {
                 axios
                     .get(this.localVal + `/api/Agente/destroyTicket/${id}`)
