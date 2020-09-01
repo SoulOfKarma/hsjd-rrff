@@ -23,9 +23,17 @@
                         <quill-editor
                             v-model="seguimientos.descripcionSeguimiento"
                             :options="editorOption"
+                            name="Descripcion"
+                            v-validate="'required|max:50|min:15'"
                         >
                             <div id="toolbar" slot="toolbar"></div>
                         </quill-editor>
+
+                        <span
+                            class="text-danger text-sm"
+                            v-show="errors.has('Descripcion')"
+                            >{{ errors.first("Descripcion") }}</span
+                        >
                         <br />
                         <vs-button type="gradient" @click="guardarSeguimiento"
                             >Actualizar</vs-button

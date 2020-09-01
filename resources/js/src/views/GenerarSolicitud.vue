@@ -73,7 +73,7 @@
             </div>
             <!-- Informacion del problema -->
             <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="2. Informacion del problema" code-toggler>
+                <vx-card title="2. Informacion del problema">
                     <div class="vx-row mb-12">
                         <div class="vx-col w-full mt-5">
                             <h6>2.1 - Tipo de Reparacion</h6>
@@ -92,16 +92,31 @@
                                 placeholder="Ej. Falla de red en equipo x"
                                 v-model="solicitud.tituloP"
                                 class="w-full"
+                                name="Titulo"
+                                v-validate="'required|max:50|min:10'"
                             />
+                            <span
+                                class="text-danger text-sm"
+                                v-show="errors.has('Titulo')"
+                                >{{ errors.first("Titulo") }}</span
+                            >
                             <br />
                             <h6>2.3 - Descripcion del Problema</h6>
                             <br />
                             <quill-editor
                                 v-model="solicitud.descripcionP"
                                 :options="editorOption"
+                                name="Descripcion"
+                                v-validate="'required|max:50|min:15'"
                             >
                                 <div id="toolbar" slot="toolbar"></div>
                             </quill-editor>
+                            <br />
+                            <span
+                                class="text-danger text-sm"
+                                v-show="errors.has('Descripcion')"
+                                >{{ errors.first("Descripcion") }}</span
+                            >
                         </div>
                     </div>
                 </vx-card>
@@ -136,6 +151,7 @@ import vSelect from "vue-select";
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
+import { Validator } from "vee-validate";
 import router from "@/router";
 
 import { quillEditor } from "vue-quill-editor";

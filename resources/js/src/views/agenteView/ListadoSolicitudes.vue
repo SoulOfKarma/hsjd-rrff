@@ -1,6 +1,6 @@
 <template>
     <div>
-        <vx-card title="1. Listado de Tickets" code-toggler>
+        <vx-card title="1. Listado de Tickets">
             <vs-alert active="true" color="success">
                 Agente:
                 {{ nombre }} - {{ run }}
@@ -39,47 +39,61 @@
                             data[indextr].descripcionEstado
                         }}</vs-td>
                         <vs-td :data="data[indextr].id">
-                            <info-icon
-                                size="1.5x"
-                                class="custom-class"
-                                @click="
-                                    detalleSolicitud(
-                                        data[indextr].id,
-                                        data[indextr].uuid
-                                    )
-                                "
-                            ></info-icon>
-                            <plus-circle-icon
-                                size="1.5x"
-                                class="custom-class"
-                                @click="
-                                    asignarSolicitud(
-                                        data[indextr].id,
-                                        data[indextr].uuid
-                                    )
-                                "
-                            ></plus-circle-icon>
-                            <upload-icon
-                                size="1.5x"
-                                class="custom-class"
-                                @click="
-                                    modificarSolicitud(
-                                        data[indextr].id,
-                                        data[indextr].uuid
-                                    )
-                                "
-                            ></upload-icon>
+                            <div v-if="data[indextr].id_estado == 7">
+                                <info-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        detalleSolicitudEliminados(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                ></info-icon>
+                            </div>
+                            <div v-else>
+                                <info-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        detalleSolicitud(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                ></info-icon>
+                                <plus-circle-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        asignarSolicitud(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                ></plus-circle-icon>
+                                <upload-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        modificarSolicitud(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                ></upload-icon>
 
-                            <trash-2-icon
-                                size="1.5x"
-                                class="custom-class"
-                                @click="
-                                    abrirPop(
-                                        data[indextr].id,
-                                        data[indextr].uuid
-                                    )
-                                "
-                            ></trash-2-icon>
+                                <trash-2-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        abrirPop(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                ></trash-2-icon>
+                            </div>
                         </vs-td>
                     </vs-tr>
                 </template>
@@ -150,6 +164,7 @@ export default {
     },
     data() {
         return {
+            colorLoading: "#ff8000",
             value1: "",
             value2: "",
             validaEliminar: false,
@@ -161,6 +176,12 @@ export default {
         };
     },
     methods: {
+        openLoadingColor() {
+            this.$vs.loading({ color: this.colorLoading });
+            setTimeout(() => {
+                this.$vs.loading.close();
+            }, 1000);
+        },
         abrirPop(id, uuid) {
             this.validaEliminar = true;
             this.value1 = id;
@@ -178,6 +199,15 @@ export default {
         detalleSolicitud(id, uuid) {
             this.$router.push({
                 name: "InformacionSolicitudAgente",
+                params: {
+                    id: `${id}`,
+                    uuid: `${uuid}`
+                }
+            });
+        },
+        detalleSolicitudEliminados(id, uuid) {
+            this.$router.push({
+                name: "InformacionSolicitudEliminados",
                 params: {
                     id: `${id}`,
                     uuid: `${uuid}`
@@ -245,6 +275,7 @@ export default {
                             this.$vs.notify({
                                 title: "Ticket Eliminado ",
                                 text: "Se recargara el listado ",
+                                time: 3000,
                                 color: "danger",
                                 position: "top-right"
                             });
@@ -256,6 +287,7 @@ export default {
     },
     beforeMount() {
         this.cargarSolicitudes();
+        this.openLoadingColor();
     }
 };
 </script>

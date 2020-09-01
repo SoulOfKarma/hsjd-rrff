@@ -66,7 +66,7 @@ class GestionTicketController extends Controller
 
     public function GetDatoCalendario()
     {
-        $users = SolicitudTickets::select('solicitud_tickets.id', 'solicitud_tickets.uuid', 'solicitud_tickets.created_at', 'gestion_solicitudes.id_trabajador', 'trabajadores.tra_nombre_apellido', 'gestion_solicitudes.horaInicio', 'gestion_solicitudes.fechaInicio', 'gestion_solicitudes.horaTermino', 'gestion_solicitudes.fechaTermino')
+        $users = SolicitudTickets::select('solicitud_tickets.id', 'solicitud_tickets.uuid', 'solicitud_tickets.descripcionP', 'solicitud_tickets.tituloP', 'solicitud_tickets.created_at', 'gestion_solicitudes.id_trabajador', 'trabajadores.tra_nombre_apellido', 'gestion_solicitudes.horaInicio', 'gestion_solicitudes.fechaInicio', 'gestion_solicitudes.horaTermino', 'gestion_solicitudes.fechaTermino')
             ->join('gestion_solicitudes', 'solicitud_tickets.id', '=', 'gestion_solicitudes.id_solicitud')
             ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
             ->get();
@@ -94,8 +94,6 @@ class GestionTicketController extends Controller
     public function store(Request $request)
     {
         //Insertando Ticket
-
-
         $response2 = SolicitudTickets::where('id', $request->id_solicitud)
             ->update(['id_edificio' => $request->id_edificio, 'id_servicio' => $request->id_servicio, 'id_ubicacionEx' => $request->id_ubicacionEx, 'id_tipoReparacion' => $request->id_tipoReparacion, 'id_estado' => $request->id_estado]);
 
@@ -105,8 +103,6 @@ class GestionTicketController extends Controller
 
     public function getSolicitudUsuariosJoin()
     {
-
-
         $ticket = SolicitudTickets::select('solicitud_tickets.*', 'users.nombre', 'estado_solicituds.descripcionEstado', DB::raw('TIMESTAMPDIFF(HOUR,solicitud_tickets.created_at,NOW()) AS Horas'), DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket"))
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')

@@ -125,6 +125,12 @@ const router = new Router({
                         import ('./views/agenteView/InformacionSolicitud.vue')
                 },
                 {
+                    path: '/agenteView/InformacionSolicitudEliminados',
+                    name: 'InformacionSolicitudEliminados',
+                    component: () =>
+                        import ('./views/agenteView/InformacionSolicitudEliminados.vue')
+                },
+                {
                     path: '/agenteView/FormularioAsignar/:id,:uuid',
                     name: 'AsignarSolicitudAgente',
                     component: () =>

@@ -71,31 +71,7 @@
                     </div>
                 </vx-card>
             </div>
-            <!-- Actualizar Seguimiento -->
-            <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="2. Actualizar Seguimiento" code-toggler>
-                    <div class="vx-row mb-12">
-                        <div class="vx-col w-full mt-5">
-                            <h6>2.1 - Descripcion del problema</h6>
-                            <br />
-                            <quill-editor
-                                v-model="seguimientos.descripcionSeguimiento"
-                                :options="editorOption"
-                            >
-                                <div id="toolbar" slot="toolbar"></div>
-                            </quill-editor>
-                            <br />
-                            <vs-button
-                                type="gradient"
-                                @click="guardarSeguimiento"
-                                >Actualizar</vs-button
-                            >
 
-                            <br />
-                        </div>
-                    </div>
-                </vx-card>
-            </div>
             <!-- Lista Seguimiento -->
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <vx-card title="Respuestas Seguimiento" code-toggler>
@@ -110,7 +86,6 @@
                                 <vs-list-item
                                     :title="tr.nombre"
                                     :subtitle="tr.descripcionSeguimiento"
-                                    v-html="tr.descripcionSeguimiento"
                                 ></vs-list-item>
                             </vs-list>
                         </div>
@@ -129,9 +104,6 @@ import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import { quillEditor } from "vue-quill-editor";
 export default {
-    components: {
-        quillEditor
-    },
     data: () => ({
         editorOption: {
             modules: {

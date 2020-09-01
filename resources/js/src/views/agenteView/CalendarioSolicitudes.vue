@@ -2,10 +2,7 @@
     <div id="app">
         <vs-row>
             <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card
-                    title="1. Calendario de tickets Asignados"
-                    code-toggler
-                >
+                <vx-card title="1. Calendario de tickets Asignados">
                     <div class="vx-row mb-12">
                         <div class="vx-col w-full mt-5">
                             <div v-if="valc">
@@ -30,7 +27,11 @@
                                     ></div>
                                 </div>
 
-                                <GSTC :config="config" @state="onState" />
+                                <GSTC
+                                    :config="config"
+                                    @state="onState"
+                                    :v-text="config.chart.items.label"
+                                />
                             </div>
                         </div>
                     </div>
@@ -38,15 +39,17 @@
             </div>
             <vs-popup
                 class="holamundo"
-                title="Lorem ipsum dolor sit amet"
+                :title="infoGeneral.titulo"
                 :active.sync="popupActive"
+                v-model="infoGeneral"
             >
+                <p>N°Ticket: {{ infoGeneral.nticket }}</p>
+                <p>Fecha Creacion Ticket: {{ infoGeneral.fechaCreacion }}</p>
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                    sed do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Fecha Asignacion Ticket: {{ infoGeneral.fechaAsignacion }}
                 </p>
+                <p>Titulo Problema: {{ infoGeneral.titulo }}</p>
+                <p>Descripcion: {{ infoGeneral.descripcion }}</p>
             </vs-popup>
         </vs-row>
     </div>
@@ -61,6 +64,7 @@ import CalendarScroll from "gantt-schedule-timeline-calendar/dist/CalendarScroll
 import Selection from "gantt-schedule-timeline-calendar/dist/Selection.plugin.js";
 import vSelect from "vue-select";
 import ItemHold from "gantt-schedule-timeline-calendar/dist/ItemHold.plugin.js";
+import { html, render } from "lit-html";
 
 let subs = [];
 
@@ -72,6 +76,15 @@ export default {
     },
     data() {
         return {
+            colorLoading: "#ff8000",
+            infoGeneral: {
+                titulo: "",
+                nticket: 0,
+                descripcion: "",
+                fechaAsignacion: "",
+                fechaCreacion: "",
+                titulo: ""
+            },
             value1: 50,
             valc: false,
             popupActive: false,
@@ -80,9 +93,9 @@ export default {
             listadoTickets: [],
             localVal: "http://127.0.0.1:8000",
             horaSeleccionada: {
-                id: 3,
-                hora: "month",
-                descripcionHora: "Meses"
+                id: 2,
+                hora: "day",
+                descripcionHora: "Dias"
             },
             horas: [
                 {
@@ -165,20 +178,13 @@ export default {
                             return [];
                         },
                         selecting(data, type) {
-                            console.log(`selecting ${type}`, data);
+                            //console.log(`selecting ${type}`, data);
                         },
                         deselecting(data, type) {
                             //console.log(`deselecting ${type}`, data);
                         },
                         selected(data, type) {
-                            console.log(`selected ${type}`, data);
-                            this.$vs.notify({
-                                title: "Ticket ya asignado ",
-                                text:
-                                    "Si necesita modificarlo vaya a Modificar Ticket ",
-                                color: "danger",
-                                position: "top-right"
-                            });
+                            //console.log(`selected ${type}`, data);
                         },
                         deselected(data, type) {
                             //console.log(`deselected ${type}`, data);
@@ -518,21 +524,23 @@ export default {
         };
     },
     methods: {
-        clickAction(vido, props) {
-            const { html, update } = vido;
-
-            let name = "John";
-            const onClickHandler = event => {
-                name = "Jack";
-                update();
+        mensaje(element, data) {
+            var dato = {
+                id: data.item.id,
+                label: data.item.label,
+                row: data.item.rowId,
+                fechaAsignacion: data.item.time.start,
+                fechaCreacion: data.item.fechaCreacion,
+                tituloProblema: data.item.titulo
             };
 
-            return () =>
-                html`
-                    <div class="clickAction" @click=${onClickHanlder}>
-                        Hello ${name}
-                    </div>
-                `;
+            element.addEventListener("click", this.mensaje2.bind(null, dato));
+        },
+        openLoadingColor() {
+            this.$vs.loading({ color: this.colorLoading });
+            setTimeout(() => {
+                this.$vs.loading.close();
+            }, 2000);
         },
         onState(state) {
             this.state = state;
@@ -618,6 +626,8 @@ export default {
                         id: "",
                         rowId: "",
                         label: "",
+                        titulo: "",
+                        fechaCreacion: moment(),
                         time: {
                             start: new Date().getTime(),
                             end: new Date().getTime() + 24 * 60 * 60 * 1000
@@ -645,6 +655,8 @@ export default {
                                     id: "",
                                     rowId: "",
                                     label: "",
+                                    titulo: "",
+                                    fechaCreacion: moment(),
 
                                     time: {
                                         start: new Date().getTime(),
@@ -668,8 +680,15 @@ export default {
 
                                 f.id = value.id;
                                 f.rowId = element.id;
-                                f.label = value.tra_nombre_apellido;
+                                f.titulo = value.tituloP;
+                                f.fechaCreacion = new Date(
+                                    value.created_at
+                                ).getTime();
 
+                                //f.label = value.descripcionP;
+                                var newElement = document.createElement("div");
+                                newElement.innerHTML = value.descripcionP;
+                                f.label = newElement.textContent;
                                 fecha.start = new Date(
                                     value.fechaInicio + " " + value.horaInicio
                                 ).getTime();
@@ -688,9 +707,6 @@ export default {
                         });
                     });
 
-                    let action = {
-                        "chart-timeline-items-row-item": [this.clickAction]
-                    };
                     /* let plugins = [
                         Selection({
                             items: true,
@@ -780,12 +796,27 @@ export default {
                     ];
 
                     this.config.plugins = plugins; */
-                    this.config.actions = action;
 
                     this.config.chart.items = b;
 
                     this.valc = true;
                 });
+        },
+
+        mensaje2(dato) {
+            this.infoGeneral.titulo = "Numero de ticket: " + dato.id;
+            this.infoGeneral.nticket = dato.id;
+            this.infoGeneral.descripcion = dato.label;
+
+            this.infoGeneral.fechaAsignacion = moment(
+                dato.fechaAsignacion
+            ).format("DD-MM-YYYY");
+            this.infoGeneral.fechaCreacion = moment(dato.fechaCreacion).format(
+                "DD-MM-YYYY"
+            );
+            this.infoGeneral.titulo = dato.tituloProblema;
+
+            this.popupActive = true;
         }
     },
     created() {
@@ -797,9 +828,16 @@ export default {
         setTimeout(() => {
             this.cargarHoraFechaCalendario();
         }, 2000);
+        this.openLoadingColor();
     },
     mounted() {
-        setTimeout(() => {}, 2000);
+        setTimeout(() => {
+            let action = {
+                "chart-timeline-items-row-item": [this.mensaje]
+            };
+
+            this.config.actions = action;
+        }, 2000);
     },
     beforeDestroy() {
         subs.forEach(unsub => unsub());

@@ -176,6 +176,7 @@ export default {
     },
     data() {
         return {
+            colorLoading: "#ff8000",
             fechaModificar: moment().format("DD/MM/YYYY HH:mm"),
             fechaEliminar: moment().format("DD/MM/YYYY HH:mm"),
             solicitudes: [],
@@ -189,6 +190,12 @@ export default {
         };
     },
     methods: {
+        openLoadingColor() {
+            this.$vs.loading({ color: this.colorLoading });
+            setTimeout(() => {
+                this.$vs.loading.close();
+            }, 1000);
+        },
         cargarSolicitudes() {
             var iduser = localStorage.getItem("id");
             axios
@@ -258,6 +265,7 @@ export default {
     },
     beforeMount() {
         this.cargarSolicitudes();
+        this.openLoadingColor();
     }
 };
 </script>

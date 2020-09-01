@@ -257,26 +257,7 @@
                                 v-model="gestionTicket.descripcionP"
                                 :options="editorOption"
                             >
-                                <div id="toolbar" slot="toolbar">
-                                    <!-- Add a bold button -->
-                                    <button class="ql-bold">Bold</button>
-                                    <button class="ql-italic">Italic</button>
-
-                                    <!-- Add font size dropdown -->
-                                    <select class="ql-size">
-                                        <option value="small"></option>
-                                        <!-- Note a missing, thus falsy value, is used to reset to default -->
-                                        <option selected></option>
-                                        <option value="large"></option>
-                                        <option value="huge"></option>
-                                    </select>
-
-                                    <select class="ql-font">
-                                        <option selected="selected"></option>
-                                        <option value="serif"></option>
-                                        <option value="monospace"></option>
-                                    </select>
-                                </div>
+                                <div id="toolbar" slot="toolbar"></div>
                             </quill-editor>
                         </div>
                     </div>
@@ -324,7 +305,17 @@ export default {
     data: () => ({
         editorOption: {
             modules: {
-                toolbar: "#toolbar"
+                toolbar: [
+                    ["bold", "italic", "underline", "strike"],
+                    ["blockquote", "code-block"],
+                    [{ header: 1 }, { header: 2 }],
+                    [{ list: "ordered" }, { list: "bullet" }],
+                    [{ indent: "-1" }, { indent: "+1" }],
+                    [{ direction: "rtl" }],
+                    [{ font: [] }],
+                    [{ align: [] }],
+                    ["clean"]
+                ]
             }
         },
         horasCalculadas: 0,
