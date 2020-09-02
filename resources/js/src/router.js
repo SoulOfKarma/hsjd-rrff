@@ -131,6 +131,48 @@ const router = new Router({
                         import ('./views/agenteView/InformacionSolicitudEliminados.vue')
                 },
                 {
+                    path: '/agenteView/DetalleTicket',
+                    name: 'DetalleTicketImp',
+                    component: () =>
+                        import ('./views/agenteView/DetalleTicket.vue')
+                },
+                {
+                    path: '/agenteView/ListadoTicketsEM',
+                    name: 'ListadoTicketsEM',
+                    component: () =>
+                        import ('./views/agenteView/ListadoTicketsEM.vue')
+                },
+                {
+                    path: '/agenteView/GenerarTicketEM',
+                    name: 'GenerarTicketEM',
+                    component: () =>
+                        import ('./views/agenteView/GenerarTicketEM.vue')
+                },
+                {
+                    path: '/agenteView/CalendarioSolicitudesEM',
+                    name: 'CalendarioSolicitudesEM',
+                    component: () =>
+                        import ('./views/agenteView/CalendarioSolicitudesEM.vue')
+                },
+                {
+                    path: '/agenteView/ListadoTicketsIND',
+                    name: 'ListadoTicketsIND',
+                    component: () =>
+                        import ('./views/agenteView/ListadoTicketsIND.vue')
+                },
+                {
+                    path: '/agenteView/GenerarTicketIND',
+                    name: 'GenerarTicketIND',
+                    component: () =>
+                        import ('./views/agenteView/GenerarTicketIND.vue')
+                },
+                {
+                    path: '/agenteView/CalendarioSolicitudesIND',
+                    name: 'CalendarioSolicitudesIND',
+                    component: () =>
+                        import ('./views/agenteView/CalendarioSolicitudesIND.vue')
+                },
+                {
                     path: '/agenteView/FormularioAsignar/:id,:uuid',
                     name: 'AsignarSolicitudAgente',
                     component: () =>

@@ -7,6 +7,7 @@ use App\Mail\AutoRespuesta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use DB;
+use Illuminate\Support\Facades\Log;
 
 
 class SeguimientoController extends Controller
@@ -39,25 +40,41 @@ class SeguimientoController extends Controller
      */
     public function store(Request $request, $uuid)
     {
-        SeguimientoSolicitudes::create($request->all());
 
 
-        $descripcionSeguimiento = $request->descripcionSeguimiento;
-        $id_solicitud = $request->id;
-        $nombre = $request->nombre;
-
-        Mail::send('/Mails/AutoRespuesta', ['nombre' => $nombre, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento], function ($message) {
-            $message->to('ricardo.soto.g@redsalud.gob.cl', 'Ricardo Soto Gomez')->subject('Nuevo Ticket Generado');
-            $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
-        });
+        try {
+            SeguimientoSolicitudes::create($request->all());
+            $descripcionSeguimiento = $request->descripcionSeguimiento;
+            $id_solicitud = $request->id;
+            $nombre = $request->nombre;
 
 
-        //
+            Mail::send('/Mails/TicketGeneradoUsuario', ['nombre' => $nombre, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento], function ($message) {
+                $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Actualizacion de ticket');
+                $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
+            });
+
+            $statusCode     = 200;
+            $this->message  = "Correo enviado correctamente";
+            $this->result   = true;
+        } catch (\Throwable $th) {
+            //throw $th;
+            $statusCode     = 200;
+            $this->message  = $th->getMessage();
+        } finally {
+            $response =
+                [
+                    'message'   => $this->message,
+                    'result'    => $this->result,
+
+                ];
+            return response()->json($response, $statusCode);
+        }
     }
 
     public function indexSeguimiento($uuid)
     {
-        $users = DB::table('seguimiento_solicitudes')
+        $users = SeguimientoSolicitudes::select('seguimiento_solicitudes')
             ->join('users', 'seguimiento_solicitudes.id_user', '=', 'users.id')
             ->select('seguimiento_solicitudes.*', 'users.nombre')
             ->where('seguimiento_solicitudes.uuid', '=', $uuid)

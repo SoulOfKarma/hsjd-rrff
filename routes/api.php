@@ -40,6 +40,8 @@ Route::get('/Usuario/GetSolicitudUsuarios/{iduser}', ['middleware' => 'cors', 'u
 //Solicitud Usuario
 //Traer Datos para el listado de tickets
 Route::get('/Usuario/GetSolicitud', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@index']);
+//Traer Datos para el listado de tickets
+Route::get('/Usuario/correo', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@correo']);
 //Traer datos especificos
 Route::get('/Usuario/TraerSolicitud/{id}', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@indexEspecifico']);
 //Guardar Solicitud

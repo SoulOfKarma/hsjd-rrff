@@ -108,13 +108,15 @@ import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import { quillEditor } from "vue-quill-editor";
+import axios from "axios";
 export default {
     components: {
         quillEditor
     },
     data() {
         return {
-            datoPrueba: ""
+            datoPrueba: "",
+            localVal: "http://127.0.0.1:8000"
         };
     },
     methods: {}

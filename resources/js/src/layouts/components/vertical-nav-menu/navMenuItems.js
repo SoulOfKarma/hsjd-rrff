@@ -9,22 +9,29 @@
 
 
 export default [{
-        url: '/home',
+        url: null,
         name: 'Inicio',
         slug: 'home',
-        icon: 'HomeIcon'
-    },
-    {
-        url: '/Listadosolicitudes',
-        name: 'Listado Tickets',
-        slug: 'Listadosolicitudes',
-        icon: 'FileIcon'
-    },
-    {
-        url: '/GenerarSolicitud',
-        name: 'Generar Ticket',
-        slug: 'GenerarSolicitud',
-        icon: 'FileIcon'
+        icon: 'HomeIcon',
+        submenu: [{
+                url: '/home',
+                name: 'Inicio',
+                slug: 'home',
+                icon: 'HomeIcon'
+            },
+            {
+                url: '/Listadosolicitudes',
+                name: 'Listado Tickets',
+                slug: 'Listadosolicitudes',
+                icon: 'FileIcon'
+            },
+            {
+                url: '/GenerarSolicitud',
+                name: 'Generar Ticket',
+                slug: 'GenerarSolicitud',
+                icon: 'FileIcon'
+            }
+        ]
     }
 
 ]

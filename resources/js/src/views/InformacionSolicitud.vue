@@ -163,13 +163,15 @@ export default {
                 var id = this.solicitudes.id;
                 this.seguimientos.id = id;
                 this.seguimientos.uuid = uuid;
+                this.seguimientos.id_solicitud = id;
                 /* var iduser = localStorage.getItem("id");
         this.seguimientos.id_user = iduser; */
                 const seguimientoNuevo = this.seguimientos;
+                console.log(seguimientoNuevo);
                 this.openLoadingColor();
                 this.seguimientos = {
                     descripcionSeguimiento: "",
-                    id_solicitud: this.$route.params.id,
+                    id_solicitud: 0,
                     uuid: this.$route.params.uuid,
                     nombre: localStorage.getItem("nombre"),
                     id_user: localStorage.getItem("id")
@@ -183,6 +185,7 @@ export default {
                     .then(res => {
                         this.mensajeGuardado();
                         const seguimientoServer = res.data;
+                        console.log(seguimientoServer);
                         this.cargaSeguimiento();
                     });
             }
