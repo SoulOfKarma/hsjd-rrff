@@ -40,36 +40,15 @@ class SeguimientoController extends Controller
      */
     public function store(Request $request, $uuid)
     {
+        SeguimientoSolicitudes::create($request->all());
+        $descripcionSeguimiento = $request->descripcionCorreo;
+        $id_solicitud = $request->id;
+        $nombre = $request->nombre;
 
-
-        try {
-            SeguimientoSolicitudes::create($request->all());
-            $descripcionSeguimiento = $request->descripcionSeguimiento;
-            $id_solicitud = $request->id;
-            $nombre = $request->nombre;
-
-
-            Mail::send('/Mails/TicketGeneradoUsuario', ['nombre' => $nombre, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento], function ($message) {
-                $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Actualizacion de ticket');
-                $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
-            });
-
-            $statusCode     = 200;
-            $this->message  = "Correo enviado correctamente";
-            $this->result   = true;
-        } catch (\Throwable $th) {
-            //throw $th;
-            $statusCode     = 200;
-            $this->message  = $th->getMessage();
-        } finally {
-            $response =
-                [
-                    'message'   => $this->message,
-                    'result'    => $this->result,
-
-                ];
-            return response()->json($response, $statusCode);
-        }
+        Mail::send('/Mails/TicketGeneradoUsuario', ['nombre' => $nombre, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento], function ($message) {
+            $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Actualizacion de ticket');
+            $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
+        });
     }
 
     public function indexSeguimiento($uuid)

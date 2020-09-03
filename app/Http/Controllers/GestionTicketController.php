@@ -7,6 +7,8 @@ use App\Mail\TicketAsignado;
 use App\SeguimientoSolicitudes;
 use App\SolicitudTickets;
 use App\Mail\AutoRespuesta;
+use App\Supervisores;
+use App\Trabajadores;
 use App\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -21,10 +23,50 @@ class GestionTicketController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function ticketsCategoriaInfra()
     {
+        $estadoEliminado = 7;
         $users = GestionSolicitudes::select('gestion_solicitudes.id', 'gestion_solicitudes.id_trabajador', 'trabajadores.tra_nombre_apellido', 'gestion_solicitudes.id_solicitud')
             ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
+            ->join('solicitud_tickets', 'gestion_solicitudes.id_solicitud', '=', 'solicitud_tickets.id')
+            ->where('solicitud_tickets.id_categoria', 1)
+            ->where('solicitud_tickets.id_estado', '!=', $estadoEliminado)
+            ->get();
+        return $users;
+    }
+
+    public function ticketsCategoriaEM()
+    {
+        $estadoEliminado = 7;
+        $users = GestionSolicitudes::select('gestion_solicitudes.id', 'gestion_solicitudes.id_trabajador', 'trabajadores.tra_nombre_apellido', 'gestion_solicitudes.id_solicitud')
+            ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
+            ->join('solicitud_tickets', 'gestion_solicitudes.id_solicitud', '=', 'solicitud_tickets.id')
+            ->where('solicitud_tickets.id_categoria', 2)
+            ->where('solicitud_tickets.id_estado', '!=', $estadoEliminado)
+            ->get();
+        return $users;
+    }
+
+    public function ticketsCategoriaIND()
+    {
+        $estadoEliminado = 7;
+        $users = GestionSolicitudes::select('gestion_solicitudes.id', 'gestion_solicitudes.id_trabajador', 'trabajadores.tra_nombre_apellido', 'gestion_solicitudes.id_solicitud')
+            ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
+            ->join('solicitud_tickets', 'gestion_solicitudes.id_solicitud', '=', 'solicitud_tickets.id')
+            ->where('solicitud_tickets.id_categoria', 3)
+            ->where('solicitud_tickets.id_estado', '!=', $estadoEliminado)
+            ->get();
+        return $users;
+    }
+
+    public function ticketsCategoriaCA()
+    {
+        $estadoEliminado = 7;
+        $users = GestionSolicitudes::select('gestion_solicitudes.id', 'gestion_solicitudes.id_trabajador', 'trabajadores.tra_nombre_apellido', 'gestion_solicitudes.id_solicitud')
+            ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
+            ->join('solicitud_tickets', 'gestion_solicitudes.id_solicitud', '=', 'solicitud_tickets.id')
+            ->where('solicitud_tickets.id_categoria', 4)
+            ->where('solicitud_tickets.id_estado', '!=', $estadoEliminado)
             ->get();
         return $users;
     }
@@ -66,9 +108,56 @@ class GestionTicketController extends Controller
 
     public function GetDatoCalendario()
     {
+        $estadoEliminado = 7;
+        $estadoEliminado2 = 1;
         $users = SolicitudTickets::select('solicitud_tickets.id', 'solicitud_tickets.uuid', 'solicitud_tickets.descripcionP', 'solicitud_tickets.tituloP', 'solicitud_tickets.created_at', 'gestion_solicitudes.id_trabajador', 'trabajadores.tra_nombre_apellido', 'gestion_solicitudes.horaInicio', 'gestion_solicitudes.fechaInicio', 'gestion_solicitudes.horaTermino', 'gestion_solicitudes.fechaTermino')
             ->join('gestion_solicitudes', 'solicitud_tickets.id', '=', 'gestion_solicitudes.id_solicitud')
             ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
+            ->where('solicitud_tickets.id_categoria', 1)
+            ->where('solicitud_tickets.id_estado', '!=', $estadoEliminado)
+            ->where('solicitud_tickets.id_estado', '!=', $estadoEliminado2)
+            ->get();
+        return  $users;
+    }
+
+    public function GetDatoCalendarioEM()
+    {
+        $estadoEliminado = 7;
+        $estadoEliminado2 = 1;
+        $users = SolicitudTickets::select('solicitud_tickets.id', 'solicitud_tickets.uuid', 'solicitud_tickets.descripcionP', 'solicitud_tickets.tituloP', 'solicitud_tickets.created_at', 'gestion_solicitudes.id_trabajador', 'trabajadores.tra_nombre_apellido', 'gestion_solicitudes.horaInicio', 'gestion_solicitudes.fechaInicio', 'gestion_solicitudes.horaTermino', 'gestion_solicitudes.fechaTermino')
+            ->join('gestion_solicitudes', 'solicitud_tickets.id', '=', 'gestion_solicitudes.id_solicitud')
+            ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
+            ->where('solicitud_tickets.id_categoria', 2)
+            ->where('solicitud_tickets.id_estado', '!=', $estadoEliminado)
+            ->where('solicitud_tickets.id_estado', '!=', $estadoEliminado2)
+            ->get();
+        return  $users;
+    }
+
+    public function GetDatoCalendarioIND()
+    {
+        $estadoEliminado = 7;
+        $estadoEliminado2 = 1;
+        $users = SolicitudTickets::select('solicitud_tickets.id', 'solicitud_tickets.uuid', 'solicitud_tickets.descripcionP', 'solicitud_tickets.tituloP', 'solicitud_tickets.created_at', 'gestion_solicitudes.id_trabajador', 'trabajadores.tra_nombre_apellido', 'gestion_solicitudes.horaInicio', 'gestion_solicitudes.fechaInicio', 'gestion_solicitudes.horaTermino', 'gestion_solicitudes.fechaTermino')
+            ->join('gestion_solicitudes', 'solicitud_tickets.id', '=', 'gestion_solicitudes.id_solicitud')
+            ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
+            ->where('solicitud_tickets.id_categoria', 3)
+            ->where('solicitud_tickets.id_estado', '!=', $estadoEliminado)
+            ->where('solicitud_tickets.id_estado', '!=', $estadoEliminado2)
+            ->get();
+        return  $users;
+    }
+
+    public function GetDatoCalendarioCA()
+    {
+        $estadoEliminado = 7;
+        $estadoEliminado2 = 1;
+        $users = SolicitudTickets::select('solicitud_tickets.id', 'solicitud_tickets.uuid', 'solicitud_tickets.descripcionP', 'solicitud_tickets.tituloP', 'solicitud_tickets.created_at', 'gestion_solicitudes.id_trabajador', 'trabajadores.tra_nombre_apellido', 'gestion_solicitudes.horaInicio', 'gestion_solicitudes.fechaInicio', 'gestion_solicitudes.horaTermino', 'gestion_solicitudes.fechaTermino')
+            ->join('gestion_solicitudes', 'solicitud_tickets.id', '=', 'gestion_solicitudes.id_solicitud')
+            ->join('trabajadores', 'gestion_solicitudes.id_trabajador', '=', 'trabajadores.id')
+            ->where('solicitud_tickets.id_categoria', 4)
+            ->where('solicitud_tickets.id_estado', '!=', $estadoEliminado)
+            ->where('solicitud_tickets.id_estado', '!=', $estadoEliminado2)
             ->get();
         return  $users;
     }
@@ -153,11 +242,140 @@ class GestionTicketController extends Controller
         $id = SolicitudTickets::create(array_merge($request->all(), ['uuid' => $uuid]))->id;
 
         $response = GestionSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id]));
-        return $response;
-        /* 
 
-        $receivers = 'ricardo.soto.g@redsalud.gob.cl';
-        Mail::to($receivers)->send(new AutoRespuesta($seguimiento)); */
+
+        $nombre = $request->nombre;
+        $descripcionP = $request->descripcionCorreo;
+        $id_solicitud = $id;
+        $fecha = $request->fechaInicio;
+        $tituloP = $request->tituloP;
+
+        $idTrabajador = $request->id_trabajador;
+        $idSupervisor = $request->id_supervisor;
+
+        $trabajador = Trabajadores::where('id', $idTrabajador)->first();
+        $supervisor = Supervisores::where('id', $idSupervisor)->first();
+
+        $nombreTrabajador = $trabajador->tra_nombre_apellido;
+        $nombreSupervisor = $supervisor->sup_nombre_apellido;
+
+        log::info($nombreSupervisor);
+        log::info($nombreTrabajador);
+
+        Mail::send('/Mails/TicketGeneradoAgente', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
+            $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Actualizacion de ticket');
+            $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
+        });
+
+        return $response;
+    }
+
+    public function NuevoTicketEM(Request $request)
+    {
+        //Insertando Ticket
+
+        $uuid = Uuid::uuid4();
+        $id = SolicitudTickets::create(array_merge($request->all(), ['uuid' => $uuid]))->id;
+
+        $response = GestionSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id]));
+
+
+        $nombre = $request->nombre;
+        $descripcionP = $request->descripcionCorreo;
+        $id_solicitud = $id;
+        $fecha = $request->fechaInicio;
+        $tituloP = $request->tituloP;
+
+        $idTrabajador = $request->id_trabajador;
+        $idSupervisor = $request->id_supervisor;
+
+        $trabajador = Trabajadores::where('id', $idTrabajador)->first();
+        $supervisor = Supervisores::where('id', $idSupervisor)->first();
+
+        $nombreTrabajador = $trabajador->tra_nombre_apellido;
+        $nombreSupervisor = $supervisor->sup_nombre_apellido;
+
+        log::info($nombreSupervisor);
+        log::info($nombreTrabajador);
+
+        Mail::send('/Mails/TicketGeneradoAgente', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
+            $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Actualizacion de ticket');
+            $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
+        });
+
+        return $response;
+    }
+
+    public function NuevoTicketIND(Request $request)
+    {
+        //Insertando Ticket
+
+        $uuid = Uuid::uuid4();
+        $id = SolicitudTickets::create(array_merge($request->all(), ['uuid' => $uuid]))->id;
+
+        $response = GestionSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id]));
+
+
+        $nombre = $request->nombre;
+        $descripcionP = $request->descripcionCorreo;
+        $id_solicitud = $id;
+        $fecha = $request->fechaInicio;
+        $tituloP = $request->tituloP;
+
+        $idTrabajador = $request->id_trabajador;
+        $idSupervisor = $request->id_supervisor;
+
+        $trabajador = Trabajadores::where('id', $idTrabajador)->first();
+        $supervisor = Supervisores::where('id', $idSupervisor)->first();
+
+        $nombreTrabajador = $trabajador->tra_nombre_apellido;
+        $nombreSupervisor = $supervisor->sup_nombre_apellido;
+
+        log::info($nombreSupervisor);
+        log::info($nombreTrabajador);
+
+        Mail::send('/Mails/TicketGeneradoAgente', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
+            $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Actualizacion de ticket');
+            $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
+        });
+
+        return $response;
+    }
+
+    public function NuevoTicketCA(Request $request)
+    {
+        //Insertando Ticket
+
+        $uuid = Uuid::uuid4();
+        $id = SolicitudTickets::create(array_merge($request->all(), ['uuid' => $uuid]))->id;
+
+        $response = GestionSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id]));
+
+
+        $nombre = $request->nombre;
+        $descripcionP = $request->descripcionCorreo;
+        $id_solicitud = $id;
+        $fecha = $request->fechaInicio;
+        $tituloP = $request->tituloP;
+
+        $idTrabajador = $request->id_trabajador;
+        $idSupervisor = $request->id_supervisor;
+
+        $trabajador = Trabajadores::where('id', $idTrabajador)->first();
+        $supervisor = Supervisores::where('id', $idSupervisor)->first();
+
+        $nombreTrabajador = $trabajador->tra_nombre_apellido;
+        $nombreSupervisor = $supervisor->sup_nombre_apellido;
+
+        log::info($nombreSupervisor);
+        log::info($nombreTrabajador);
+
+        Mail::send('/Mails/TicketGeneradoAgente', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
+            $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Actualizacion de ticket');
+            $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
+        });
+
+        return $response;
     }
 
     /**

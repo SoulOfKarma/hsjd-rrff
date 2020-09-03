@@ -48,6 +48,7 @@
                 <p>
                     Fecha Asignacion Ticket: {{ infoGeneral.fechaAsignacion }}
                 </p>
+                <p>Fecha Termino Ticket: {{ infoGeneral.fechaTermino }}</p>
                 <p>Titulo Problema: {{ infoGeneral.titulo }}</p>
                 <p>Descripcion: {{ infoGeneral.descripcion }}</p>
             </vs-popup>
@@ -83,6 +84,7 @@ export default {
                 descripcion: "",
                 fechaAsignacion: "",
                 fechaCreacion: "",
+                fechaTermino: "",
                 titulo: ""
             },
             value1: 50,
@@ -531,7 +533,8 @@ export default {
                 row: data.item.rowId,
                 fechaAsignacion: data.item.time.start,
                 fechaCreacion: data.item.fechaCreacion,
-                tituloProblema: data.item.titulo
+                tituloProblema: data.item.titulo,
+                fechaTermino: data.item.time.end
             };
 
             element.addEventListener("click", this.mensaje2.bind(null, dato));
@@ -578,7 +581,7 @@ export default {
         },
         cargaListadoTickets() {
             axios
-                .get(this.localVal + "/api/Agente/GetTicketAsignados")
+                .get(this.localVal + "/api/Agente/GetTicketAsignadosInfra")
                 .then(res => {
                     this.listadoTickets = res.data;
                     let listadoRow = this.config.list.rows;
@@ -810,9 +813,14 @@ export default {
 
             this.infoGeneral.fechaAsignacion = moment(
                 dato.fechaAsignacion
-            ).format("DD-MM-YYYY");
+            ).format("DD-MM-YYYY, HH:mm:ss");
+
+            this.infoGeneral.fechaTermino = moment(dato.fechaTermino).format(
+                "DD-MM-YYYY , HH:mm:ss"
+            );
+
             this.infoGeneral.fechaCreacion = moment(dato.fechaCreacion).format(
-                "DD-MM-YYYY"
+                "DD-MM-YYYY , HH:mm:ss"
             );
             this.infoGeneral.titulo = dato.tituloProblema;
 

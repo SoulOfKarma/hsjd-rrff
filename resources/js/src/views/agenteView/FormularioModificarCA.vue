@@ -311,16 +311,16 @@ export default {
         gestionTicket: {
             uuid: "",
             id_solicitud: 0,
-            id_edificio: 2,
-            id_servicio: 2,
-            id_ubicacionEx: 3,
-            id_tipoReparacion: 3,
+            id_edificio: 0,
+            id_servicio: 0,
+            id_ubicacionEx: 0,
+            id_tipoReparacion: 0,
             id_estado: 1,
-            id_supervisor: 4,
-            id_trabajador: 5,
-            idApoyo1: 5,
-            idApoyo2: 5,
-            idApoyo3: 5,
+            id_supervisor: 0,
+            id_trabajador: 0,
+            idApoyo1: 0,
+            idApoyo2: 0,
+            idApoyo3: 0,
             fechaCambiada: null,
             fechaTermino: null,
             horaCambiada: null,
@@ -357,15 +357,15 @@ export default {
             tra_nombre_apellido: "Seleccione al Trabajador"
         },
         seleccionApoyo1: {
-            id: 5,
+            id: 999,
             tra_nombre_apellido: "Sin Asignar"
         },
         seleccionApoyo2: {
-            id: 5,
+            id: 999,
             tra_nombre_apellido: "Sin Asignar"
         },
         seleccionApoyo3: {
-            id: 5,
+            id: 999,
             tra_nombre_apellido: "Sin Asignar"
         },
         variablePrueba: 0,

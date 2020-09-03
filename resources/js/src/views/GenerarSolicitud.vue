@@ -103,13 +103,8 @@
                                 v-model="solicitud.tituloP"
                                 class="w-full"
                                 name="Titulo"
-                                v-validate="'required|max:50|min:10'"
                             />
-                            <span
-                                class="text-danger text-sm"
-                                v-show="errors.has('Titulo')"
-                                >{{ errors.first("Titulo") }}</span
-                            >
+
                             <br />
                             <h6>2.4 - Descripcion del Problema</h6>
                             <br />
@@ -117,16 +112,10 @@
                                 v-model="solicitud.descripcionP"
                                 :options="editorOption"
                                 name="Descripcion"
-                                v-validate="'required|max:50|min:15'"
                             >
                                 <div id="toolbar" slot="toolbar"></div>
                             </quill-editor>
                             <br />
-                            <span
-                                class="text-danger text-sm"
-                                v-show="errors.has('Descripcion')"
-                                >{{ errors.first("Descripcion") }}</span
-                            >
                         </div>
                     </div>
                 </vx-card>
@@ -206,7 +195,8 @@ export default {
             id_solicitud: 0,
             id_categoria: 0,
             uuid: "",
-            descripcionSeguimiento: "Solicitud creada"
+            descripcionSeguimiento: "Solicitud creada",
+            descripcionCorreo: ""
         },
         datosCorreo: {
             nombre: "",
@@ -223,7 +213,7 @@ export default {
         },
         seleccionUnidadEsp: {
             id: 0,
-            descripcionUnidadEsp: "Seleccione Unidad Especifica"
+            descripcionUnidadEsp: "Seleccion Unidad Especifica"
         },
         seleccionReparacion: {
             id: 0,
@@ -416,6 +406,9 @@ export default {
                 this.solicitud.id_ubicacionEx = this.seleccionUnidadEsp[0].id;
                 this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
                 this.solicitud.id_categoria = this.seleccionCategoria.id;
+                var newElement = document.createElement("div");
+                newElement.innerHTML = this.solicitud.descripcionP;
+                this.solicitud.descripcionCorreo = newElement.textContent;
                 const solicitudNueva = this.solicitud;
                 this.openLoadingColor();
                 (this.solicitud = {
@@ -453,15 +446,63 @@ export default {
         probando() {
             this.solicitud.id_user;
             console.log(this.seleccionUnidadEsp[0].id);
+        },
+        verListas() {
+            var idGeneral = 4;
+
+            let c = this.listadoUnidadEsp;
+            let b = [];
+            var a = 0;
+
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == idGeneral) {
+                    b.push(value);
+                }
+            });
+            this.seleccionUnidadEsp = b;
+            idGeneral = 0;
+            idGeneral = this.seleccionUnidadEsp[0].id_servicio;
+            b = [];
+
+            c = this.listadoServicios;
+
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == idGeneral) {
+                    b.push(value);
+                }
+            });
+
+            this.seleccionServicio = b;
+            idGeneral = 0;
+            idGeneral = this.seleccionServicio[0].id_edificio;
+            b = [];
+            c = this.listadoEdificios;
+
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == idGeneral) {
+                    b.push(value);
+                }
+            });
+
+            this.seleccionEdificio = b;
         }
     },
-    beforeMount() {
+    created() {
         this.cargarEdificios();
         this.cargarServicios();
         this.cargarUnidadEsp();
         this.cargarCategoria();
         this.cargarTipoRep();
     },
+    mounted() {
+        setTimeout(() => {
+            this.verListas();
+        }, 2000);
+    },
+
     components: {
         "v-select": vSelect,
         quillEditor

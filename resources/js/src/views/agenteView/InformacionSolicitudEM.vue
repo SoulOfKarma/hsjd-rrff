@@ -170,8 +170,10 @@ export default {
             id_solicitud: 0,
             uuid: "",
             nombre: localStorage.getItem("nombre"),
-            id_user: localStorage.getItem("id")
-        }
+            id_user: localStorage.getItem("id"),
+            descripcionCorreo: ""
+        },
+        colorLoading: "#ff8000"
     }),
     methods: {
         cargaSolicitudEspecifica() {
@@ -180,11 +182,15 @@ export default {
                 .get(this.localVal + `/api/Agente/TraerSolicitud/${id}`)
                 .then(res => {
                     this.solicitudes = res.data;
-                    this.titulo = "Ticket N°" + this.solicitudes[0].id;
-                    this.infoSeguimiento.nombre = this.solicitudes[0].nombre;
-                    this.infoSeguimiento.edificio = this.solicitudes[0].descripcionEdificio;
-                    this.infoSeguimiento.servicio = this.solicitudes[0].descripcionServicio;
-                    this.infoSeguimiento.unidadEsp = this.solicitudes[0].descripcionUnidadEsp;
+                    try {
+                        this.titulo = "Ticket N°" + this.solicitudes[0].id;
+                        this.infoSeguimiento.nombre = this.solicitudes[0].nombre;
+                        this.infoSeguimiento.edificio = this.solicitudes[0].descripcionEdificio;
+                        this.infoSeguimiento.servicio = this.solicitudes[0].descripcionServicio;
+                        this.infoSeguimiento.unidadEsp = this.solicitudes[0].descripcionUnidadEsp;
+                    } catch (error) {
+                        router.back();
+                    }
                 });
         },
         cargaSeguimiento() {
@@ -211,9 +217,12 @@ export default {
                 });
                 return;
             }
-            var id = this.solicitudes.id;
+            var id = this.solicitudes[0].id;
             this.seguimientos.id = id;
             this.seguimientos.uuid = uuid;
+            var newElement = document.createElement("div");
+            newElement.innerHTML = this.seguimientos.descripcionSeguimiento;
+            this.seguimientos.descripcionCorreo = newElement.textContent;
             const seguimientoNuevo = this.seguimientos;
             this.seguimientos = {
                 descripcionSeguimiento: "",
@@ -222,6 +231,7 @@ export default {
                 nombre: localStorage.getItem("nombre"),
                 id_user: localStorage.getItem("id")
             };
+            this.openLoadingColor();
             axios
                 .post(
                     this.localVal + `/api/Agente/GuardarSeguimiento/${uuid}`,
@@ -229,8 +239,21 @@ export default {
                 )
                 .then(res => {
                     const seguimientoServer = res.data;
+                    this.$vs.notify({
+                        time: 3000,
+                        title: "Actualizacion realizada",
+                        text: "Se cargara listado automaticamente",
+                        color: "success",
+                        position: "top-right"
+                    });
                     this.cargaSeguimiento();
                 });
+        },
+        openLoadingColor() {
+            this.$vs.loading({ color: this.colorLoading });
+            setTimeout(() => {
+                this.$vs.loading.close();
+            }, 2000);
         }
     },
     beforeMount() {

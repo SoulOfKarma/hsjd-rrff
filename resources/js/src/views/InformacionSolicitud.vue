@@ -104,7 +104,8 @@ export default {
             id_solicitud: 0,
             uuid: "",
             nombre: localStorage.getItem("nombre"),
-            id_user: localStorage.getItem("id")
+            id_user: localStorage.getItem("id"),
+            descripcionCorreo: ""
         }
     }),
     methods: {
@@ -164,6 +165,9 @@ export default {
                 this.seguimientos.id = id;
                 this.seguimientos.uuid = uuid;
                 this.seguimientos.id_solicitud = id;
+                var newElement = document.createElement("div");
+                newElement.innerHTML = this.seguimientos.descripcionSeguimiento;
+                this.seguimientos.descripcionCorreo = newElement.textContent;
                 /* var iduser = localStorage.getItem("id");
         this.seguimientos.id_user = iduser; */
                 const seguimientoNuevo = this.seguimientos;

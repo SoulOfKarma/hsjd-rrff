@@ -578,7 +578,7 @@ export default {
         },
         cargaListadoTickets() {
             axios
-                .get(this.localVal + "/api/Agente/GetTicketAsignados")
+                .get(this.localVal + "/api/Agente/GetTicketAsignadosCA")
                 .then(res => {
                     this.listadoTickets = res.data;
                     let listadoRow = this.config.list.rows;
@@ -615,7 +615,7 @@ export default {
         },
         cargarHoraFechaCalendario() {
             axios
-                .get(this.localVal + "/api/Agente/getDatoCalendario")
+                .get(this.localVal + "/api/Agente/getDatoCalendarioCA")
                 .then(res => {
                     this.listadoHoraFecha = res.data;
 

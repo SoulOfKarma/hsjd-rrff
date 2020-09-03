@@ -140,7 +140,8 @@ export default {
             uuid: "",
             nombre: localStorage.getItem("nombre"),
             id_user: localStorage.getItem("id")
-        }
+        },
+        colorLoading: "#ff8000"
     }),
     methods: {
         cargaSolicitudEspecifica() {
@@ -200,6 +201,12 @@ export default {
                     const seguimientoServer = res.data;
                     this.cargaSeguimiento();
                 });
+        },
+        openLoadingColor() {
+            this.$vs.loading({ color: this.colorLoading });
+            setTimeout(() => {
+                this.$vs.loading.close();
+            }, 2000);
         }
     },
     beforeMount() {

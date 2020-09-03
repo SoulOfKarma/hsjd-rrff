@@ -380,7 +380,10 @@ export default {
             horasEjecucion: 0,
             diasEjecucion: 0,
             tituloP: "",
-            descripcionP: ""
+            descripcionP: "",
+            descripcionCorreo: "",
+            id_categoria: 0,
+            nombre: ""
         },
         seleccionEdificio: {
             id: 0,
@@ -877,11 +880,16 @@ export default {
             this.gestionTicket.idApoyo1 = this.seleccionApoyo1[0].id;
             this.gestionTicket.idApoyo2 = this.seleccionApoyo2[0].id;
             this.gestionTicket.idApoyo3 = this.seleccionApoyo3[0].id;
+            var newElement = document.createElement("div");
+            newElement.innerHTML = this.gestionTicket.descripcionP;
+            this.gestionTicket.descripcionCorreo = newElement.textContent;
+            this.gestionTicket.id_categoria = 3;
+            this.gestionTicket.nombre = this.nombre;
 
             const ticket = this.gestionTicket;
             this.openLoadingColor();
             axios
-                .post(this.localVal + "/api/Agente/PostNuevoTicket", ticket)
+                .post(this.localVal + "/api/Agente/PostNuevoTicketIND", ticket)
                 .then(res => {
                     const ticketServer = res.data;
                     this.mensajeGuardado();

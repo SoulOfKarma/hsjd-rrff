@@ -318,20 +318,35 @@ a {
                                 </tr>
                                 <tr>
                                     <td class="content-block">
-                                      <b> Se ha Creado el Ticket N° {{$id}} </b>
+                                      <b>  Se ha Creado el Ticket N° {{$id}} </b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                  <td class="content-block">
+                                      <b>Se creado y Asignado el dia: {{$fecha}}</b> 
+                                  </td>
+                              </tr>
+                                <tr>
+                                    <td class="content-block">
+                                        <b>Titulo:  {{$titulo}}.</b>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="content-block">
-                                        <b>Titulo: </b> {{$titulo}}.
+                                        <b>Descripcion: {{$descripcionTicket}}</b> 
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="content-block">
-                                        <b>Descripcion: </b> {{$descripcionTicket}}.
-                                    </td>
-                                </tr>
-                                
+                                  <td class="content-block">
+                                      <b>Asignado a: {{$tra_nombre}}</b> 
+                                  </td>
+                              </tr>
+                              <tr>
+                                <td class="content-block">
+                                    <b>Supervisor: {{$sup_nombre}}</b> 
+                                </td>
+                            </tr>
+                            
                                 <tr>
                                     <td class="content-block">
                                         Saludos!

@@ -31,9 +31,11 @@
             </vs-alert>
             <!-- Ubicacion -->
             <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="1. Lugar del problema" code-toggler>
+                <vx-card title="1. Lugar del problema">
                     <div class="vx-row mb-12">
                         <div class="vx-col w-1/3 mt-5">
+                            <h6>1.1 - Seleccione el Edificio</h6>
+                            <br />
                             <v-select
                                 v-model="seleccionEdificio"
                                 placeholder="Edificio"
@@ -43,6 +45,8 @@
                             ></v-select>
                         </div>
                         <div class="vx-col w-1/3 mt-5">
+                            <h6>1.2 - Seleccione el Servicio</h6>
+                            <br />
                             <v-select
                                 v-model="seleccionServicio"
                                 placeholder="Servicio"
@@ -53,6 +57,8 @@
                             ></v-select>
                         </div>
                         <div class="vx-col w-1/3 mt-5">
+                            <h6>1.3 - Seleccione la Unidad Especifica</h6>
+                            <br />
                             <v-select
                                 v-model="seleccionUnidadEsp"
                                 placeholder="Unidad Especifica"
@@ -70,6 +76,8 @@
                 <vx-card title="2. Asignar Supervisor y Tecnico" code-toggler>
                     <div class="vx-row mb-12">
                         <div class="vx-col w-1/2 mt-5">
+                            <h6>2.1 - Seleccione al Supervisor</h6>
+                            <br />
                             <v-select
                                 v-model="seleccionSupervisor"
                                 placeholder="Seleccione al Supervisor"
@@ -79,6 +87,8 @@
                             ></v-select>
                         </div>
                         <div class="vx-col w-1/2 mt-5">
+                            <h6>2.2 - Seleccione al Trabajador</h6>
+                            <br />
                             <v-select
                                 v-model="seleccionTrabajador"
                                 placeholder="Seleccione al Trabajador"
@@ -88,6 +98,8 @@
                             ></v-select>
                         </div>
                         <div class="vx-col w-full mt-5">
+                            <h6>2.3 - Seleccione al Apoyo 1</h6>
+                            <br />
                             <v-select
                                 v-model="seleccionApoyo1"
                                 placeholder="Seleccione al Apoyo"
@@ -97,6 +109,8 @@
                             ></v-select>
                         </div>
                         <div class="vx-col w-full mt-5">
+                            <h6>2.4 - Seleccione al Apoyo 2</h6>
+                            <br />
                             <v-select
                                 v-model="seleccionApoyo2"
                                 placeholder="Seleccione al Apoyo"
@@ -106,6 +120,8 @@
                             ></v-select>
                         </div>
                         <div class="vx-col w-full mt-5">
+                            <h6>2.5 - Seleccione al Apoyo 3</h6>
+                            <br />
                             <v-select
                                 v-model="seleccionApoyo3"
                                 placeholder="Seleccione al Apoyo"
@@ -119,9 +135,11 @@
             </div>
             <!-- Hora y Fecha -->
             <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="3. Asignar Hora y Fecha" code-toggler>
+                <vx-card title="3. Asignar Hora y Fecha">
                     <div class="vx-row mb-12">
                         <div class="vx-col w-1/2 mt-5">
+                            <h6>3.1 - Hora y Fecha de inicio</h6>
+                            <br />
                             <flat-pickr
                                 :config="configFromdateTimePicker"
                                 v-model="gestionTicket.fechaInicio"
@@ -135,6 +153,8 @@
                             />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
+                            <h6>3.2 - Hora y Fecha de termino</h6>
+                            <br />
                             <flat-pickr
                                 :config="configTodateTimePicker"
                                 v-model="gestionTicket.fechaTermino"
@@ -166,9 +186,11 @@
             </div>
             <!-- Informacion del problema -->
             <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="4. Problema a Resolver" code-toggler>
+                <vx-card title="4. Problema a Resolver">
                     <div class="vx-row mb-12">
                         <div class="vx-col w-full mt-5">
+                            <h6>4.2 - Seleccione Tipo de Reparacion</h6>
+                            <br />
                             <v-select
                                 v-model="seleccionReparacion"
                                 placeholder="Seleccione Tipo de Reparacion"
@@ -179,6 +201,8 @@
                                     arrayTipoReparacion(seleccionReparacion.id)
                                 "
                             ></v-select>
+                            <br />
+                            <h6>4.2 - Seleccione Estado</h6>
                             <br />
                             <v-select
                                 v-model="seleccionEstado"
@@ -284,9 +308,9 @@ export default {
             id_estado: 1,
             id_supervisor: 4,
             id_trabajador: 5,
-            idApoyo1: 5,
-            idApoyo2: 5,
-            idApoyo3: 5,
+            idApoyo1: 999,
+            idApoyo2: 999,
+            idApoyo3: 999,
             fechaInicio: null,
             fechaTermino: null,
             horaInicio: null,
@@ -323,15 +347,15 @@ export default {
             tra_nombre_apellido: "Seleccione al Trabajador"
         },
         seleccionApoyo1: {
-            id: 4,
+            id: 999,
             tra_nombre_apellido: "Sin Asignar"
         },
         seleccionApoyo2: {
-            id: 4,
+            id: 999,
             tra_nombre_apellido: "Sin Asignar"
         },
         seleccionApoyo3: {
-            id: 4,
+            id: 999,
             tra_nombre_apellido: "Sin Asignar"
         },
         variablePrueba: 0,

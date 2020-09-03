@@ -31,10 +31,7 @@
             </vs-alert>
             <!-- Usuario -->
             <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card
-                    title="1. Seleccionar Usuario Solicitante"
-                    code-toggler
-                >
+                <vx-card title="1. Seleccionar Usuario Solicitante" c>
                     <div class="vx-row mb-12">
                         <div class="vx-col w-full mt-5">
                             <h6>1.1 - Seleccione Al usuario</h6>
@@ -52,7 +49,7 @@
             </div>
             <!-- Ubicacion -->
             <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="2. Lugar del problema" code-toggler>
+                <vx-card title="2. Lugar del problema">
                     <div class="vx-row mb-12">
                         <div class="vx-col w-1/3 mt-5">
                             <h6>2.1 - Seleccione el Edificio</h6>
@@ -94,7 +91,7 @@
             </div>
             <!-- Personal -->
             <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="3. Asignar Supervisor y Tecnico" code-toggler>
+                <vx-card title="3. Asignar Supervisor y Tecnico">
                     <div class="vx-row mb-12">
                         <div class="vx-col w-1/2 mt-5">
                             <h6>3.1 - Seleccione al Supervisor</h6>
@@ -216,7 +213,7 @@
             </div>
             <!-- Informacion del problema -->
             <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="5. Informacion del problema" code-toggler>
+                <vx-card title="5. Informacion del problema">
                     <div class="vx-row mb-12">
                         <div class="vx-col w-full mt-5">
                             <h6>5.1 - Tipo de Reparacion</h6>
@@ -232,18 +229,7 @@
                                 "
                             ></v-select>
                             <br />
-                            <h6>5.2 - Categoria</h6>
-                            <br />
-                            <v-select
-                                v-model="seleccionCategoria"
-                                placeholder="Seleccione Categoria"
-                                class="w-full select-large"
-                                label="des_categoria"
-                                :options="listadoCategoria"
-                                @input="arrayCategoria(seleccionCategoria.id)"
-                            ></v-select>
-                            <br />
-                            <h6>5.3 - Estado Ticket</h6>
+                            <h6>5.2 - Estado Ticket</h6>
                             <br />
                             <v-select
                                 v-model="seleccionEstado"
@@ -254,7 +240,7 @@
                                 @input="arrayEstado(seleccionEstado.id)"
                             ></v-select>
                             <br />
-                            <h6>5.4 - Titulo del problema</h6>
+                            <h6>5.3 - Titulo del problema</h6>
                             <br />
                             <vs-input
                                 placeholder="Ej. Falla de red en equipo x"
@@ -262,7 +248,7 @@
                                 class="w-full"
                             />
                             <br />
-                            <h6>5.5 - Descripcion del problema</h6>
+                            <h6>5.4 - Descripcion del problema</h6>
                             <br />
                             <quill-editor
                                 v-model="gestionTicket.descripcionP"
@@ -369,22 +355,22 @@ export default {
         listadoApoyo3: [],
         listadoEstado: [],
         listadoCorreo: [],
-        listadoCategoria: [],
+
         listadoUsuarios: [],
         gestionTicket: {
             id_user: 0,
             uuid: "",
             id_solicitud: 0,
-            id_edificio: 2,
-            id_servicio: 2,
-            id_ubicacionEx: 3,
-            id_tipoReparacion: 3,
+            id_edificio: 0,
+            id_servicio: 0,
+            id_ubicacionEx: 0,
+            id_tipoReparacion: 0,
             id_estado: 1,
-            id_supervisor: 4,
-            id_trabajador: 5,
-            idApoyo1: 5,
-            idApoyo2: 5,
-            idApoyo3: 5,
+            id_supervisor: 0,
+            id_trabajador: 0,
+            idApoyo1: 999,
+            idApoyo2: 999,
+            idApoyo3: 999,
             fechaInicio: null,
             fechaTermino: null,
             horaInicio: null,
@@ -393,7 +379,9 @@ export default {
             diasEjecucion: 0,
             tituloP: "",
             descripcionP: "",
-            id_categoria: 0
+            id_categoria: 1,
+            nombre: "",
+            descripcionCorreo: ""
         },
         seleccionEdificio: {
             id: 0,
@@ -439,10 +427,7 @@ export default {
             id: 4,
             tra_nombre_apellido: "Sin Asignar"
         },
-        seleccionCategoria: {
-            id: 0,
-            des_categoria: "Seleccione Categoria"
-        },
+
         variablePrueba: 0,
         mensajeError: "",
         colorLoading: "#ff8000",
@@ -595,13 +580,6 @@ export default {
                 }
             });
             this.seleccionTrabajador = b;
-        },
-        cargarCategoria() {
-            this.csrf_token;
-
-            axios.get(this.localVal + "/api/Agente/GetCategoria").then(res => {
-                this.listadoCategoria = res.data;
-            });
         },
         arrayApoyo1(id) {
             let c = this.listadoApoyo1;
@@ -915,7 +893,12 @@ export default {
             this.gestionTicket.idApoyo1 = this.seleccionApoyo1[0].id;
             this.gestionTicket.idApoyo2 = this.seleccionApoyo2[0].id;
             this.gestionTicket.idApoyo3 = this.seleccionApoyo3[0].id;
-            this.gestionTicket.id_categoria = this.seleccionCategoria[0].id;
+            //this.gestionTicket.id_categoria = this.seleccionCategoria[0].id;
+            var newElement = document.createElement("div");
+            newElement.innerHTML = this.gestionTicket.descripcionP;
+            this.gestionTicket.descripcionCorreo = newElement.textContent;
+            this.gestionTicket.id_categoria = 1;
+            this.gestionTicket.nombre = this.nombre;
 
             const ticket = this.gestionTicket;
             this.openLoadingColor();
@@ -948,7 +931,6 @@ export default {
         this.cargarTrabajadores();
         this.cargarEstado();
         this.cargarUsuarios();
-        this.cargarCategoria();
     },
     async beforeMount() {},
     components: {
