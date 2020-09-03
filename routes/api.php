@@ -27,6 +27,8 @@ Route::get('/Usuario/GetEdificios', ['middleware' => 'cors', 'uses' => 'Edificio
 //Route::get('/Usuario/GetEdificios', 'EdificioController@index');
 //Retorna Servicios
 Route::get('/Usuario/GetServicios', ['middleware' => 'cors', 'uses' => 'ServicioController@index']);
+//Retorna Categorias
+Route::get('/Usuario/GetCategoria', ['middleware' => 'cors', 'uses' => 'CategoriaController@index']);
 //Route::get('/Usuario/GetEdificios', 'ServicioController@index');
 //Retorna Tipo Unidad Especifica
 Route::get('/Usuario/GetUnidadEsp', ['middleware' => 'cors', 'uses' => 'UnidadExController@index']);
@@ -64,12 +66,21 @@ Route::get('/Agente/GetSupervisores', ['middleware' => 'cors', 'uses' => 'Superv
 Route::get('/Agente/GetTicketAsignados', ['middleware' => 'cors', 'uses' => 'GestionTicketController@index']);
 //Traer Trabajadores
 Route::get('/Agente/GetTrabajadores', ['middleware' => 'cors', 'uses' => 'TrabajadorController@index']);
+//Retorna Categorias
+Route::get('/Agente/GetCategoria', ['middleware' => 'cors', 'uses' => 'CategoriaController@index']);
 //Traer Estado
 Route::get('/Agente/GetEstado', ['middleware' => 'cors', 'uses' => 'EstadoController@index']);
 //Guardar Ticket
 Route::post('/Agente/PostTicket', ['middleware' => 'cors', 'uses' => 'GestionTicketController@store']);
-//Traer Tickets con sus usuarios
+//Traer Tickets con sus usuarios Infraestructura
 Route::get('/Agente/GetSolicitudTickets', ['middleware' => 'cors', 'uses' => 'GestionTicketController@getSolicitudUsuariosJoin']);
+//Traer Tickets con sus usuarios Equipos Medicos
+Route::get('/Agente/GetSolicitudTicketsEM', ['middleware' => 'cors', 'uses' => 'GestionTicketController@getSolicitudUsuariosJoinEM']);
+//Traer Tickets con sus usuarios Industrial
+Route::get('/Agente/GetSolicitudTicketsIND', ['middleware' => 'cors', 'uses' => 'GestionTicketController@getSolicitudUsuariosJoinIND']);
+//Traer Tickets con sus usuarios CA
+Route::get('/Agente/GetSolicitudTicketsCA', ['middleware' => 'cors', 'uses' => 'GestionTicketController@getSolicitudUsuariosJoinCA']);
+
 //Traer seguimiento de tickets
 Route::get('/Agente/TraerSeguimiento/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoController@indexSeguimiento']);
 //Traer datos especificos

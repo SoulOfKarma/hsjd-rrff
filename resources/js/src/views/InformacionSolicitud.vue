@@ -44,7 +44,7 @@
             </vx-card>
         </div>
         <div class="vx-col md:w-1/1 w-full mb-base">
-            <vx-card title="3. Respuestas Seguimiento" code-toggler>
+            <vx-card title="3. Respuestas Seguimiento">
                 <div class="vx-row">
                     <div class="vx-col sm:w-full w-full">
                         <vs-list

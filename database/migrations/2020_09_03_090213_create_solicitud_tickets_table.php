@@ -22,6 +22,7 @@ class CreateSolicitudTicketsTable extends Migration
             $table->bigInteger('id_servicio');
             $table->bigInteger('id_ubicacionEx');
             $table->bigInteger('id_tipoReparacion');
+            $table->bigInteger('id_categoria');
             $table->string('tituloP');
             $table->text('descripcionP');
             $table->timestamps();

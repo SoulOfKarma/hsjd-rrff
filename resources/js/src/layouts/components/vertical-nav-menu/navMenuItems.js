@@ -9,17 +9,16 @@
 
 
 export default [{
-        url: null,
+        url: '/home',
         name: 'Inicio',
+        slug: 'home',
+        icon: 'HomeIcon'
+    }, {
+        url: null,
+        name: 'Menu',
         slug: 'home',
         icon: 'HomeIcon',
         submenu: [{
-                url: '/home',
-                name: 'Inicio',
-                slug: 'home',
-                icon: 'HomeIcon'
-            },
-            {
                 url: '/Listadosolicitudes',
                 name: 'Listado Tickets',
                 slug: 'Listadosolicitudes',

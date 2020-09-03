@@ -8,7 +8,7 @@
                 <div
                     class="content-area__heading pr-4 border-0 md:border-r border-solid border-grey-light"
                 >
-                    <h2 class="mb-1">Registrar nuevo Ticket</h2>
+                    <h2 class="mb-1">Modificar Ticket</h2>
                 </div>
                 <div class="vx-breadcrumb ml-4 md:block hidden">
                     <div
@@ -29,33 +29,12 @@
             >
                 <p>Recuerda que todos los campos son obligatorios!</p>
             </vs-alert>
-            <!-- Usuario -->
-            <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card
-                    title="1. Seleccionar Usuario Solicitante"
-                    code-toggler
-                >
-                    <div class="vx-row mb-12">
-                        <div class="vx-col w-full mt-5">
-                            <h6>1.1 - Seleccione Al usuario</h6>
-                            <br />
-                            <v-select
-                                v-model="seleccionUsuario"
-                                placeholder="Seleccione al Usuario"
-                                class="w-full select-large"
-                                label="nombre"
-                                :options="listadoUsuarios"
-                            ></v-select>
-                        </div>
-                    </div>
-                </vx-card>
-            </div>
             <!-- Ubicacion -->
             <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="2. Lugar del problema" code-toggler>
+                <vx-card title="1. Lugar del problema" code-toggler>
                     <div class="vx-row mb-12">
                         <div class="vx-col w-1/3 mt-5">
-                            <h6>2.1 - Seleccione el Edificio</h6>
+                            <h6>1.1 - Seleccione el Edificio</h6>
                             <br />
                             <v-select
                                 v-model="seleccionEdificio"
@@ -66,7 +45,7 @@
                             ></v-select>
                         </div>
                         <div class="vx-col w-1/3 mt-5">
-                            <h6>2.2 - Seleccione el Servicio</h6>
+                            <h6>1.2 - Seleccione el Servicio</h6>
                             <br />
                             <v-select
                                 v-model="seleccionServicio"
@@ -78,7 +57,7 @@
                             ></v-select>
                         </div>
                         <div class="vx-col w-1/3 mt-5">
-                            <h6>2.3 - Seleccione la Unidad Especifica</h6>
+                            <h6>1.3 - Seleccione la Unidad especifica</h6>
                             <br />
                             <v-select
                                 v-model="seleccionUnidadEsp"
@@ -94,10 +73,10 @@
             </div>
             <!-- Personal -->
             <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="3. Asignar Supervisor y Tecnico" code-toggler>
+                <vx-card title="2. Asignar Supervisor y Tecnico" code-toggler>
                     <div class="vx-row mb-12">
                         <div class="vx-col w-1/2 mt-5">
-                            <h6>3.1 - Seleccione al Supervisor</h6>
+                            <h6>2.1 - Seleccione al Supervisor</h6>
                             <br />
                             <v-select
                                 v-model="seleccionSupervisor"
@@ -111,7 +90,7 @@
                             ></v-select>
                         </div>
                         <div class="vx-col w-1/2 mt-5">
-                            <h6>3.2 - Seleccione al Trabajador</h6>
+                            <h6>2.2 - Seleccione al Trabajador</h6>
                             <br />
                             <v-select
                                 v-model="seleccionTrabajador"
@@ -125,7 +104,7 @@
                             ></v-select>
                         </div>
                         <div class="vx-col w-full mt-5">
-                            <h6>3.3 - Seleccione al Apoyo 1</h6>
+                            <h6>2.3 - Seleccione al Apoyo 1</h6>
                             <br />
                             <v-select
                                 v-model="seleccionApoyo1"
@@ -137,7 +116,7 @@
                             ></v-select>
                         </div>
                         <div class="vx-col w-full mt-5">
-                            <h6>3.4 - Seleccione al Apoyo 2</h6>
+                            <h6>2.4 - Seleccione al Apoyo 2</h6>
                             <br />
                             <v-select
                                 v-model="seleccionApoyo2"
@@ -149,7 +128,7 @@
                             ></v-select>
                         </div>
                         <div class="vx-col w-full mt-5">
-                            <h6>3.5 - Seleccione al Apoyo 3</h6>
+                            <h6>2.5 - Seleccione al Apoyo 3</h6>
                             <br />
                             <v-select
                                 v-model="seleccionApoyo3"
@@ -163,27 +142,27 @@
                     </div>
                 </vx-card>
             </div>
-            <!-- Hora y Fecha -->
+            <!-- Reasignar Hora y Fecha -->
             <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="4. Asignar Hora y Fecha" code-toggler>
+                <vx-card title="3. Re-asignar  Hora y Fecha" code-toggler>
                     <div class="vx-row mb-12">
                         <div class="vx-col w-1/2 mt-5">
-                            <h6>4.1 - Hora y Fecha de inicio</h6>
+                            <h6>3.1 - Hora y Fecha Cambiada</h6>
                             <br />
                             <flat-pickr
                                 :config="configFromdateTimePicker"
-                                v-model="gestionTicket.fechaInicio"
-                                placeholder="Fecha Inicio"
+                                v-model="gestionTicket.fechaCambiada"
+                                placeholder="Fecha A Cambiar"
                                 @on-change="onFromChange"
                             />
                             <flat-pickr
                                 :config="configdateTimePicker"
-                                v-model="gestionTicket.horaInicio"
-                                placeholder="Seleccione Hora"
+                                v-model="gestionTicket.horaCambiada"
+                                placeholder="Seleccione Hora a Cambiar"
                             />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
-                            <h6>4.2 - Hora y Fecha de termino</h6>
+                            <h6>3.2 - Hora y Fecha termino</h6>
                             <br />
                             <flat-pickr
                                 :config="configTodateTimePicker"
@@ -216,10 +195,10 @@
             </div>
             <!-- Informacion del problema -->
             <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="5. Informacion del problema" code-toggler>
+                <vx-card title="4. Problema a Resolver" code-toggler>
                     <div class="vx-row mb-12">
                         <div class="vx-col w-full mt-5">
-                            <h6>5.1 - Tipo de Reparacion</h6>
+                            <h6>4.1 - Tipo de Reparacion</h6>
                             <br />
                             <v-select
                                 v-model="seleccionReparacion"
@@ -232,18 +211,7 @@
                                 "
                             ></v-select>
                             <br />
-                            <h6>5.2 - Categoria</h6>
-                            <br />
-                            <v-select
-                                v-model="seleccionCategoria"
-                                placeholder="Seleccione Categoria"
-                                class="w-full select-large"
-                                label="des_categoria"
-                                :options="listadoCategoria"
-                                @input="arrayCategoria(seleccionCategoria.id)"
-                            ></v-select>
-                            <br />
-                            <h6>5.3 - Estado Ticket</h6>
+                            <h6>4.2 - Estado Ticket</h6>
                             <br />
                             <v-select
                                 v-model="seleccionEstado"
@@ -253,23 +221,6 @@
                                 :options="listadoEstado"
                                 @input="arrayEstado(seleccionEstado.id)"
                             ></v-select>
-                            <br />
-                            <h6>5.4 - Titulo del problema</h6>
-                            <br />
-                            <vs-input
-                                placeholder="Ej. Falla de red en equipo x"
-                                v-model="gestionTicket.tituloP"
-                                class="w-full"
-                            />
-                            <br />
-                            <h6>5.5 - Descripcion del problema</h6>
-                            <br />
-                            <quill-editor
-                                v-model="gestionTicket.descripcionP"
-                                :options="editorOption"
-                            >
-                                <div id="toolbar" slot="toolbar"></div>
-                            </quill-editor>
                         </div>
                     </div>
                 </vx-card>
@@ -279,16 +230,16 @@
                 <div class="vx-row">
                     <div class="vx-col sm:w-2/3 w-full ml-auto">
                         <vs-button
-                            color="warning"
+                            color="primary"
                             class="mb-2"
                             @click="probando"
                             >Limpiar</vs-button
                         >
                         <vs-button
                             class="mr-3 mb-2"
-                            color="success"
+                            color="warning"
                             @click="validarFormulario"
-                            >Enviar</vs-button
+                            >Modificar</vs-button
                         >
                     </div>
                 </div>
@@ -314,22 +265,8 @@ import router from "@/router";
 
 export default {
     data: () => ({
-        editorOption: {
-            modules: {
-                toolbar: [
-                    ["bold", "italic", "underline", "strike"],
-                    ["blockquote", "code-block"],
-                    [{ header: 1 }, { header: 2 }],
-                    [{ list: "ordered" }, { list: "bullet" }],
-                    [{ indent: "-1" }, { indent: "+1" }],
-                    [{ direction: "rtl" }],
-                    [{ font: [] }],
-                    [{ align: [] }],
-                    ["clean"]
-                ]
-            }
-        },
         horasCalculadas: 0,
+        colorLoading: "#ff8000",
         diaCalculado: 0,
         format: "d MMMM yyyy",
         nombre: localStorage.getItem("nombre"),
@@ -355,8 +292,10 @@ export default {
             enableSeconds: true,
             noCalendar: true
         },
+        colorLoading: "#ff8000",
         listadoEdificios: [],
         datosSolicitud: [],
+        datosTicketAsignado: [],
         listadoServicios: [],
         listadoUnidadEsp: [],
         listadoTemporalServicios: [],
@@ -369,10 +308,7 @@ export default {
         listadoApoyo3: [],
         listadoEstado: [],
         listadoCorreo: [],
-        listadoCategoria: [],
-        listadoUsuarios: [],
         gestionTicket: {
-            id_user: 0,
             uuid: "",
             id_solicitud: 0,
             id_edificio: 2,
@@ -385,23 +321,16 @@ export default {
             idApoyo1: 5,
             idApoyo2: 5,
             idApoyo3: 5,
-            fechaInicio: null,
+            fechaCambiada: null,
             fechaTermino: null,
-            horaInicio: null,
+            horaCambiada: null,
             horaTermino: null,
             horasEjecucion: 0,
-            diasEjecucion: 0,
-            tituloP: "",
-            descripcionP: "",
-            id_categoria: 0
+            diasEjecucion: 0
         },
         seleccionEdificio: {
             id: 0,
             descripcionEdificio: "Seleccione Edificio"
-        },
-        seleccionUsuario: {
-            id: 0,
-            nombre: "Seleccione Usuario"
         },
         seleccionServicio: {
             id: 0,
@@ -428,29 +357,25 @@ export default {
             tra_nombre_apellido: "Seleccione al Trabajador"
         },
         seleccionApoyo1: {
-            id: 4,
+            id: 5,
             tra_nombre_apellido: "Sin Asignar"
         },
         seleccionApoyo2: {
-            id: 4,
+            id: 5,
             tra_nombre_apellido: "Sin Asignar"
         },
         seleccionApoyo3: {
-            id: 4,
+            id: 5,
             tra_nombre_apellido: "Sin Asignar"
-        },
-        seleccionCategoria: {
-            id: 0,
-            des_categoria: "Seleccione Categoria"
         },
         variablePrueba: 0,
         mensajeError: "",
-        colorLoading: "#ff8000",
+
         localVal: "http://127.0.0.1:8000"
     }),
     computed: {
         calcularHorasTrabajo() {
-            this.hora1 = moment(this.gestionTicket.horaInicio, "HH:mm");
+            this.hora1 = moment(this.gestionTicket.horaCambiada, "HH:mm");
             this.hora2 = moment(this.gestionTicket.horaTermino, "HH:mm");
             this.gestionTicket.horasEjecucion = moment
                 .duration(this.hora2 - this.hora1)
@@ -458,7 +383,7 @@ export default {
             return this.gestionTicket.horasEjecucion;
         },
         diasCalculados() {
-            this.fecha1 = moment(this.gestionTicket.fechaInicio);
+            this.fecha1 = moment(this.gestionTicket.fechaCambiada);
             this.fecha2 = moment(this.gestionTicket.fechaTermino);
             this.gestionTicket.diasEjecucion = this.fecha2.diff(
                 this.fecha1,
@@ -596,13 +521,6 @@ export default {
             });
             this.seleccionTrabajador = b;
         },
-        cargarCategoria() {
-            this.csrf_token;
-
-            axios.get(this.localVal + "/api/Agente/GetCategoria").then(res => {
-                this.listadoCategoria = res.data;
-            });
-        },
         arrayApoyo1(id) {
             let c = this.listadoApoyo1;
             let b = [];
@@ -616,7 +534,6 @@ export default {
             });
             this.seleccionApoyo1 = b;
         },
-
         arrayApoyo2(id) {
             let c = this.listadoApoyo2;
             let b = [];
@@ -643,19 +560,6 @@ export default {
             });
             this.seleccionApoyo3 = b;
         },
-        arrayCategoria(id) {
-            let c = this.listadoCategoria;
-            let b = [];
-            var a = 0;
-
-            c.forEach((value, index) => {
-                a = value.id;
-                if (a == id) {
-                    b.push(value);
-                }
-            });
-            this.seleccionCategoria = b;
-        },
         onFromChange(selectedDates, dateStr, instance) {
             this.$set(this.configTodateTimePicker, "minDate", dateStr);
         },
@@ -665,11 +569,6 @@ export default {
         cargarEdificios() {
             axios.get(this.localVal + "/api/Usuario/GetEdificios").then(res => {
                 this.listadoEdificios = res.data;
-            });
-        },
-        cargarUsuarios() {
-            axios.get(this.localVal + "/api/Agente/getUsuarios").then(res => {
-                this.listadoUsuarios = res.data;
             });
         },
         cargarServicios() {
@@ -701,62 +600,43 @@ export default {
                 .get(this.localVal + "/api/Agente/GetTrabajadores")
                 .then(res => {
                     this.listadoTrabajadores = res.data;
-
-                    this.cargarApoyosArray(this.listadoTrabajadores);
+                    this.listadoApoyo1 = res.data;
+                    this.listadoApoyo2 = res.data;
+                    this.listadoApoyo3 = res.data;
                 });
-        },
-        cargarApoyosArray(listadoApoyo) {
-            let c = listadoApoyo;
-            this.listadoApoyo1 = listadoApoyo;
-            this.listadoApoyo2 = listadoApoyo;
-            this.listadoApoyo3 = listadoApoyo;
-            let b = [];
-            var a = 0;
-
-            c.forEach((value, index) => {
-                if (999 == value.id) {
-                    b.push(value);
-                }
-            });
-            this.seleccionApoyo1 = b;
-            this.seleccionApoyo2 = b;
-            this.seleccionApoyo3 = b;
         },
         cargarEstado() {
             axios.get(this.localVal + "/api/Agente/GetEstado").then(res => {
                 this.listadoEstado = res.data;
             });
         },
+        cargaSolicitudEspecifica() {
+            let id = this.$route.params.id;
+            axios
+                .get(this.localVal + `/api/Usuario/TraerSolicitud/${id}`)
+                .then(res => {
+                    this.datosSolicitud = res.data;
+                    /* this.cargaEstado();
+                    this.cargaTipoReparacion();
+                    this.cargarUSE(); */
+                    this.cargarInicial();
+                });
+        },
         errorDrop(mensajeError) {
             this.$vs.notify({
                 title: "Falto seleccionar " + mensajeError,
                 text: "Seleccione " + mensajeError,
                 color: "danger",
-                position: "top-right"
-            });
-        },
-        errorTitulo(mensajeError) {
-            this.$vs.notify({
-                title: mensajeError,
-                text: "Debe escribir un titulo superior a 10 caracteres",
-                color: "danger",
-                position: "top-right"
-            });
-        },
-        errorDescripcion(mensajeError) {
-            this.$vs.notify({
-                title: mensajeError,
-                text: "Debe escribir una descripcion superior a 15 caracteres",
-                color: "danger",
-                position: "top-right"
+                position: "top-right",
+                fixed: true
             });
         },
         mensajeGuardado() {
             this.$vs.notify({
                 time: 5000,
-                title: "Ticket Creado",
+                title: "Ticket Modificado",
                 text:
-                    "Ticket creado correctamente, Retornara a la pagina anterior",
+                    "A sido Modificado correctamente, Retornara a la pagina anterior",
                 color: "success",
                 position: "top-right"
             });
@@ -769,9 +649,6 @@ export default {
                     this.errorDrop(this.mensajeError);
                 } else if (this.seleccionServicio[0].id == 0) {
                     this.mensajeError = "el servicio";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionUsuario.id == 0) {
-                    this.mensajeError = "el usuario";
                     this.errorDrop(this.mensajeError);
                 } else if (this.seleccionUnidadEsp[0].id == 0) {
                     this.mensajeError = "la Unidad especifica";
@@ -815,22 +692,8 @@ export default {
                 } else if (this.gestionTicket.diasEjecucion == 0) {
                     this.mensajeError = "Los dias calculados no pueden ser 0";
                     this.errorDrop(this.mensajeError);
-                } else if (
-                    this.gestionTicket.tituloP.trim() === "" ||
-                    this.gestionTicket.tituloP.length < 10
-                ) {
-                    this.mensajeError =
-                        "El titulo no puede ser menor a 10 caracteres";
-                    this.errorTitulo(this.mensajeError);
-                } else if (
-                    this.gestionTicket.descripcionP.trim() === "" ||
-                    this.gestionTicket.descripcionP.length < 15
-                ) {
-                    this.mensajeError =
-                        "La descripcion no puede ser menor a 15 caracteres";
-                    this.errorDescripcion(this.mensajeError);
                 } else {
-                    this.guardarFormulario();
+                    this.ModificarFormulario();
                 }
             } catch (error) {
                 if (this.seleccionEdificio.id == 0) {
@@ -838,9 +701,6 @@ export default {
                     this.errorDrop(this.mensajeError);
                 } else if (this.seleccionServicio.id == 0) {
                     this.mensajeError = "el servicio";
-                    this.errorDrop(this.mensajeError);
-                } else if (this.seleccionUsuario.id == 0) {
-                    this.mensajeError = "el usuario";
                     this.errorDrop(this.mensajeError);
                 } else if (this.seleccionUnidadEsp.id == 0) {
                     this.mensajeError = "la Unidad especifica";
@@ -884,50 +744,111 @@ export default {
                 } else if (this.gestionTicket.diasEjecucion == 0) {
                     this.mensajeError = "Los dias calculados no pueden ser 0";
                     this.errorDrop(this.mensajeError);
-                } else if (
-                    this.gestionTicket.tituloP.trim() === "" ||
-                    this.gestionTicket.tituloP.length < 10
-                ) {
-                    this.mensajeError =
-                        "El titulo no puede ser menor a 10 caracteres";
-                    this.errorTitulo(this.mensajeError);
-                } else if (
-                    this.gestionTicket.descripcionP.trim() === "" ||
-                    this.gestionTicket.descripcionP.length < 15
-                ) {
-                    this.mensajeError =
-                        "La descripcion no puede ser menor a 15 caracteres";
-                    this.errorDescripcion(this.mensajeError);
                 } else {
-                    this.guardarFormulario();
+                    this.ModificarFormulario();
                 }
             }
         },
-        guardarFormulario() {
-            this.gestionTicket.id_user = this.seleccionUsuario.id;
-            this.gestionTicket.id_edificio = this.seleccionEdificio[0].id;
-            this.gestionTicket.id_servicio = this.seleccionServicio[0].id;
-            this.gestionTicket.id_ubicacionEx = this.seleccionUnidadEsp[0].id;
-            this.gestionTicket.id_tipoReparacion = this.seleccionReparacion[0].id;
-            this.gestionTicket.id_estado = this.seleccionEstado[0].id;
-            this.gestionTicket.id_supervisor = this.seleccionSupervisor[0].id;
-            this.gestionTicket.id_trabajador = this.seleccionTrabajador[0].id;
-            this.gestionTicket.idApoyo1 = this.seleccionApoyo1[0].id;
-            this.gestionTicket.idApoyo2 = this.seleccionApoyo2[0].id;
-            this.gestionTicket.idApoyo3 = this.seleccionApoyo3[0].id;
-            this.gestionTicket.id_categoria = this.seleccionCategoria[0].id;
+        ModificarFormulario() {
+            var hoy = new Date();
 
-            const ticket = this.gestionTicket;
-            this.openLoadingColor();
-            axios
-                .post(this.localVal + "/api/Agente/PostNuevoTicket", ticket)
-                .then(res => {
-                    const ticketServer = res.data;
-                    this.mensajeGuardado();
-                    setTimeout(() => {
-                        router.back();
-                    }, 5000);
-                });
+            if (this.seleccionEdificio[0].id == 0) {
+                this.mensajeError = "el Edificio";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionServicio[0].id == 0) {
+                this.mensajeError = "el servicio";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionUnidadEsp[0].id == 0) {
+                this.mensajeError = "la Unidad especifica";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionReparacion[0].id == 0) {
+                this.mensajeError = "el tipo de reparacion";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionEstado[0].id == 0) {
+                this.mensajeError = "el estado";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionSupervisor[0].id == 0) {
+                this.mensajeError = "el supervisor";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionTrabajador[0].id == 0) {
+                this.mensajeError = "el trabajador";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionApoyo1[0].id == 0) {
+                this.mensajeError = "el apoyo 1";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionApoyo2[0].id == 0) {
+                this.mensajeError = "el apoyo 2";
+                this.errorDrop(this.mensajeError);
+            } else if (this.seleccionApoyo3[0].id == 0) {
+                this.mensajeError = "el apoyo 3";
+                this.errorDrop(this.mensajeError);
+            } else if (
+                this.gestionTicket.fechaCambiada == null ||
+                this.gestionTicket.fechaCambiada < hoy.getDate()
+            ) {
+                this.mensajeError = "la fecha de inicio ";
+                this.errorDrop(this.mensajeError);
+            } else if (
+                this.gestionTicket.fechaTermino == null ||
+                this.gestionTicket.fechaTermino < hoy.getDate()
+            ) {
+                this.mensajeError = "la fecha de termino";
+                this.errorDrop(this.mensajeError);
+            } else if (this.gestionTicket.horasEjecucion == 0) {
+                this.mensajeError = "Las horas calculadas no pueden ser 0";
+                this.errorDrop(this.mensajeError);
+            } else if (this.gestionTicket.diasEjecucion == 0) {
+                this.mensajeError = "Los dias calculados no pueden ser 0";
+                this.errorDrop(this.mensajeError);
+            } else {
+                let uuid = this.$route.params.uuid;
+                this.gestionTicket.uuid = uuid;
+                let id = this.$route.params.id;
+                this.gestionTicket.id_solicitud = id;
+                this.gestionTicket.id_edificio = this.seleccionEdificio[0].id;
+                this.gestionTicket.id_servicio = this.seleccionServicio[0].id;
+                this.gestionTicket.id_ubicacionEx = this.seleccionUnidadEsp[0].id;
+                this.gestionTicket.id_tipoReparacion = this.seleccionReparacion[0].id;
+                this.gestionTicket.id_estado = this.seleccionEstado[0].id;
+                this.gestionTicket.id_supervisor = this.seleccionSupervisor[0].id;
+                this.gestionTicket.id_trabajador = this.seleccionTrabajador[0].id;
+                this.gestionTicket.idApoyo1 = this.seleccionApoyo1[0].id;
+                this.gestionTicket.idApoyo2 = this.seleccionApoyo2[0].id;
+                this.gestionTicket.idApoyo3 = this.seleccionApoyo3[0].id;
+
+                const ticket = this.gestionTicket;
+                console.log(ticket);
+                this.openLoadingColor();
+                (this.gestionTicket = {
+                    uuid: "",
+                    id_solicitud: 0,
+                    id_edificio: 2,
+                    id_servicio: 2,
+                    id_ubicacionEx: 3,
+                    id_tipoReparacion: 3,
+                    id_estado: 1,
+                    id_supervisor: 4,
+                    id_trabajador: 5,
+                    idApoyo1: 5,
+                    idApoyo2: 5,
+                    idApoyo3: 5,
+                    fechaCambiada: null,
+                    fechaTermino: null,
+                    horaCambiada: null,
+                    horaTermino: null,
+                    horasEjecucion: 0,
+                    diasEjecucion: 0
+                }),
+                    axios
+                        .post(this.localVal + "/api/Agente/PutTicket", ticket)
+                        .then(res => {
+                            const ticketServer = res.data;
+                            this.mensajeGuardado();
+                            setTimeout(() => {
+                                router.back();
+                            }, 5000);
+                        });
+            }
         },
         openLoadingColor() {
             this.$vs.loading({ color: this.colorLoading });
@@ -935,8 +856,183 @@ export default {
                 this.$vs.loading.close();
             }, 2000);
         },
+        cargaEstado() {
+            var datoidEstado = this.datosSolicitud.id_estado;
+            let c = this.listadoEstado;
+            let b = [];
+            var a = 0;
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == datoidEstado) {
+                    b.push(value);
+                }
+            });
+            this.seleccionEstado = b;
+        },
+
+        cargaTipoReparacion() {
+            var datoidRep = this.datosSolicitud.id_tipoReparacion;
+            let c = this.listadoTipoRep;
+            let b = [];
+            var a = 0;
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == datoidRep) {
+                    b.push(value);
+                }
+            });
+            this.seleccionReparacion = b;
+        },
+        cargarUSE() {
+            var datoidServicio = this.datosSolicitud.id_servicio;
+            var datoidEdificio = this.datosSolicitud.id_edificio;
+            var datoidUbicacion = this.datosSolicitud.id_ubicacionEx;
+            let c = this.listadoUnidadEsp;
+            let b = [];
+            var a = 0;
+            c.forEach((value, index) => {
+                a = value.id;
+
+                if (a == datoidUbicacion) {
+                    b.push(value);
+                }
+            });
+
+            this.seleccionUnidadEsp = b;
+
+            b = [];
+            c = this.listadoServicios;
+
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == datoidServicio) {
+                    b.push(value);
+                }
+            });
+
+            this.seleccionServicio = b;
+
+            c = this.listadoEdificios;
+            b = [];
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == datoidEdificio) {
+                    b.push(value);
+                }
+            });
+
+            this.seleccionEdificio = b;
+        },
+        cargaTicketAsignado() {
+            let id = this.$route.params.id;
+            axios
+                .get(this.localVal + `/api/Agente/GetTicketAsignado/${id}`)
+                .then(res => {
+                    this.datosTicketAsignado = res.data;
+                    console.log(this.datosTicketAsignado);
+                    var datoidSupervisor = this.datosTicketAsignado
+                        .id_supervisor;
+                    var datoidTrabajador = this.datosTicketAsignado
+                        .id_trabajador;
+                    var datoidApoyo1 = this.datosTicketAsignado.idApoyo1;
+                    var datoidApoyo2 = this.datosTicketAsignado.idApoyo2;
+                    var datoidApoyo3 = this.datosTicketAsignado.idApoyo3;
+                    this.cargarSTA(
+                        datoidSupervisor,
+                        datoidTrabajador,
+                        datoidApoyo1,
+                        datoidApoyo2,
+                        datoidApoyo3
+                    );
+                });
+        },
+        cargarSTA(
+            datoidSupervisor,
+            datoidTrabajador,
+            datoidApoyo1,
+            datoidApoyo2,
+            datoidApoyo3
+        ) {
+            let c = this.listadoSupervisores;
+            let b = [];
+            var a = 0;
+            c.forEach((value, index) => {
+                a = value.id;
+
+                if (a == datoidSupervisor) {
+                    b.push(value);
+                }
+            });
+
+            this.seleccionSupervisor = b;
+
+            b = [];
+            c = this.listadoTrabajadores;
+
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == datoidTrabajador) {
+                    b.push(value);
+                }
+            });
+
+            this.seleccionTrabajador = b;
+
+            c = this.listadoApoyo1;
+            b = [];
+
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == datoidApoyo1) {
+                    b.push(value);
+                }
+            });
+            if (b.length <= 0) {
+            } else {
+                this.seleccionApoyo1 = b;
+            }
+
+            c = this.listadoApoyo2;
+            b = [];
+            console.log(datoidApoyo2);
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == datoidApoyo2) {
+                    b.push(value);
+                }
+            });
+
+            if (b.length <= 0) {
+            } else {
+                this.seleccionApoyo2 = b;
+            }
+
+            this.seleccionApoyo2 = b;
+
+            c = this.listadoApoyo3;
+            b = [];
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == datoidApoyo3) {
+                    b.push(value);
+                }
+            });
+
+            if (b.length <= 0) {
+            } else {
+                this.seleccionApoyo3 = b;
+            }
+        },
+        cargarInicial() {
+            this.cargaEstado();
+            this.cargaTipoReparacion();
+            this.cargarUSE();
+        },
         probando() {
-            console.log(this.seleccionUsuario);
+            console.log(this.seleccionEstado);
+            console.log(this.seleccionApoyo1);
+            console.log(this.seleccionApoyo2);
+            console.log(this.seleccionApoyo3);
         }
     },
     created() {
@@ -947,8 +1043,8 @@ export default {
         this.cargarSupervisores();
         this.cargarTrabajadores();
         this.cargarEstado();
-        this.cargarUsuarios();
-        this.cargarCategoria();
+        this.cargaSolicitudEspecifica();
+        this.cargaTicketAsignado();
     },
     async beforeMount() {},
     components: {

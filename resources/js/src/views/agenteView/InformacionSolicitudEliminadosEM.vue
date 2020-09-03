@@ -31,7 +31,7 @@
             </vs-alert>
             <!-- Informacion General Ticket -->
             <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card :title="titulo">
+                <vx-card :title="titulo" code-toggler>
                     <div class="vx-row mb-12">
                         <div class="vx-col w-full mt-5">
                             <vs-input
@@ -71,34 +71,10 @@
                     </div>
                 </vx-card>
             </div>
-            <!-- Actualizar Seguimiento -->
-            <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="2. Actualizar Seguimiento">
-                    <div class="vx-row mb-12">
-                        <div class="vx-col w-full mt-5">
-                            <h6>2.1 - Descripcion del problema</h6>
-                            <br />
-                            <quill-editor
-                                v-model="seguimientos.descripcionSeguimiento"
-                                :options="editorOption"
-                            >
-                                <div id="toolbar" slot="toolbar"></div>
-                            </quill-editor>
-                            <br />
-                            <vs-button
-                                type="gradient"
-                                @click="guardarSeguimiento"
-                                >Actualizar</vs-button
-                            >
 
-                            <br />
-                        </div>
-                    </div>
-                </vx-card>
-            </div>
             <!-- Lista Seguimiento -->
             <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="Respuestas Seguimiento">
+                <vx-card title="Respuestas Seguimiento" code-toggler>
                     <div class="vx-row">
                         <div class="vx-col sm:w-full w-full">
                             <vs-list
@@ -107,14 +83,10 @@
                                 max-items="2"
                                 pagination
                             >
-                                <vx-card
+                                <vs-list-item
                                     :title="tr.nombre"
-                                    title-color="primary"
-                                >
-                                    <p v-html="tr.descripcionSeguimiento">
-                                        {{ tr.descripcionSeguimiento }}
-                                    </p>
-                                </vx-card>
+                                    :subtitle="tr.descripcionSeguimiento"
+                                ></vs-list-item>
                             </vs-list>
                         </div>
                     </div>
@@ -132,9 +104,6 @@ import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import { quillEditor } from "vue-quill-editor";
 export default {
-    components: {
-        quillEditor
-    },
     data: () => ({
         editorOption: {
             modules: {

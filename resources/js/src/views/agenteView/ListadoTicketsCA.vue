@@ -191,14 +191,14 @@ export default {
 
         cargarSolicitudes() {
             axios
-                .get(this.localVal + "/api/Agente/GetSolicitudTicketsIND")
+                .get(this.localVal + "/api/Agente/GetSolicitudTicketsCA")
                 .then(res => {
                     this.solicitudes = res.data;
                 });
         },
         detalleSolicitud(id, uuid) {
             this.$router.push({
-                name: "InformacionSolicitudAgenteIND",
+                name: "InformacionSolicitudAgenteCA",
                 params: {
                     id: `${id}`,
                     uuid: `${uuid}`
@@ -207,7 +207,7 @@ export default {
         },
         detalleSolicitudEliminados(id, uuid) {
             this.$router.push({
-                name: "InformacionSolicitudEliminadosIND",
+                name: "InformacionSolicitudEliminadosCA",
                 params: {
                     id: `${id}`,
                     uuid: `${uuid}`
@@ -229,7 +229,7 @@ export default {
                         });
                     } else {
                         this.$router.push({
-                            name: "AsignarSolicitudAgenteIND",
+                            name: "AsignarSolicitudAgenteCA",
                             params: {
                                 id: `${id}`,
                                 uuid: `${uuid}`
@@ -255,7 +255,7 @@ export default {
                         });
                     } else {
                         this.$router.push({
-                            name: "ModificarSolicitudAgenteIND",
+                            name: "ModificarSolicitudAgenteCA",
                             params: {
                                 id: `${id}`,
                                 uuid: `${uuid}`

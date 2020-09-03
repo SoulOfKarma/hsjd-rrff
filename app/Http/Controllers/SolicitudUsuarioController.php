@@ -118,7 +118,7 @@ class SolicitudUsuarioController extends Controller
     {
         $uuid = Uuid::generate()->string;
         $response = SolicitudTickets::create(array_merge($request->all(), ['uuid' => $uuid]));
-        SeguimientoSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $response->id, 'descripcionSeguimiento' => 'Solicitud creada']));
+        SeguimientoSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $response->id, 'descripcionSeguimiento' => 'Ticket creado']));
 
 
 

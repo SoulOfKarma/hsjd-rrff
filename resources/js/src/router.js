@@ -125,10 +125,46 @@ const router = new Router({
                         import ('./views/agenteView/InformacionSolicitud.vue')
                 },
                 {
+                    path: '/agenteView/InformacionSolicitudCA',
+                    name: 'InformacionSolicitudAgenteCA',
+                    component: () =>
+                        import ('./views/agenteView/InformacionSolicitudCA.vue')
+                },
+                {
+                    path: '/agenteView/InformacionSolicitudEM',
+                    name: 'InformacionSolicitudAgenteEM',
+                    component: () =>
+                        import ('./views/agenteView/InformacionSolicitudEM.vue')
+                },
+                {
+                    path: '/agenteView/InformacionSolicitudIND',
+                    name: 'InformacionSolicitudAgenteIND',
+                    component: () =>
+                        import ('./views/agenteView/InformacionSolicitudIND.vue')
+                },
+                {
                     path: '/agenteView/InformacionSolicitudEliminados',
                     name: 'InformacionSolicitudEliminados',
                     component: () =>
                         import ('./views/agenteView/InformacionSolicitudEliminados.vue')
+                },
+                {
+                    path: '/agenteView/InformacionSolicitudEliminadosCA',
+                    name: 'InformacionSolicitudEliminadosCA',
+                    component: () =>
+                        import ('./views/agenteView/InformacionSolicitudEliminadosCA.vue')
+                },
+                {
+                    path: '/agenteView/InformacionSolicitudEliminadosEM',
+                    name: 'InformacionSolicitudEliminadosEM',
+                    component: () =>
+                        import ('./views/agenteView/InformacionSolicitudEliminadosEM.vue')
+                },
+                {
+                    path: '/agenteView/InformacionSolicitudEliminadosIND',
+                    name: 'InformacionSolicitudEliminadosIND',
+                    component: () =>
+                        import ('./views/agenteView/InformacionSolicitudEliminadosIND.vue')
                 },
                 {
                     path: '/agenteView/DetalleTicket',
@@ -161,10 +197,22 @@ const router = new Router({
                         import ('./views/agenteView/ListadoTicketsIND.vue')
                 },
                 {
+                    path: '/agenteView/ListadoTicketsCA',
+                    name: 'ListadoTicketsCA',
+                    component: () =>
+                        import ('./views/agenteView/ListadoTicketsCA.vue')
+                },
+                {
                     path: '/agenteView/GenerarTicketIND',
                     name: 'GenerarTicketIND',
                     component: () =>
                         import ('./views/agenteView/GenerarTicketIND.vue')
+                },
+                {
+                    path: '/agenteView/GenerarTicketCA',
+                    name: 'GenerarTicketCA',
+                    component: () =>
+                        import ('./views/agenteView/GenerarTicketCA.vue')
                 },
                 {
                     path: '/agenteView/CalendarioSolicitudesIND',
@@ -173,16 +221,58 @@ const router = new Router({
                         import ('./views/agenteView/CalendarioSolicitudesIND.vue')
                 },
                 {
+                    path: '/agenteView/CalendarioSolicitudesCA',
+                    name: 'CalendarioSolicitudesCA',
+                    component: () =>
+                        import ('./views/agenteView/CalendarioSolicitudesCA.vue')
+                },
+                {
                     path: '/agenteView/FormularioAsignar/:id,:uuid',
                     name: 'AsignarSolicitudAgente',
                     component: () =>
                         import ('./views/agenteView/FormularioAsignar.vue')
                 },
                 {
+                    path: '/agenteView/FormularioAsignarCA/:id,:uuid',
+                    name: 'AsignarSolicitudAgenteCA',
+                    component: () =>
+                        import ('./views/agenteView/FormularioAsignarCA.vue')
+                },
+                {
+                    path: '/agenteView/FormularioAsignarEM/:id,:uuid',
+                    name: 'AsignarSolicitudAgenteEM',
+                    component: () =>
+                        import ('./views/agenteView/FormularioAsignarEM.vue')
+                },
+                {
+                    path: '/agenteView/FormularioAsignarIND/:id,:uuid',
+                    name: 'AsignarSolicitudAgenteIND',
+                    component: () =>
+                        import ('./views/agenteView/FormularioAsignarIND.vue')
+                },
+                {
                     path: '/agenteView/FormularioModificar/:id,:uuid',
                     name: 'ModificarSolicitudAgente',
                     component: () =>
                         import ('./views/agenteView/FormularioModificar.vue')
+                },
+                {
+                    path: '/agenteView/FormularioModificarEM/:id,:uuid',
+                    name: 'ModificarSolicitudAgenteEM',
+                    component: () =>
+                        import ('./views/agenteView/FormularioModificarEM.vue')
+                },
+                {
+                    path: '/agenteView/FormularioModificarCA/:id,:uuid',
+                    name: 'ModificarSolicitudAgenteCA',
+                    component: () =>
+                        import ('./views/agenteView/FormularioModificarCA.vue')
+                },
+                {
+                    path: '/agenteView/FormularioModificarIND/:id,:uuid',
+                    name: 'ModificarSolicitudAgenteIND',
+                    component: () =>
+                        import ('./views/agenteView/FormularioModificarIND.vue')
                 }
 
 

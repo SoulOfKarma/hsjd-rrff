@@ -86,7 +86,17 @@
                                 :options="listadoTipoRep"
                             ></v-select>
                             <br />
-                            <h6>2.2 - Titulo del Problema</h6>
+                            <h6>2.2 - Categoria</h6>
+                            <br />
+                            <v-select
+                                v-model="seleccionCategoria"
+                                placeholder="Seleccione Categoria"
+                                class="w-full select-large"
+                                label="des_categoria"
+                                :options="listadoCategoria"
+                            ></v-select>
+                            <br />
+                            <h6>2.3 - Titulo del Problema</h6>
                             <br />
                             <vs-input
                                 placeholder="Ej. Falla de red en equipo x"
@@ -101,7 +111,7 @@
                                 >{{ errors.first("Titulo") }}</span
                             >
                             <br />
-                            <h6>2.3 - Descripcion del Problema</h6>
+                            <h6>2.4 - Descripcion del Problema</h6>
                             <br />
                             <quill-editor
                                 v-model="solicitud.descripcionP"
@@ -179,6 +189,7 @@ export default {
         listadoUnidadEsp: [],
         listadoTipoRep: [],
         listadoCorreo: [],
+        listadoCategoria: [],
         localVal: "http://127.0.0.1:8000",
         uuidC: "",
 
@@ -193,6 +204,7 @@ export default {
             id_ubicacionEx: 0,
             id_tipoReparacion: 0,
             id_solicitud: 0,
+            id_categoria: 0,
             uuid: "",
             descripcionSeguimiento: "Solicitud creada"
         },
@@ -216,6 +228,10 @@ export default {
         seleccionReparacion: {
             id: 0,
             descripcionTipoReparacion: "Seleccione Tipo de Reparacion"
+        },
+        seleccionCategoria: {
+            id: 0,
+            des_categoria: "Seleccione Categoria"
         }
     }),
     computed: {
@@ -310,6 +326,13 @@ export default {
                 this.listadoServicios = res.data;
             });
         },
+        cargarCategoria() {
+            this.csrf_token;
+
+            axios.get(this.localVal + "/api/Usuario/GetCategoria").then(res => {
+                this.listadoCategoria = res.data;
+            });
+        },
         cargarUnidadEsp() {
             this.csrf_token;
 
@@ -384,11 +407,15 @@ export default {
             } else if (this.seleccionReparacion.id == 0) {
                 this.mensajeError = "el tipo de reparacion";
                 this.errorDrop(this.mensajeError);
+            } else if (this.seleccionCategoria.id == 0) {
+                this.mensajeError = "el tipo de categoria";
+                this.errorDrop(this.mensajeError);
             } else {
                 this.solicitud.id_edificio = this.seleccionEdificio[0].id;
                 this.solicitud.id_servicio = this.seleccionServicio[0].id;
                 this.solicitud.id_ubicacionEx = this.seleccionUnidadEsp[0].id;
                 this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
+                this.solicitud.id_categoria = this.seleccionCategoria.id;
                 const solicitudNueva = this.solicitud;
                 this.openLoadingColor();
                 (this.solicitud = {
@@ -399,7 +426,8 @@ export default {
                     id_edificio: 0,
                     id_servicio: 0,
                     id_ubicacionEx: 0,
-                    id_tipoReparacion: 0
+                    id_tipoReparacion: 0,
+                    id_categoria: 0
                 }),
                     axios
                         .post(
@@ -431,6 +459,7 @@ export default {
         this.cargarEdificios();
         this.cargarServicios();
         this.cargarUnidadEsp();
+        this.cargarCategoria();
         this.cargarTipoRep();
     },
     components: {

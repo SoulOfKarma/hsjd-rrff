@@ -93,21 +93,21 @@ export default [{
         slug: 'home',
         icon: 'PlusCircleIcon',
         submenu: [{
-                url: '/agenteView/CalendarioSolicitudes',
+                url: '/agenteView/CalendarioSolicitudesCA',
                 name: 'Calendario',
-                slug: 'CalendarioSolicitudes',
+                slug: 'CalendarioSolicitudesCA',
                 icon: 'FileIcon'
             },
             {
-                url: '/agenteView/ListadoSolicitudes',
+                url: '/agenteView/ListadoTicketsCA',
                 name: 'Listado Tickets',
-                slug: 'ListadoSolicitudes',
+                slug: 'ListadoSolicitudesCA',
                 icon: 'FileIcon'
             },
             {
-                url: '/agenteView/GenerarTicket',
+                url: '/agenteView/GenerarTicketCA',
                 name: 'Generar Ticket',
-                slug: 'GenerarTicket',
+                slug: 'GenerarTicketCA',
                 icon: 'FileIcon'
             }
         ]
