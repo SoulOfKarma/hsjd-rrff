@@ -182,12 +182,145 @@ class GestionTicketController extends Controller
      */
     public function store(Request $request)
     {
-        //Insertando Ticket
-        $response2 = SolicitudTickets::where('id', $request->id_solicitud)
-            ->update(['id_edificio' => $request->id_edificio, 'id_servicio' => $request->id_servicio, 'id_ubicacionEx' => $request->id_ubicacionEx, 'id_tipoReparacion' => $request->id_tipoReparacion, 'id_estado' => $request->id_estado]);
+        try {
+            //Gestionando Correo
+            $nombre = $request->nombre;
+            $descripcionP = $request->descripcionP;
+            $id_solicitud = $request->id_solicitud;
+            $fecha = $request->fechaInicioFormateada;
+            $fechacreacion = $request->fechaCreacion;
+            $tituloP = $request->tituloP;
+            $nombreTrabajador = $request->desTrabajador;
+            $nombreSupervisor = $request->desSupervisor;
+            $desEstado = $request->desEstado;
+            $desApoyo1 = $request->desApoyo1;
+            $desApoyo2 = $request->desApoyo2;
+            $desApoyo3 = $request->desApoyo3;
 
-        $response = GestionSolicitudes::create($request->all());
-        return $response2;
+
+            SeguimientoSolicitudes::create($request->all());
+            //Insertando Ticket
+            $response2 = SolicitudTickets::where('id', $request->id_solicitud)
+                ->update(['id_edificio' => $request->id_edificio, 'id_servicio' => $request->id_servicio, 'id_ubicacionEx' => $request->id_ubicacionEx, 'id_tipoReparacion' => $request->id_tipoReparacion, 'id_estado' => $request->id_estado]);
+
+            $response = GestionSolicitudes::create($request->all());
+        } catch (\Throwable $th) {
+            log::info($th);
+        } finally {
+            Mail::send('/Mails/TicketAsignado', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
+                $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Asignacion de ticket');
+                $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
+            });
+            return $response;
+        }
+    }
+
+    public function AsignarTicketEM(Request $request)
+    {
+        try {
+            //Gestionando Correo
+            $nombre = $request->nombre;
+            $descripcionP = $request->descripcionP;
+            $id_solicitud = $request->id_solicitud;
+            $fecha = $request->fechaInicioFormateada;
+            $fechacreacion = $request->fechaCreacion;
+            $tituloP = $request->tituloP;
+            $nombreTrabajador = $request->desTrabajador;
+            $nombreSupervisor = $request->desSupervisor;
+            $desEstado = $request->desEstado;
+            $desApoyo1 = $request->desApoyo1;
+            $desApoyo2 = $request->desApoyo2;
+            $desApoyo3 = $request->desApoyo3;
+
+
+            SeguimientoSolicitudes::create($request->all());
+            //Insertando Ticket
+            $response2 = SolicitudTickets::where('id', $request->id_solicitud)
+                ->update(['id_edificio' => $request->id_edificio, 'id_servicio' => $request->id_servicio, 'id_ubicacionEx' => $request->id_ubicacionEx, 'id_tipoReparacion' => $request->id_tipoReparacion, 'id_estado' => $request->id_estado]);
+
+            $response = GestionSolicitudes::create($request->all());
+        } catch (\Throwable $th) {
+            log::info($th);
+        } finally {
+            Mail::send('/Mails/TicketAsignado', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
+                $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Asignacion de ticket');
+                $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
+            });
+            return $response;
+        }
+    }
+
+    public function AsignarTicketIND(Request $request)
+    {
+        try {
+            //Gestionando Correo
+            $nombre = $request->nombre;
+            $descripcionP = $request->descripcionP;
+            $id_solicitud = $request->id_solicitud;
+            $fecha = $request->fechaInicioFormateada;
+            $fechacreacion = $request->fechaCreacion;
+            $tituloP = $request->tituloP;
+            $nombreTrabajador = $request->desTrabajador;
+            $nombreSupervisor = $request->desSupervisor;
+            $desEstado = $request->desEstado;
+            $desApoyo1 = $request->desApoyo1;
+            $desApoyo2 = $request->desApoyo2;
+            $desApoyo3 = $request->desApoyo3;
+
+
+
+            SeguimientoSolicitudes::create($request->all());
+            //Insertando Ticket
+            $response2 = SolicitudTickets::where('id', $request->id_solicitud)
+                ->update(['id_edificio' => $request->id_edificio, 'id_servicio' => $request->id_servicio, 'id_ubicacionEx' => $request->id_ubicacionEx, 'id_tipoReparacion' => $request->id_tipoReparacion, 'id_estado' => $request->id_estado]);
+
+            $response = GestionSolicitudes::create($request->all());
+        } catch (\Throwable $th) {
+            log::info($th);
+        } finally {
+            Mail::send('/Mails/TicketAsignado', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
+                $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Asignacion de ticket');
+                $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
+            });
+            return $response;
+        }
+    }
+
+    public function AsignarTicketCA(Request $request)
+    {
+        try {
+            //Gestionando Correo
+            $nombre = $request->nombre;
+            $descripcionP = $request->descripcionP;
+            $id_solicitud = $request->id_solicitud;
+            $fecha = $request->fechaInicioFormateada;
+            $fechacreacion = $request->fechaCreacion;
+            $tituloP = $request->tituloP;
+            $nombreTrabajador = $request->desTrabajador;
+            $nombreSupervisor = $request->desSupervisor;
+            $desEstado = $request->desEstado;
+            $desApoyo1 = $request->desApoyo1;
+            $desApoyo2 = $request->desApoyo2;
+            $desApoyo3 = $request->desApoyo3;
+
+
+
+
+            SeguimientoSolicitudes::create($request->all());
+            //Insertando Ticket
+            $response2 = SolicitudTickets::where('id', $request->id_solicitud)
+                ->update(['id_edificio' => $request->id_edificio, 'id_servicio' => $request->id_servicio, 'id_ubicacionEx' => $request->id_ubicacionEx, 'id_tipoReparacion' => $request->id_tipoReparacion, 'id_estado' => $request->id_estado]);
+
+            $response = GestionSolicitudes::create($request->all());
+        } catch (\Throwable $th) {
+            log::info($th);
+        } finally {
+            Mail::send('/Mails/TicketAsignado', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
+                $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Asignacion de ticket');
+                $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
+            });
+            return $response;
+        }
     }
 
     public function getSolicitudUsuariosJoin()
@@ -250,6 +383,8 @@ class GestionTicketController extends Controller
         $fecha = $request->fechaInicio;
         $tituloP = $request->tituloP;
 
+        $descripcionSeguimiento = "Se a creado el Ticket N°" . $id_solicitud . " por el Usuario: " . $nombre;
+
         $idTrabajador = $request->id_trabajador;
         $idSupervisor = $request->id_supervisor;
 
@@ -259,11 +394,10 @@ class GestionTicketController extends Controller
         $nombreTrabajador = $trabajador->tra_nombre_apellido;
         $nombreSupervisor = $supervisor->sup_nombre_apellido;
 
-        log::info($nombreSupervisor);
-        log::info($nombreTrabajador);
+        SeguimientoSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento]));
 
         Mail::send('/Mails/TicketGeneradoAgente', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
-            $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Actualizacion de ticket');
+            $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Nueva Creacion de ticket');
             $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
         });
 
@@ -286,6 +420,8 @@ class GestionTicketController extends Controller
         $fecha = $request->fechaInicio;
         $tituloP = $request->tituloP;
 
+        $descripcionSeguimiento = "Se a creado el Ticket N°" . $id_solicitud . " por el Usuario: " . $nombre;
+
         $idTrabajador = $request->id_trabajador;
         $idSupervisor = $request->id_supervisor;
 
@@ -295,11 +431,10 @@ class GestionTicketController extends Controller
         $nombreTrabajador = $trabajador->tra_nombre_apellido;
         $nombreSupervisor = $supervisor->sup_nombre_apellido;
 
-        log::info($nombreSupervisor);
-        log::info($nombreTrabajador);
+        SeguimientoSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento]));
 
         Mail::send('/Mails/TicketGeneradoAgente', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
-            $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Actualizacion de ticket');
+            $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Nueva Creacion de ticket');
             $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
         });
 
@@ -322,6 +457,8 @@ class GestionTicketController extends Controller
         $fecha = $request->fechaInicio;
         $tituloP = $request->tituloP;
 
+        $descripcionSeguimiento = "Se a creado el Ticket N°" . $id_solicitud . " por el Usuario: " . $nombre;
+
         $idTrabajador = $request->id_trabajador;
         $idSupervisor = $request->id_supervisor;
 
@@ -331,11 +468,10 @@ class GestionTicketController extends Controller
         $nombreTrabajador = $trabajador->tra_nombre_apellido;
         $nombreSupervisor = $supervisor->sup_nombre_apellido;
 
-        log::info($nombreSupervisor);
-        log::info($nombreTrabajador);
+        SeguimientoSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento]));
 
         Mail::send('/Mails/TicketGeneradoAgente', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
-            $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Actualizacion de ticket');
+            $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Nueva Creacion de ticket');
             $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
         });
 
@@ -358,6 +494,8 @@ class GestionTicketController extends Controller
         $fecha = $request->fechaInicio;
         $tituloP = $request->tituloP;
 
+        $descripcionSeguimiento = "Se a creado el Ticket N°" . $id_solicitud . " por el Usuario: " . $nombre;
+
         $idTrabajador = $request->id_trabajador;
         $idSupervisor = $request->id_supervisor;
 
@@ -367,11 +505,10 @@ class GestionTicketController extends Controller
         $nombreTrabajador = $trabajador->tra_nombre_apellido;
         $nombreSupervisor = $supervisor->sup_nombre_apellido;
 
-        log::info($nombreSupervisor);
-        log::info($nombreTrabajador);
+        SeguimientoSolicitudes::create(array_merge($request->all(), ['uuid' => $uuid, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento]));
 
         Mail::send('/Mails/TicketGeneradoAgente', ['nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
-            $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Actualizacion de ticket');
+            $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Nueva Creacion de ticket');
             $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
         });
 
@@ -413,27 +550,251 @@ class GestionTicketController extends Controller
 
     }
 
+    public function ModificarCategoria(Request $request)
+    {
+        try {
+            SolicitudTickets::where('id', $request->idsolicitud)
+                ->where('uuid', $request->uuid)
+                ->update(['id_categoria' => $request->idCategoria]);
+
+            $seguimiento = new SeguimientoSolicitudes();
+
+            $seguimiento->id_solicitud = $request->idSolicitud;
+            $seguimiento->uuid = $request->uuid;
+            $seguimiento->descripcionSeguimiento = "El agente " . $request->nombre . " a derivado el Ticket N°" . $request->idSolicitud . " a " . $request->des_categoria . "";
+            $seguimiento->id_user = $request->id_user;
+
+            $seguimiento->save();
+
+            return true;
+        } catch (\Throwable $th) {
+            log::info($th);
+            return $th;
+        }
+    }
+
     public function modificarTicket(Request $request)
     {
-        //Modificando Ticket
-        $response2 = SolicitudTickets::where('uuid', $request->uuid)
-            ->where('id', $request->id_solicitud)
-            ->update([
-                'id_edificio' => $request->id_edificio, 'id_servicio' => $request->id_servicio,
-                'id_ubicacionEx' => $request->id_ubicacionEx, 'id_tipoReparacion' => $request->id_tipoReparacion,
-                'id_estado' => $request->id_estado
-            ]);
-        $response = GestionSolicitudes::where('uuid', $request->uuid)
-            ->where('id_solicitud', $request->id_solicitud)
-            ->update([
-                'id_supervisor' => $request->id_supervisor, 'id_trabajador' => $request->id_trabajador,
-                'idApoyo1' => $request->idApoyo1, 'idApoyo2' => $request->idApoyo2,
-                'idApoyo3' => $request->idApoyo3, 'horaCambiada' => $request->horaCambiada,
-                'fechaCambiada' => $request->fechaCambiada, 'horaTermino' => $request->horaTermino,
-                'fechaTermino' => $request->fechaTermino
-            ]);
+        try {
+            //Gestionando Correo
+            $nombre = $request->nombre;
+            $descripcionP = $request->descripcionP;
+            $id_solicitud = $request->id_solicitud;
+            $fecha = $request->fechaCambiadaFormateada;
+            $fechacreacion = $request->fechaCreacion;
+            $tituloP = $request->tituloP;
+            $nombreTrabajador = $request->desTrabajador;
+            $nombreSupervisor = $request->desSupervisor;
+            $desEstado = $request->desEstado;
+            $desApoyo1 = $request->desApoyo1;
+            $desApoyo2 = $request->desApoyo2;
+            $desApoyo3 = $request->desApoyo3;
+            $id_user = $request->id_user;
+            $descripcionSeguimiento = $request->descripcionSeguimiento;
 
-        return $response;
+            log::info($id_user);
+            log::info($descripcionSeguimiento);
+
+            SeguimientoSolicitudes::create($request->all());
+
+
+            $response2 = SolicitudTickets::where('uuid', $request->uuid)
+                ->where('id', $request->id_solicitud)
+                ->update([
+                    'id_edificio' => $request->id_edificio, 'id_servicio' => $request->id_servicio,
+                    'id_ubicacionEx' => $request->id_ubicacionEx, 'id_tipoReparacion' => $request->id_tipoReparacion,
+                    'id_estado' => $request->id_estado
+                ]);
+            $response = GestionSolicitudes::where('uuid', $request->uuid)
+                ->where('id_solicitud', $request->id_solicitud)
+                ->update([
+                    'id_supervisor' => $request->id_supervisor, 'id_trabajador' => $request->id_trabajador,
+                    'idApoyo1' => $request->idApoyo1, 'idApoyo2' => $request->idApoyo2,
+                    'idApoyo3' => $request->idApoyo3, 'horaCambiada' => $request->horaCambiada,
+                    'fechaCambiada' => $request->fechaCambiada, 'horaTermino' => $request->horaTermino,
+                    'fechaTermino' => $request->fechaTermino
+                ]);
+        } catch (\Throwable $th) {
+            log::info($th);
+        } finally {
+            Mail::send('/Mails/TicketModificadoAgente', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
+                $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Modificacion de ticket');
+                $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
+            });
+            return $response;
+        }
+        //Modificando Ticket
+
+
+
+    }
+
+    public function modificarTicketCA(Request $request)
+    {
+        try {
+            //Gestionando Correo
+            $nombre = $request->nombre;
+            $descripcionP = $request->descripcionP;
+            $id_solicitud = $request->id_solicitud;
+            $fecha = $request->fechaCambiadaFormateada;
+            $fechacreacion = $request->fechaCreacion;
+            $tituloP = $request->tituloP;
+            $nombreTrabajador = $request->desTrabajador;
+            $nombreSupervisor = $request->desSupervisor;
+            $desEstado = $request->desEstado;
+            $desApoyo1 = $request->desApoyo1;
+            $desApoyo2 = $request->desApoyo2;
+            $desApoyo3 = $request->desApoyo3;
+            $id_user = $request->id_user;
+            $descripcionSeguimiento = $request->descripcionSeguimiento;
+
+            log::info($id_user);
+            log::info($descripcionSeguimiento);
+
+            SeguimientoSolicitudes::create($request->all());
+
+
+            $response2 = SolicitudTickets::where('uuid', $request->uuid)
+                ->where('id', $request->id_solicitud)
+                ->update([
+                    'id_edificio' => $request->id_edificio, 'id_servicio' => $request->id_servicio,
+                    'id_ubicacionEx' => $request->id_ubicacionEx, 'id_tipoReparacion' => $request->id_tipoReparacion,
+                    'id_estado' => $request->id_estado
+                ]);
+            $response = GestionSolicitudes::where('uuid', $request->uuid)
+                ->where('id_solicitud', $request->id_solicitud)
+                ->update([
+                    'id_supervisor' => $request->id_supervisor, 'id_trabajador' => $request->id_trabajador,
+                    'idApoyo1' => $request->idApoyo1, 'idApoyo2' => $request->idApoyo2,
+                    'idApoyo3' => $request->idApoyo3, 'horaCambiada' => $request->horaCambiada,
+                    'fechaCambiada' => $request->fechaCambiada, 'horaTermino' => $request->horaTermino,
+                    'fechaTermino' => $request->fechaTermino
+                ]);
+        } catch (\Throwable $th) {
+            log::info($th);
+        } finally {
+            Mail::send('/Mails/TicketModificadoAgente', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
+                $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Modificacion de ticket');
+                $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
+            });
+            return $response;
+        }
+        //Modificando Ticket
+
+
+
+    }
+
+    public function modificarTicketEM(Request $request)
+    {
+        try {
+            //Gestionando Correo
+            $nombre = $request->nombre;
+            $descripcionP = $request->descripcionP;
+            $id_solicitud = $request->id_solicitud;
+            $fecha = $request->fechaCambiadaFormateada;
+            $fechacreacion = $request->fechaCreacion;
+            $tituloP = $request->tituloP;
+            $nombreTrabajador = $request->desTrabajador;
+            $nombreSupervisor = $request->desSupervisor;
+            $desEstado = $request->desEstado;
+            $desApoyo1 = $request->desApoyo1;
+            $desApoyo2 = $request->desApoyo2;
+            $desApoyo3 = $request->desApoyo3;
+            $id_user = $request->id_user;
+            $descripcionSeguimiento = $request->descripcionSeguimiento;
+
+            log::info($id_user);
+            log::info($descripcionSeguimiento);
+
+            SeguimientoSolicitudes::create($request->all());
+
+
+            $response2 = SolicitudTickets::where('uuid', $request->uuid)
+                ->where('id', $request->id_solicitud)
+                ->update([
+                    'id_edificio' => $request->id_edificio, 'id_servicio' => $request->id_servicio,
+                    'id_ubicacionEx' => $request->id_ubicacionEx, 'id_tipoReparacion' => $request->id_tipoReparacion,
+                    'id_estado' => $request->id_estado
+                ]);
+            $response = GestionSolicitudes::where('uuid', $request->uuid)
+                ->where('id_solicitud', $request->id_solicitud)
+                ->update([
+                    'id_supervisor' => $request->id_supervisor, 'id_trabajador' => $request->id_trabajador,
+                    'idApoyo1' => $request->idApoyo1, 'idApoyo2' => $request->idApoyo2,
+                    'idApoyo3' => $request->idApoyo3, 'horaCambiada' => $request->horaCambiada,
+                    'fechaCambiada' => $request->fechaCambiada, 'horaTermino' => $request->horaTermino,
+                    'fechaTermino' => $request->fechaTermino
+                ]);
+        } catch (\Throwable $th) {
+            log::info($th);
+        } finally {
+            Mail::send('/Mails/TicketModificadoAgente', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
+                $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Modificacion de ticket');
+                $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
+            });
+            return $response;
+        }
+        //Modificando Ticket
+
+
+
+    }
+
+    public function modificarTicketIND(Request $request)
+    {
+        try {
+            //Gestionando Correo
+            $nombre = $request->nombre;
+            $descripcionP = $request->descripcionP;
+            $id_solicitud = $request->id_solicitud;
+            $fecha = $request->fechaCambiadaFormateada;
+            $fechacreacion = $request->fechaCreacion;
+            $tituloP = $request->tituloP;
+            $nombreTrabajador = $request->desTrabajador;
+            $nombreSupervisor = $request->desSupervisor;
+            $desEstado = $request->desEstado;
+            $desApoyo1 = $request->desApoyo1;
+            $desApoyo2 = $request->desApoyo2;
+            $desApoyo3 = $request->desApoyo3;
+            $id_user = $request->id_user;
+            $descripcionSeguimiento = $request->descripcionSeguimiento;
+
+            log::info($id_user);
+            log::info($descripcionSeguimiento);
+
+            SeguimientoSolicitudes::create($request->all());
+
+
+            $response2 = SolicitudTickets::where('uuid', $request->uuid)
+                ->where('id', $request->id_solicitud)
+                ->update([
+                    'id_edificio' => $request->id_edificio, 'id_servicio' => $request->id_servicio,
+                    'id_ubicacionEx' => $request->id_ubicacionEx, 'id_tipoReparacion' => $request->id_tipoReparacion,
+                    'id_estado' => $request->id_estado
+                ]);
+            $response = GestionSolicitudes::where('uuid', $request->uuid)
+                ->where('id_solicitud', $request->id_solicitud)
+                ->update([
+                    'id_supervisor' => $request->id_supervisor, 'id_trabajador' => $request->id_trabajador,
+                    'idApoyo1' => $request->idApoyo1, 'idApoyo2' => $request->idApoyo2,
+                    'idApoyo3' => $request->idApoyo3, 'horaCambiada' => $request->horaCambiada,
+                    'fechaCambiada' => $request->fechaCambiada, 'horaTermino' => $request->horaTermino,
+                    'fechaTermino' => $request->fechaTermino
+                ]);
+        } catch (\Throwable $th) {
+            log::info($th);
+        } finally {
+            Mail::send('/Mails/TicketModificadoAgente', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
+                $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Modificacion de ticket');
+                $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
+            });
+            return $response;
+        }
+        //Modificando Ticket
+
+
+
     }
 
     /**

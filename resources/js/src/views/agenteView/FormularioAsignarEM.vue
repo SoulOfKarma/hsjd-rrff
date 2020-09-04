@@ -316,7 +316,24 @@ export default {
             horaInicio: null,
             horaTermino: null,
             horasEjecucion: 0,
-            diasEjecucion: 0
+            diasEjecucion: 0,
+            desTrabajador: "",
+            desSupervisor: "",
+            desEdificio: "",
+            desServicio: "",
+            desUbicacion: "",
+            desReparacion: "",
+            desEstado: "",
+            desApoyo1: "",
+            desApoyo2: "",
+            desApoyo3: "",
+            nombre: "",
+            tituloP: "",
+            descripcionP: "",
+            fechaInicioFormateada: null,
+            fechaCreacion: null,
+            id_user: 0,
+            descripcionSeguimiento: ""
         },
         seleccionEdificio: {
             id: 0,
@@ -365,11 +382,21 @@ export default {
     }),
     computed: {
         calcularHorasTrabajo() {
-            this.hora1 = moment(this.gestionTicket.horaInicio, "HH:mm");
-            this.hora2 = moment(this.gestionTicket.horaTermino, "HH:mm");
-            this.gestionTicket.horasEjecucion = moment
-                .duration(this.hora2 - this.hora1)
-                .asHours();
+            this.hora1 = moment(
+                this.gestionTicket.fechaInicio +
+                    " " +
+                    this.gestionTicket.horaInicio
+            );
+
+            this.hora2 = moment(
+                this.gestionTicket.fechaTermino +
+                    " " +
+                    this.gestionTicket.horaTermino
+            );
+            var mili = this.hora2.diff(this.hora1);
+            var duracion = moment.duration(mili);
+
+            this.gestionTicket.horasEjecucion = duracion.asHours();
             return this.gestionTicket.horasEjecucion;
         },
         diasCalculados() {
@@ -762,7 +789,39 @@ export default {
                 this.gestionTicket.idApoyo1 = this.seleccionApoyo1.id;
                 this.gestionTicket.idApoyo2 = this.seleccionApoyo2.id;
                 this.gestionTicket.idApoyo3 = this.seleccionApoyo3.id;
-                console.log(this.gestionTicket);
+                this.gestionTicket.desEdificio = this.seleccionEdificio[0].descripcionEdificio;
+                this.gestionTicket.desServicio = this.seleccionServicio[0].descripcionServicio;
+                this.gestionTicket.desUbicacion = this.seleccionUnidadEsp[0].descripcionUnidadEsp;
+                this.gestionTicket.desReparacion = this.seleccionReparacion[0].descripcionTipoReparacion;
+                this.gestionTicket.desEstado = this.seleccionEstado[0].descripcionEstado;
+                this.gestionTicket.desTrabajador = this.seleccionTrabajador.tra_nombre_apellido;
+                this.gestionTicket.desSupervisor = this.seleccionSupervisor.sup_nombre_apellido;
+                this.gestionTicket.desApoyo1 = this.seleccionApoyo1.tra_nombre_apellido;
+                this.gestionTicket.desApoyo2 = this.seleccionApoyo2.tra_nombre_apellido;
+                this.gestionTicket.desApoyo3 = this.seleccionApoyo3.tra_nombre_apellido;
+                this.gestionTicket.tituloP = this.datosSolicitud[0].tituloP;
+                var newElement = document.createElement("div");
+                newElement.innerHTML = this.datosSolicitud[0].descripcionP;
+                this.gestionTicket.descripcionP = newElement.textContent;
+                this.gestionTicket.nombre = this.nombre;
+                var fechaCreacionT = moment(this.datosSolicitud[0].created_at)
+                    .locale("es")
+                    .format("Do MMMM YYYY, HH:mm:ss");
+                this.gestionTicket.fechaCreacion = fechaCreacionT;
+                var fechaInicioT = moment(this.hora1)
+                    .locale("es")
+                    .format("Do MMMM YYYY, HH:mm:ss");
+
+                this.gestionTicket.fechaInicioFormateada = fechaInicioT;
+                this.gestionTicket.id_user = localStorage.getItem("id");
+                this.gestionTicket.descripcionSeguimiento =
+                    "El Agente " +
+                    this.nombre +
+                    " a asignado un ticket a " +
+                    this.gestionTicket.desTrabajador +
+                    " en el Ticket N°" +
+                    id;
+
                 const ticket = this.gestionTicket;
                 this.openLoadingColor();
                 /*   this.gestionTicket = {
@@ -786,7 +845,7 @@ export default {
                 diaCalculado: 0
             }; */
                 axios
-                    .post(this.localVal + "/api/Agente/PostTicket", ticket)
+                    .post(this.localVal + "/api/Agente/PostTicketEM", ticket)
                     .then(res => {
                         const ticketServer = res.data;
                         this.mensajeGuardado();

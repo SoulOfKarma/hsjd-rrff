@@ -78,6 +78,12 @@ Route::get('/Agente/GetCategoria', ['middleware' => 'cors', 'uses' => 'Categoria
 Route::get('/Agente/GetEstado', ['middleware' => 'cors', 'uses' => 'EstadoController@index']);
 //Guardar Ticket
 Route::post('/Agente/PostTicket', ['middleware' => 'cors', 'uses' => 'GestionTicketController@store']);
+//Guardar Ticket
+Route::post('/Agente/PostTicketEM', ['middleware' => 'cors', 'uses' => 'GestionTicketController@AsignarTicketEM']);
+//Guardar Ticket
+Route::post('/Agente/PostTicketIND', ['middleware' => 'cors', 'uses' => 'GestionTicketController@AsignarTicketIND']);
+//Guardar Ticket
+Route::post('/Agente/PostTicketCA', ['middleware' => 'cors', 'uses' => 'GestionTicketController@AsignarTicketCA']);
 //Traer Tickets con sus usuarios Infraestructura
 Route::get('/Agente/GetSolicitudTickets', ['middleware' => 'cors', 'uses' => 'GestionTicketController@getSolicitudUsuariosJoin']);
 //Traer Tickets con sus usuarios Equipos Medicos
@@ -101,6 +107,12 @@ Route::post('/Agente/enviarCorreo', ['middleware' => 'cors', 'uses' => 'GestionT
 Route::get('/Agente/ValidarTicketAsignadoMod/{id}', ['middleware' => 'cors', 'uses' => 'GestionTicketController@ValidarTicketAsignadoMod']);
 //Guardar Ticket
 Route::post('/Agente/PutTicket', ['middleware' => 'cors', 'uses' => 'GestionTicketController@modificarTicket']);
+//Guardar Ticket
+Route::post('/Agente/PutTicketCA', ['middleware' => 'cors', 'uses' => 'GestionTicketController@modificarTicketCA']);
+//Guardar Ticket
+Route::post('/Agente/PutTicketEM', ['middleware' => 'cors', 'uses' => 'GestionTicketController@modificarTicketEM']);
+//Guardar Ticket
+Route::post('/Agente/PutTicketIND', ['middleware' => 'cors', 'uses' => 'GestionTicketController@modificarTicketIND']);
 //Guardar Nuevo Ticket
 Route::post('/Agente/PostNuevoTicket', ['middleware' => 'cors', 'uses' => 'GestionTicketController@NuevoTicket']);
 //Guardar Nuevo Ticket
@@ -134,3 +146,5 @@ Route::get('/Agente/getDatoCalendarioEM', ['middleware' => 'cors', 'uses' => 'Ge
 Route::get('/Agente/getDatoCalendarioIND', ['middleware' => 'cors', 'uses' => 'GestionTicketController@GetDatoCalendarioIND']);
 //Traer Dato Join Calendario
 Route::get('/Agente/getDatoCalendarioCA', ['middleware' => 'cors', 'uses' => 'GestionTicketController@GetDatoCalendarioCA']);
+//Traer Dato Join Calendario
+Route::post('/Agente/ModificarCategoria', ['middleware' => 'cors', 'uses' => 'GestionTicketController@ModificarCategoria']);

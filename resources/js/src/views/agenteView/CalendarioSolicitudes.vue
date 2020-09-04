@@ -63,6 +63,8 @@ import router from "@/router";
 import moment from "moment";
 import CalendarScroll from "gantt-schedule-timeline-calendar/dist/CalendarScroll.plugin.js";
 import Selection from "gantt-schedule-timeline-calendar/dist/Selection.plugin.js";
+import ItemMovement from "gantt-schedule-timeline-calendar/dist/ItemMovement.plugin.js";
+import WeekendHighlight from "gantt-schedule-timeline-calendar/dist/WeekendHighlight.plugin.js";
 import vSelect from "vue-select";
 import ItemHold from "gantt-schedule-timeline-calendar/dist/ItemHold.plugin.js";
 import { html, render } from "lit-html";
@@ -127,7 +129,8 @@ export default {
                 }
             ],
             config: {
-                height: 423,
+                Height: 428,
+
                 plugins: [
                     Selection({
                         items: true,
@@ -191,7 +194,14 @@ export default {
                         deselected(data, type) {
                             //console.log(`deselected ${type}`, data);
                         }
-                    })
+                    }),
+                    ItemMovement({
+                        moveable: false,
+                        resizable: false,
+                        collisionDetection: false
+                    }),
+                    CalendarScroll(),
+                    WeekendHighlight()
                 ],
                 locale: {
                     name: "es-Cl",
@@ -222,18 +232,26 @@ export default {
                 },
                 list: {
                     rows: {},
-
+                    row: {
+                        height: 40,
+                        gap: {
+                            top: 0,
+                            bottom: 0
+                        }
+                    },
                     columns: {
                         percent: 100,
                         resizer: {
-                            inRealTime: true
+                            width: 10,
+                            inRealTime: true,
+                            dots: 6
                         },
                         minWidth: 50,
                         data: {
                             id: {
                                 id: "id",
                                 data: "id",
-                                width: 50,
+                                width: 40,
                                 header: {
                                     content: "ID"
                                 }
@@ -241,7 +259,7 @@ export default {
                             label: {
                                 id: "label",
                                 data: "label",
-                                width: 230,
+                                width: 180,
                                 expander: true,
                                 isHTML: false,
                                 header: {
@@ -275,21 +293,31 @@ export default {
                     }
                 },
                 scroll: {
-                    propagate: true,
-                    smooth: false,
-                    top: 0,
-                    left: 0,
-                    xMultiplier: 3,
-                    yMultiplier: 3,
-                    percent: {
-                        top: 0,
-                        left: 0
+                    bodyClassName: "gstc-scrolling",
+                    horizontal: {
+                        size: 20,
+                        minInnerSize: 40,
+                        data: null,
+                        posPx: 0,
+                        maxPosPx: 0,
+                        area: 0,
+                        multiplier: 3,
+                        offset: 0,
+                        precise: false
                     },
-                    compensation: {
-                        x: 0,
-                        y: 0
+                    vertical: {
+                        size: 20,
+                        minInnerSize: 40,
+                        data: null,
+                        posPx: 0,
+                        maxPosPx: 0,
+                        area: 0,
+                        multiplier: 3,
+                        offset: 0,
+                        precise: false
                     }
                 },
+                spacing: 1,
                 chart: {
                     items: {},
                     time: {
@@ -526,6 +554,9 @@ export default {
         };
     },
     methods: {
+        recenter() {
+            GSTC.api.scrollToTime(GSTC.api.time.date().valueOf());
+        },
         mensaje(element, data) {
             var dato = {
                 id: data.item.id,

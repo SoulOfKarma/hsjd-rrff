@@ -227,6 +227,12 @@ const router = new Router({
                         import ('./views/agenteView/CalendarioSolicitudesCA.vue')
                 },
                 {
+                    path: '/agenteView/ModificarCategoriaTicket/:id,:uuid',
+                    name: 'ModificarCategoriaTicket',
+                    component: () =>
+                        import ('./views/agenteView/ModificarCategoriaTicket.vue')
+                },
+                {
                     path: '/agenteView/FormularioAsignar/:id,:uuid',
                     name: 'AsignarSolicitudAgente',
                     component: () =>

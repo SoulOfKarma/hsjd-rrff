@@ -326,7 +326,24 @@ export default {
             horaCambiada: null,
             horaTermino: null,
             horasEjecucion: 0,
-            diasEjecucion: 0
+            diasEjecucion: 0,
+            desTrabajador: "",
+            desSupervisor: "",
+            desEdificio: "",
+            desServicio: "",
+            desUbicacion: "",
+            desReparacion: "",
+            desEstado: "",
+            desApoyo1: "",
+            desApoyo2: "",
+            desApoyo3: "",
+            nombre: "",
+            tituloP: "",
+            descripcionP: "",
+            fechaCreacion: null,
+            fechaCambiadaFormateada: null,
+            id_user: 0,
+            descripcionSeguimiento: ""
         },
         seleccionEdificio: {
             id: 0,
@@ -375,16 +392,34 @@ export default {
     }),
     computed: {
         calcularHorasTrabajo() {
-            this.hora1 = moment(this.gestionTicket.horaCambiada, "HH:mm");
-            this.hora2 = moment(this.gestionTicket.horaTermino, "HH:mm");
-            this.gestionTicket.horasEjecucion = moment
-                .duration(this.hora2 - this.hora1)
-                .asHours();
+            this.hora1 = moment(
+                this.gestionTicket.fechaCambiada +
+                    " " +
+                    this.gestionTicket.horaCambiada
+            );
+
+            this.hora2 = moment(
+                this.gestionTicket.fechaTermino +
+                    " " +
+                    this.gestionTicket.horaTermino
+            );
+            var mili = this.hora2.diff(this.hora1);
+            var duracion = moment.duration(mili);
+
+            this.gestionTicket.horasEjecucion = duracion.asHours();
             return this.gestionTicket.horasEjecucion;
         },
         diasCalculados() {
-            this.fecha1 = moment(this.gestionTicket.fechaCambiada);
-            this.fecha2 = moment(this.gestionTicket.fechaTermino);
+            this.fecha1 = moment(
+                this.gestionTicket.fechaCambiada +
+                    " " +
+                    this.gestionTicket.horaCambiada
+            );
+            this.fecha2 = moment(
+                this.gestionTicket.fechaTermino +
+                    " " +
+                    this.gestionTicket.horaTermino
+            );
             this.gestionTicket.diasEjecucion = this.fecha2.diff(
                 this.fecha1,
                 "days"
@@ -616,6 +651,7 @@ export default {
                 .get(this.localVal + `/api/Usuario/TraerSolicitud/${id}`)
                 .then(res => {
                     this.datosSolicitud = res.data;
+
                     /* this.cargaEstado();
                     this.cargaTipoReparacion();
                     this.cargarUSE(); */
@@ -675,8 +711,8 @@ export default {
                     this.mensajeError = "el apoyo 3";
                     this.errorDrop(this.mensajeError);
                 } else if (
-                    this.gestionTicket.fechaInicio == null ||
-                    this.gestionTicket.fechaInicio < hoy.getDate()
+                    this.gestionTicket.fechaCambiada == null ||
+                    this.gestionTicket.fechaCambiada < hoy.getDate()
                 ) {
                     this.mensajeError = "la fecha de inicio ";
                     this.errorDrop(this.mensajeError);
@@ -727,8 +763,8 @@ export default {
                     this.mensajeError = "el apoyo 3";
                     this.errorDrop(this.mensajeError);
                 } else if (
-                    this.gestionTicket.fechaInicio == null ||
-                    this.gestionTicket.fechaInicio < hoy.getDate()
+                    this.gestionTicket.fechaCambiada == null ||
+                    this.gestionTicket.fechaCambiada < hoy.getDate()
                 ) {
                     this.mensajeError = "la fecha de inicio ";
                     this.errorDrop(this.mensajeError);
@@ -815,9 +851,38 @@ export default {
                 this.gestionTicket.idApoyo1 = this.seleccionApoyo1[0].id;
                 this.gestionTicket.idApoyo2 = this.seleccionApoyo2[0].id;
                 this.gestionTicket.idApoyo3 = this.seleccionApoyo3[0].id;
+                this.gestionTicket.desEdificio = this.seleccionEdificio[0].descripcionEdificio;
+                this.gestionTicket.desServicio = this.seleccionServicio[0].descripcionServicio;
+                this.gestionTicket.desUbicacion = this.seleccionUnidadEsp[0].descripcionUnidadEsp;
+                this.gestionTicket.desReparacion = this.seleccionReparacion[0].descripcionTipoReparacion;
+                this.gestionTicket.desEstado = this.seleccionEstado[0].descripcionEstado;
+                this.gestionTicket.desTrabajador = this.seleccionTrabajador[0].tra_nombre_apellido;
+                this.gestionTicket.desSupervisor = this.seleccionSupervisor[0].sup_nombre_apellido;
+                this.gestionTicket.desApoyo1 = this.seleccionApoyo1[0].tra_nombre_apellido;
+                this.gestionTicket.desApoyo2 = this.seleccionApoyo2[0].tra_nombre_apellido;
+                this.gestionTicket.desApoyo3 = this.seleccionApoyo3[0].tra_nombre_apellido;
+                this.gestionTicket.tituloP = this.datosSolicitud.tituloP;
+                var newElement = document.createElement("div");
+                newElement.innerHTML = this.datosSolicitud.descripcionP;
+                this.gestionTicket.descripcionP = newElement.textContent;
+                this.gestionTicket.nombre = this.nombre;
+                var fechaCreacionT = moment(this.datosSolicitud.created_at)
+                    .locale("es")
+                    .format("Do MMMM YYYY, HH:mm:ss");
+                var fechaCambiadaF = moment(this.hora1)
+                    .locale("es")
+                    .format("Do MMMM YYYY, HH:mm:ss");
+                this.gestionTicket.fechaCambiadaFormateada = fechaCambiadaF;
+                this.gestionTicket.fechaCreacion = fechaCreacionT;
+                this.gestionTicket.id_user = localStorage.getItem("id");
+                this.gestionTicket.descripcionSeguimiento =
+                    "El Agente " +
+                    this.nombre +
+                    " a realizado una modificacion en el Ticket N°" +
+                    id;
 
                 const ticket = this.gestionTicket;
-                console.log(ticket);
+
                 this.openLoadingColor();
                 (this.gestionTicket = {
                     uuid: "",
@@ -929,7 +994,7 @@ export default {
                 .get(this.localVal + `/api/Agente/GetTicketAsignado/${id}`)
                 .then(res => {
                     this.datosTicketAsignado = res.data;
-                    console.log(this.datosTicketAsignado);
+
                     var datoidSupervisor = this.datosTicketAsignado
                         .id_supervisor;
                     var datoidTrabajador = this.datosTicketAsignado

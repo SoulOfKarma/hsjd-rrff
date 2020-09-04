@@ -452,11 +452,21 @@ export default {
     }),
     computed: {
         calcularHorasTrabajo() {
-            this.hora1 = moment(this.gestionTicket.horaInicio, "HH:mm");
-            this.hora2 = moment(this.gestionTicket.horaTermino, "HH:mm");
-            this.gestionTicket.horasEjecucion = moment
-                .duration(this.hora2 - this.hora1)
-                .asHours();
+            this.hora1 = moment(
+                this.gestionTicket.fechaInicio +
+                    " " +
+                    this.gestionTicket.horaInicio
+            );
+
+            this.hora2 = moment(
+                this.gestionTicket.fechaTermino +
+                    " " +
+                    this.gestionTicket.horaTermino
+            );
+            var mili = this.hora2.diff(this.hora1);
+            var duracion = moment.duration(mili);
+
+            this.gestionTicket.horasEjecucion = duracion.asHours();
             return this.gestionTicket.horasEjecucion;
         },
         diasCalculados() {

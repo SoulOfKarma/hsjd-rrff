@@ -308,7 +308,7 @@ a {
                                 </tr>
                                 <tr>
                                     <td class="content-block">
-                                        <h3>Ticket Asignado</h3>
+                                        <h3>Ticket Modificado</h3>
                                     </td>
                                 </tr>
                                 <tr>
@@ -318,7 +318,8 @@ a {
                                 </tr>
                                 <tr>
                                     <td class="content-block">
-                                      <b>  Se ha Asignado el Ticket N° {{$id}} </b>
+                                      <b>  Se ha Modificado el Ticket N° {{$id}} </b>
+                                      <b>Con los siguientes Cambios:</b> 
                                     </td>
                                 </tr>
                                 <tr>
@@ -353,7 +354,7 @@ a {
                           </tr>
                                 <tr>
                                   <td class="content-block">
-                                      <b>Asignado el dia: {{$fecha}}</b> 
+                                      <b>Fecha cambiada al dia: {{$fecha}}</b> 
                                   </td>
                               </tr>
                                 <tr>

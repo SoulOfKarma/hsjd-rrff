@@ -93,6 +93,16 @@
                                         )
                                     "
                                 ></trash-2-icon>
+                                <corner-down-right-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        cambiarCategoria(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                ></corner-down-right-icon>
                             </div>
                         </vs-td>
                     </vs-tr>
@@ -154,13 +164,15 @@ import { InfoIcon } from "vue-feather-icons";
 import { PlusCircleIcon } from "vue-feather-icons";
 import { Trash2Icon } from "vue-feather-icons";
 import { UploadIcon } from "vue-feather-icons";
+import { CornerDownRightIcon } from "vue-feather-icons";
 
 export default {
     components: {
         InfoIcon,
         PlusCircleIcon,
         Trash2Icon,
-        UploadIcon
+        UploadIcon,
+        CornerDownRightIcon
     },
     data() {
         return {
@@ -199,6 +211,15 @@ export default {
         detalleSolicitud(id, uuid) {
             this.$router.push({
                 name: "InformacionSolicitudAgenteEM",
+                params: {
+                    id: `${id}`,
+                    uuid: `${uuid}`
+                }
+            });
+        },
+        cambiarCategoria(id, uuid) {
+            this.$router.push({
+                name: "ModificarCategoriaTicket",
                 params: {
                     id: `${id}`,
                     uuid: `${uuid}`
