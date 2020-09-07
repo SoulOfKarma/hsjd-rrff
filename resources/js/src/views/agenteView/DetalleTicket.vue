@@ -114,20 +114,20 @@
                     </button>
                 </div>
             </div>
-            <div class="vx-card" id="invoice-container">
+            <div class="vx-card">
                 <!---->
                 <div
                     class="vx-card__collapsible-content vs-con-loading__container"
                 >
-                    <div class="vx-card__body">
+                    <div class="vx-card__body" id="invoice-container">
                         <div class="vx-row leading-loose p-base">
-                            <div class="vx-col w-full md:w-1/2 mt-base">
+                            <div class="vx-col w-full md:w-1/2 text-left">
                                 <img
-                                    src="/demo/vuexy-vuejs-laravel-admin-template/demo-1/images/logo.png?a5d6fa57427643c6ebe37859086c9a63"
+                                    src="@assets/images/logo/1.png"
                                     alt="vuexy-logo"
                                 />
                             </div>
-                            <div class="vx-col w-full md:w-1/2 text-right">
+                            <div class="vx-col w-full md:w-1/2 ">
                                 <h1>Invoice</h1>
                                 <div class="invoice__invoice-detail mt-6">
                                     <h6>INVOICE NO.</h6>
@@ -458,17 +458,19 @@
 import Vue from "vue";
 import VueHtmlToPaper from "vue-html-to-paper";
 
+const options = {
+    name: "_blank",
+    specs: ["fullscreen=yes", "titlebar=yes", "scrollbars=yes"],
+    styles: [
+        "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css",
+        "https://unpkg.com/kidlat-css/css/kidlat.css"
+    ]
+};
+Vue.use(VueHtmlToPaper, options);
 export default {
     data() {
         return {
-            options: {
-                name: "_blank",
-                specs: ["fullscreen=yes", "titlebar=yes", "scrollbars=yes"],
-                styles: [
-                    "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css",
-                    "https://unpkg.com/kidlat-css/css/kidlat.css"
-                ]
-            }
+            output: null
         };
     },
     methods: {

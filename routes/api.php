@@ -148,3 +148,5 @@ Route::get('/Agente/getDatoCalendarioIND', ['middleware' => 'cors', 'uses' => 'G
 Route::get('/Agente/getDatoCalendarioCA', ['middleware' => 'cors', 'uses' => 'GestionTicketController@GetDatoCalendarioCA']);
 //Traer Dato Join Calendario
 Route::post('/Agente/ModificarCategoria', ['middleware' => 'cors', 'uses' => 'GestionTicketController@ModificarCategoria']);
+//Imprimir
+Route::get('/Agente/imprimir', ['middleware' => 'cors', 'uses' => 'PdfController@imprimir']);

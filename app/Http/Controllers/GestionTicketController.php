@@ -618,7 +618,8 @@ class GestionTicketController extends Controller
             log::info($th);
         } finally {
             Mail::send('/Mails/TicketModificadoAgente', ['Apoyo1' => $desApoyo1, 'Apoyo2' => $desApoyo2, 'Apoyo3' => $desApoyo3, 'estado' => $desEstado, 'fechaCreacion' => $fechacreacion, 'nombre' => $nombre, 'id' => $id_solicitud, 'descripcionTicket' => $descripcionP, 'titulo' => $tituloP, 'fecha' => $fecha, 'tra_nombre' => $nombreTrabajador, 'sup_nombre' => $nombreSupervisor], function ($message) {
-                $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Modificacion de ticket');
+                $pdf = \PDF::loadView('invoice');
+                $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Modificacion de ticket')->attachData($pdf->output(), 'invoice.pdf');
                 $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
             });
             return $response;
