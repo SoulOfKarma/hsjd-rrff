@@ -100,22 +100,26 @@
             </div>
             <div class="vx-col w-full lg:w-1/4 mb-base"></div>
         </div>
-        <vs-button color="warning" class="mr-3 mb-2" @click="detalleImpTicket"
+        <vs-button color="warning" class="mr-3 mb-2" @click="imprimir"
             >Ticket Formato</vs-button
         >
     </div>
 </template>
 <script>
+import axios from "axios";
 import router from "@/router";
 export default {
     data() {
-        return {};
+        return { localVal: "http://127.0.0.1:8000" };
     },
     methods: {
         detalleImpTicket() {
             this.$router.push({
                 name: "DetalleTicketImp"
             });
+        },
+        imprimir() {
+            axios.get(this.localVal + "/api/Agente/imprimir");
         }
     }
 };
