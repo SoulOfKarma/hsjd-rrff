@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="http://localhost:8080/proyectov1/public/css/bootstrap.min.css">
 
-        <title>Ticket-Indra</title>
+        <title>Ticket-Infraestructura</title>
         <style>#TADescripcion{
           width: 99%;
         }
@@ -26,27 +26,25 @@
         }
 
         #hoverL{
-          display: inline-block;
+          
           width:100%;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-         overflow: hidden;
+       
         }
         
         #TADescripcion {
-            height: 9em;
+            height: 8em;
             width: 90%;
         }
         
         .panel-body{
-          height: 9em;
+          height: 5em;
             width: 90%;
         }
         </style>
 
     </head>
     <body>
-        <div class="container-fluid">
+        <div class="container">
             <div class="row">
               <div class="col-xs-2"> <img src="http://localhost:8080/proyectov1/resources/assets/images/logo/1.png"></div>
                 <div class="col-xs-10">
@@ -58,59 +56,73 @@
             
             </div>
             <div class="row">
-              <div class="col-xs-3"><label>N°Ticket</label></div>
-              <div class="col-xs-3"><strong>{{$idSolicitud}}</strong></div>
+              <div class="col-xs-2"><label>N°Ticket</label></div>
+              <div class="col-xs-2"><strong>{{$idSolicitud}}</strong></div>
+              <div class="col-xs-1"></div>
               <div class="col-xs-3"><label>Fecha Solicitud</label> </div>
-              <div class="col-xs-3"><label>08-09-2020</label></div>
+              <div class="col-xs-2"><label>{{$fechaS}}</label></div>
+              <div class="col-xs-2"></div>
             </div>
             <div class="row">
-              <div class="col-xs-3"><label>Edificio</label></div>
-              <div class="col-xs-3"><label>{{$desEdificio}}</label></div>
+              <div class="col-xs-2"><label>Edificio</label></div>
+              <div class="col-xs-2"><label>{{$desEdificio}}</label></div>
+              <div class="col-xs-1"></div>
               <div class="col-xs-3"><label>Servicio</label></div>
-              <div class="col-xs-3"><label>{{$desServicio}}</label></div>
+              <div class="col-xs-2"><label>{{$desServicio}}</label></div>
+              <div class="col-xs-2"></div>
             </div>
             <div class="row">
-              <div class="col-xs-3"><label>Unidad Especifica</label></div>
-              <div class="col-xs-3"><label>{{$desUnidadEsp}}</label></div>
+              <div class="col-xs-2"><label>Unidad Especifica</label></div>
+              <div class="col-xs-2"><label>{{$desUnidadEsp}}</label></div>
+              <div class="col-xs-1"></div>
               <div class="col-xs-3"><label>Estado</label></div>
-              <div class="col-xs-3"><label>{{$desEstado}}</label></div>
+              <div class="col-xs-2"><label>{{$desEstado}}</label></div>
+              <div class="col-xs-2"></div>
             </div>
             <div class="row">
-              <div class="col-xs-3"><label>Responsable</label></div>
-              <div class="col-xs-3"><label>{{$nombreTra}}</label> </div>
+              <div class="col-xs-2"><label>Responsable</label></div>
+              <div class="col-xs-2"><label>{{$nombreTra}}</label> </div>
+              <div class="col-xs-1"></div>
               <div class="col-xs-3"><label>Supervisor</label> </div>
-              <div class="col-xs-3"><label>{{$nombreSup}}</label></div>
+              <div class="col-xs-2"><label>{{$nombreSup}}</label></div>
+              <div class="col-xs-2"></div>
             </div>
             <div class="row">
-              <div class="col-xs-3"><label>Apoyo 1</label></div>
-              <div class="col-xs-3"><label>Sin Asignar</label> </div>
+              <div class="col-xs-2"><label>Apoyo 1</label></div>
+              <div class="col-xs-2"><label>{{$nomApoyo1}}</label> </div>
+              <div class="col-xs-1"></div>
               <div class="col-xs-3"><label>Apoyo 2</label> </div>
-              <div class="col-xs-3"><label>Sin Asignar</label></div>
+              <div class="col-xs-2"><label>{{$nomApoyo2}}</label></div>
+              <div class="col-xs-2"></div>
             </div>
             <div class="row">
-              <div class="col-xs-3"><label>Apoyo 3</label></div>
-              <div class="col-xs-3"><label>Sin Asignar</label></div>
+              <div class="col-xs-2"><label>Apoyo 3</label></div>
+              <div class="col-xs-2"><label>{{$nomApoyo3}}</label></div>
+              <div class="col-xs-1"></div>
               <div class="col-xs-3"><label>Especialidad</label> </div>
-              <div class="col-xs-3"><label>{{$desTipoRep}}</label></div>
+              <div class="col-xs-2"><label>{{$desTipoRep}}</label></div>
+              <div class="col-xs-2"></div>
             </div>
             <div class="row">
-              <div class="col-xs-3"><label>Fecha Programada Visita</label></div>
-              <div class="col-xs-3"><label>08-09-2020</label> </div>
+              <div class="col-xs-2"><label>Fecha Programada</label></div>
+              <div class="col-xs-2"><label>{{$fechaI}}</label> </div>
+              <div class="col-xs-1"></div>
               <div class="col-xs-3"><label>Dias Ejecucion</label></div>
-              <div class="col-xs-3"><label>1</label></div>
+              <div class="col-xs-2"><label>{{$diasEjecucion}}</label></div>
+              <div class="col-xs-2"></div>
             </div>
             <div class="row">
-              <div class="col-xs-3"><label>Horas Ejecucion</label></div>
-              <div class="col-xs-3"><label>1</label> </div>
+              <div class="col-xs-2"><label>Horas Ejecucion</label></div>
+              <div class="col-xs-2"><label>{{$horasEjecucion}}</label> </div>
             </div><br>
             <div class="row">
               <div class="col-xs-12">
                 <div class="panel panel-primary">
                   <div class="panel-heading">
-                    <h3 class="panel-title">Solicitud realizada por el servicio de Cirugia - CDT</h3>
+                    <h3 class="panel-title">Solicitud realizada por el servicio de {{$desServicio}} - {{$desEdificio}}</h3>
                   </div>
                   <div class="panel-body">
-                    x Falla
+                    {{$descripcionPro}}
                   </div>
                 </div>
               </div>
@@ -122,7 +134,7 @@
                     <h3 class="panel-title">Trabajo realizado por la unidad de Mantencion</h3>
                   </div>
                   <div class="panel-body">
-                    X Cosa
+                    
                   </div>
                 </div>
               </div>

@@ -103,6 +103,16 @@
                                         )
                                     "
                                 ></corner-down-right-icon>
+                                <corner-down-right-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        generarTicket(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                ></corner-down-right-icon>
                             </div>
                         </vs-td>
                     </vs-tr>
@@ -225,6 +235,24 @@ export default {
                     uuid: `${uuid}`
                 }
             });
+        },
+        generarTicket(id, uuid) {
+            var ticket = {
+                idTicket: id,
+                uuidTicket: uuid
+            };
+
+            const ticketEnviado = ticket;
+
+            axios
+                .post(
+                    this.localVal + `/api/Agente/imprimirPorTicket/${id}`,
+                    ticketEnviado
+                )
+                .then(function(response) {})
+                .catch(error => {
+                    console.log(error);
+                });
         },
         detalleSolicitudEliminados(id, uuid) {
             this.$router.push({

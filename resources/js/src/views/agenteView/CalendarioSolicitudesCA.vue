@@ -610,6 +610,10 @@ export default {
                         listadoRow.push(objeto);
                     });
 
+                    var cont = listadoRow.length;
+
+                    this.config.height = 41 * cont;
+
                     this.config.list.rows = listadoRow;
                 });
         },

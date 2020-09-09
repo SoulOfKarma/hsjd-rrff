@@ -150,3 +150,6 @@ Route::get('/Agente/getDatoCalendarioCA', ['middleware' => 'cors', 'uses' => 'Ge
 Route::post('/Agente/ModificarCategoria', ['middleware' => 'cors', 'uses' => 'GestionTicketController@ModificarCategoria']);
 //Imprimir
 Route::get('/Agente/imprimir', ['middleware' => 'cors', 'uses' => 'PdfController@imprimir']);
+
+//Imprimir
+Route::post('/Agente/imprimirPorTicket/{id}', ['middleware' => 'cors', 'uses' => 'PdfController@imprimirPorTicket']);
