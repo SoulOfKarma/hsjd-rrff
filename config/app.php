@@ -163,6 +163,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Barryvdh\Snappy\ServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
         //App\Providers\SolicitudProvider::class,
 
         /*
@@ -231,10 +232,7 @@ return [
         'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
         'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
         'PDFs' => Barryvdh\DomPDF\Facade::class,
-
-
-
-
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class
     ],
 
 ];

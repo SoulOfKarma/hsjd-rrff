@@ -26,27 +26,30 @@
         }
 
         #hoverL{
-          display: inline-block;
-          width:100%;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-         overflow: hidden;
+          text-align: center;
+          width:60%;
+       
+        }
+
+        #centrarFirmas{
+          width: 300px;
+          height: 50px;
         }
         
         #TADescripcion {
-            height: 9em;
+            height: 8em;
             width: 90%;
         }
         
         .panel-body{
-          height: 8em;
+          height: 5em;
             width: 90%;
         }
         </style>
 
     </head>
     <body>
-        <div class="container-fluid">
+        <div class="container">
             <div class="row">
               <div class="col-xs-2"> <img src="http://localhost:8080/proyectov1/resources/assets/images/logo/1.png"></div>
                 <div class="col-xs-10">
@@ -123,7 +126,7 @@
                   <div class="panel-heading">
                     <h3 class="panel-title">Solicitud realizada por el servicio de {{$desServicio}} - {{$desEdificio}}</h3>
                   </div>
-                  <div class="panel-body">
+                  <div class="panel-body" id="descripcion">
                     {{$descripcionPro}}
                   </div>
                 </div>
@@ -143,27 +146,27 @@
             </div>
             <div class="row">
               <div class="col-xs-1"></div>
-              <div class="col-xs-5"><label id="hoverL">Nombre y firma Solicitante</label></div>
-              <div class="col-xs-5"><label id="hoverL">_____________________</label><br>
-                <label id="hoverL">Nombre y firma Supervisor</label>
+              <div class="col-xs-5" id="centrarFirmas"><label id="hoverL">Nombre y firma Solicitante</label></div>
+              <div class="col-xs-5" id="centrarFirmas"><label id="hoverL">_____________________</label><br>
+                <label id="hoverL">{{$nombreUsuario}}</label>
               </div>
               <div class="col-xs-1"></div>
             </div><br>
             <div class="row">
               <div class="col-xs-1"></div>
-              <div class="col-xs-5" >
-                <label id="hoverL">Nombre y firma Responsable</label></div>
-              <div class="col-xs-5"><label id="hoverL">_____________________</label> <br>
-                <label id="hoverL">Nombre y firma Supervisor</label>
+              <div class="col-xs-5" id="centrarFirmas">
+                <label id="hoverL" >Nombre y firma Responsable</label></div>
+              <div class="col-xs-5" id="centrarFirmas"><label id="hoverL">_____________________</label> <br>
+                <label id="hoverL" >{{$nombreTra}}</label>
               </div>
               <div class="col-xs-1"></div>
               
             </div><br>
             <div class="row">
               <div class="col-xs-1"></div>
-              <div class="col-xs-5"><label id="hoverL">Nombre y firma Supervisor</label></div>
-              <div class="col-xs-5"><label id="hoverL"> _____________________</label> <br>
-                <label id="hoverL">Nombre y firma Supervisor</label>
+              <div class="col-xs-5" id="centrarFirmas"><label id="hoverL">Nombre y firma Supervisor</label></div>
+              <div class="col-xs-5" id="centrarFirmas"><label id="hoverL"> _____________________</label> <br>
+                <label id="hoverL" >{{$nombreSup}}</label>
               </div>
               <div class="col-xs-1"></div>
               
@@ -171,4 +174,5 @@
         </div>
         
     </body>
+   
 </html>

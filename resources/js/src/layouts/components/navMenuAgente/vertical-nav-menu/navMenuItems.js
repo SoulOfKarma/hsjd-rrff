@@ -35,6 +35,25 @@ export default [{
                 name: 'Generar Ticket',
                 slug: 'GenerarTicket',
                 icon: 'FileIcon'
+            },
+            {
+                url: null,
+                name: 'Reportes',
+                slug: 'home',
+                icon: 'PlusCircleIcon',
+                submenu: [{
+                        url: '/agenteView/ReporteExDiaInfra',
+                        name: 'Reporte Por Dia',
+                        slug: 'ReporteExDiaInfra',
+                        icon: 'FileIcon'
+                    },
+                    {
+                        url: '/agenteView/ReporteExMesInfra',
+                        name: 'Reporte Por Mes',
+                        slug: 'ReporteExMesInfra',
+                        icon: 'FileIcon'
+                    }
+                ]
             }
         ]
     }, {
@@ -59,6 +78,25 @@ export default [{
                 name: 'Generar Ticket ',
                 slug: 'GenerarTicketEM',
                 icon: 'FileIcon'
+            },
+            {
+                url: null,
+                name: 'Reportes',
+                slug: 'home',
+                icon: 'PlusCircleIcon',
+                submenu: [{
+                        url: '/agenteView/ReporteExDiaEM',
+                        name: 'Reporte Por Dia',
+                        slug: 'ReporteExDiaEM',
+                        icon: 'FileIcon'
+                    },
+                    {
+                        url: '/agenteView/ReporteExMesEM',
+                        name: 'Reporte Por Mes',
+                        slug: 'ReporteExMesEM',
+                        icon: 'FileIcon'
+                    }
+                ]
             }
         ]
     },
@@ -84,6 +122,25 @@ export default [{
                 name: 'Generar Ticket',
                 slug: 'GenerarTicketIND',
                 icon: 'FileIcon'
+            },
+            {
+                url: null,
+                name: 'Reportes',
+                slug: 'home',
+                icon: 'PlusCircleIcon',
+                submenu: [{
+                        url: '/agenteView/ReporteExDiaIND',
+                        name: 'Reporte Por Dia',
+                        slug: 'ReporteExDiaIND',
+                        icon: 'FileIcon'
+                    },
+                    {
+                        url: '/agenteView/ReporteExMesIND',
+                        name: 'Reporte Por Mes',
+                        slug: 'ReporteExMesIND',
+                        icon: 'FileIcon'
+                    }
+                ]
             }
         ]
     },
@@ -109,6 +166,25 @@ export default [{
                 name: 'Generar Ticket',
                 slug: 'GenerarTicketCA',
                 icon: 'FileIcon'
+            },
+            {
+                url: null,
+                name: 'Reportes',
+                slug: 'home',
+                icon: 'PlusCircleIcon',
+                submenu: [{
+                        url: '/agenteView/ReporteExDiaCA',
+                        name: 'Reporte Por Dia',
+                        slug: 'ReporteExDiaCA',
+                        icon: 'FileIcon'
+                    },
+                    {
+                        url: '/agenteView/ReporteExMesCA',
+                        name: 'Reporte Por Mes',
+                        slug: 'ReporteExMesCA',
+                        icon: 'FileIcon'
+                    }
+                ]
             }
         ]
     }

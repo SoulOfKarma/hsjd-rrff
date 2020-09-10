@@ -148,8 +148,15 @@ Route::get('/Agente/getDatoCalendarioIND', ['middleware' => 'cors', 'uses' => 'G
 Route::get('/Agente/getDatoCalendarioCA', ['middleware' => 'cors', 'uses' => 'GestionTicketController@GetDatoCalendarioCA']);
 //Traer Dato Join Calendario
 Route::post('/Agente/ModificarCategoria', ['middleware' => 'cors', 'uses' => 'GestionTicketController@ModificarCategoria']);
-//Imprimir
-Route::get('/Agente/imprimir', ['middleware' => 'cors', 'uses' => 'PdfController@imprimir']);
 
-//Imprimir
-Route::post('/Agente/imprimirPorTicket/{id}', ['middleware' => 'cors', 'uses' => 'PdfController@imprimirPorTicket']);
+//Imprimir Ticket Infraestructura
+Route::get('/Agente/imprimirPorTicketINFRA/{id}', ['middleware' => 'cors', 'uses' => 'PdfController@imprimirPorTicketINFRA']);
+//Imprimir Ticket Equipos Medicos
+Route::get('/Agente/imprimirPorTicketEM/{id}', ['middleware' => 'cors', 'uses' => 'PdfController@imprimirPorTicketEM']);
+//Imprimir Ticket Industrial
+Route::get('/Agente/imprimirPorTicketIND/{id}', ['middleware' => 'cors', 'uses' => 'PdfController@imprimirPorTicketIND']);
+//Imprimir CA
+Route::get('/Agente/imprimirPorTicketCA/{id}', ['middleware' => 'cors', 'uses' => 'PdfController@imprimirPorTicketCA']);
+
+//Generar Excel	
+Route::get('/Agente/GenerarExcel', 'ExcelController@generarExcel');

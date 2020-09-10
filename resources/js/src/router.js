@@ -279,7 +279,55 @@ const router = new Router({
                     name: 'ModificarSolicitudAgenteIND',
                     component: () =>
                         import ('./views/agenteView/FormularioModificarIND.vue')
-                }
+                },
+                {
+                    path: '/agenteView/ReporteExDiaInfra',
+                    name: 'ReporteExDiaInfra',
+                    component: () =>
+                        import ('./views/agenteView/ReporteExDiaInfra.vue')
+                },
+                {
+                    path: '/agenteView/ReporteExMesInfra',
+                    name: 'ReporteExMesInfra',
+                    component: () =>
+                        import ('./views/agenteView/ReporteExMesInfra.vue')
+                },
+                {
+                    path: '/agenteView/ReporteExDiaEM',
+                    name: 'ReporteExDiaEM',
+                    component: () =>
+                        import ('./views/agenteView/ReporteExDiaEM.vue')
+                },
+                {
+                    path: '/agenteView/ReporteExMesEM',
+                    name: 'ReporteExMesEM',
+                    component: () =>
+                        import ('./views/agenteView/ReporteExMesEM.vue')
+                },
+                {
+                    path: '/agenteView/ReporteExDiaIND',
+                    name: 'ReporteExDiaIND',
+                    component: () =>
+                        import ('./views/agenteView/ReporteExDiaIND.vue')
+                },
+                {
+                    path: '/agenteView/ReporteExMesIND',
+                    name: 'ReporteExMesIND',
+                    component: () =>
+                        import ('./views/agenteView/ReporteExMesIND.vue')
+                },
+                {
+                    path: '/agenteView/ReporteExDiaCA',
+                    name: 'ReporteExDiaCA',
+                    component: () =>
+                        import ('./views/agenteView/ReporteExDiaCA.vue')
+                },
+                {
+                    path: '/agenteView/ReporteExMesCA',
+                    name: 'ReporteExMesCA',
+                    component: () =>
+                        import ('./views/agenteView/ReporteExMesCA.vue')
+                },
 
 
             ]

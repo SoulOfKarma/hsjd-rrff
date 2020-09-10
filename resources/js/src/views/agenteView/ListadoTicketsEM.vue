@@ -103,7 +103,7 @@
                                         )
                                     "
                                 ></corner-down-right-icon>
-                                <corner-down-right-icon
+                                <archive-icon
                                     size="1.5x"
                                     class="custom-class"
                                     @click="
@@ -112,7 +112,7 @@
                                             data[indextr].uuid
                                         )
                                     "
-                                ></corner-down-right-icon>
+                                ></archive-icon>
                             </div>
                         </vs-td>
                     </vs-tr>
@@ -175,9 +175,11 @@ import { PlusCircleIcon } from "vue-feather-icons";
 import { Trash2Icon } from "vue-feather-icons";
 import { UploadIcon } from "vue-feather-icons";
 import { CornerDownRightIcon } from "vue-feather-icons";
+import { ArchiveIcon } from "vue-feather-icons";
 
 export default {
     components: {
+        ArchiveIcon,
         InfoIcon,
         PlusCircleIcon,
         Trash2Icon,
@@ -237,21 +239,26 @@ export default {
             });
         },
         generarTicket(id, uuid) {
-            var ticket = {
-                idTicket: id,
-                uuidTicket: uuid
-            };
-
-            const ticketEnviado = ticket;
-
             axios
-                .post(
-                    this.localVal + `/api/Agente/imprimirPorTicket/${id}`,
-                    ticketEnviado
+                .get(
+                    this.localVal + `/api/Agente/ValidarTicketAsignadoMod/${id}`
                 )
-                .then(function(response) {})
-                .catch(error => {
-                    console.log(error);
+                .then(res => {
+                    if (res.data) {
+                        this.$vs.notify({
+                            title: "Ticket no ha sido asignado ",
+                            text:
+                                "Ticket necesita ya estar asignado primero para generar el ticket ",
+                            color: "danger",
+                            position: "top-right"
+                        });
+                    } else {
+                        const url =
+                            this.localVal +
+                            "/api/Agente/imprimirPorTicketEM/" +
+                            id;
+                        window.open(url, "_blank");
+                    }
                 });
         },
         detalleSolicitudEliminados(id, uuid) {

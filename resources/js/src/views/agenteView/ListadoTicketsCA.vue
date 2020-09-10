@@ -103,6 +103,16 @@
                                         )
                                     "
                                 ></corner-down-right-icon>
+                                <archive-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        generarTicket(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                ></archive-icon>
                             </div>
                         </vs-td>
                     </vs-tr>
@@ -165,9 +175,11 @@ import { PlusCircleIcon } from "vue-feather-icons";
 import { Trash2Icon } from "vue-feather-icons";
 import { UploadIcon } from "vue-feather-icons";
 import { CornerDownRightIcon } from "vue-feather-icons";
+import { ArchiveIcon } from "vue-feather-icons";
 
 export default {
     components: {
+        ArchiveIcon,
         InfoIcon,
         PlusCircleIcon,
         Trash2Icon,
@@ -208,6 +220,29 @@ export default {
                     uuid: `${uuid}`
                 }
             });
+        },
+        generarTicket(id, uuid) {
+            axios
+                .get(
+                    this.localVal + `/api/Agente/ValidarTicketAsignadoMod/${id}`
+                )
+                .then(res => {
+                    if (res.data) {
+                        this.$vs.notify({
+                            title: "Ticket no ha sido asignado ",
+                            text:
+                                "Ticket necesita ya estar asignado primero para generar el ticket ",
+                            color: "danger",
+                            position: "top-right"
+                        });
+                    } else {
+                        const url =
+                            this.localVal +
+                            "/api/Agente/imprimirPorTicketCA/" +
+                            id;
+                        window.open(url, "_blank");
+                    }
+                });
         },
         cargarSolicitudes() {
             axios
