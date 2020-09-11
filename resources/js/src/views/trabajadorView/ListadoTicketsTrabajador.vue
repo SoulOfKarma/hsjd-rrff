@@ -38,19 +38,36 @@
                             data[indextr].descripcionEstado
                         }}</vs-td>
                         <vs-td :data="data[indextr].id">
-                            <vs-button
-                                size="small"
-                                type="border"
-                                color="success"
-                                class="mb-2"
+                            <info-icon
+                                size="1.5x"
+                                class="custom-class"
                                 @click="
                                     detalleSolicitud(
                                         data[indextr].id,
                                         data[indextr].uuid
                                     )
                                 "
-                                >Ir</vs-button
-                            >
+                            ></info-icon>
+                            <plus-circle-icon
+                                size="1.5x"
+                                class="custom-class"
+                                @click="
+                                    resolucionSolicitud(
+                                        data[indextr].id,
+                                        data[indextr].uuid
+                                    )
+                                "
+                            ></plus-circle-icon>
+                            <archive-icon
+                                size="1.5x"
+                                class="custom-class"
+                                @click="
+                                    generarTicket(
+                                        data[indextr].id,
+                                        data[indextr].uuid
+                                    )
+                                "
+                            ></archive-icon>
                         </vs-td>
                     </vs-tr>
                 </template>
@@ -65,12 +82,14 @@ import { InfoIcon } from "vue-feather-icons";
 import { PlusCircleIcon } from "vue-feather-icons";
 import { Trash2Icon } from "vue-feather-icons";
 import { UploadIcon } from "vue-feather-icons";
+import { ArchiveIcon } from "vue-feather-icons";
 export default {
     components: {
         InfoIcon,
         PlusCircleIcon,
         Trash2Icon,
-        UploadIcon
+        UploadIcon,
+        ArchiveIcon
     },
     data() {
         return {
@@ -89,7 +108,50 @@ export default {
                     this.solicitudes = res.data;
                 });
         },
-        detalleSolicitud() {}
+        detalleSolicitud(id, uuid) {
+            this.$router.push({
+                name: "InformacionSolicitudTrabajador",
+                params: {
+                    id: `${id}`,
+                    uuid: `${uuid}`
+                }
+            });
+        },
+        generarTicket(id, uuid) {
+            axios
+                .get(
+                    this.localVal + `/api/Agente/ValidarTicketAsignadoMod/${id}`
+                )
+                .then(res => {
+                    if (res.data) {
+                        this.$vs.notify({
+                            title: "Ticket no ha sido asignado ",
+                            text:
+                                "Ticket necesita ya estar asignado primero para generar el ticket ",
+                            color: "danger",
+                            position: "top-right"
+                        });
+                    } else {
+                        const url =
+                            this.localVal +
+                            "/api/Agente/imprimirPorTicketINFRA/" +
+                            id;
+                        window.open(url, "_blank");
+                    }
+                });
+        },
+        resolucionSolicitud(id, uuid) {
+            this.$router.push({
+                name: "ResolucionSolicitud",
+                params: {
+                    id: `${id}`,
+                    uuid: `${uuid}`
+                }
+            });
+        }
+    },
+    created() {
+        this.cargarSolicitudes();
     }
 };
 </script>

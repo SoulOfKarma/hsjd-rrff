@@ -178,11 +178,11 @@ class PdfController extends Controller
         ];
 
         $pdf = App::make("dompdf.wrapper");
-        $pdf->loadView('TicketEM', $data);
+        $pdf->loadView('TicketInfra', $data);
         $pdf->setOptions(['isJavascriptEnabled' => true]);
         $pdf->setOptions(['isRemoteEnabled' => true]);
 
-        return $pdf->stream("TicketEM.pdf", array("Attachment" => 0));
+        return $pdf->stream("TicketInfra.pdf", array("Attachment" => 0));
     }
 
     public function imprimirPorTicketEM($id)
@@ -350,11 +350,11 @@ class PdfController extends Controller
         ];
 
         $pdf = App::make("dompdf.wrapper");
-        $pdf->loadView('TicketEM', $data);
+        $pdf->loadView('TicketIND', $data);
         $pdf->setOptions(['isJavascriptEnabled' => true]);
         $pdf->setOptions(['isRemoteEnabled' => true]);
 
-        return $pdf->stream("TicketEM.pdf", array("Attachment" => 0));
+        return $pdf->stream("TicketIND.pdf", array("Attachment" => 0));
     }
 
     public function imprimirPorTicketCA($id)
@@ -436,10 +436,10 @@ class PdfController extends Controller
         ];
 
         $pdf = App::make("dompdf.wrapper");
-        $pdf->loadView('TicketEM', $data);
+        $pdf->loadView('TicketCA', $data);
         $pdf->setOptions(['isJavascriptEnabled' => true]);
         $pdf->setOptions(['isRemoteEnabled' => true]);
 
-        return $pdf->stream("TicketEM.pdf", array("Attachment" => 0));
+        return $pdf->stream("TicketCA.pdf", array("Attachment" => 0));
     }
 }

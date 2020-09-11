@@ -68,6 +68,12 @@ const router = new Router({
                         import ('./views/trabajadorView/ListadoTicketsTrabajador.vue')
                 },
                 {
+                    path: '/ResolucionSolicitud/:id,:uuid',
+                    name: 'ResolucionSolicitud',
+                    component: () =>
+                        import ('./views/trabajadorView/ResolucionSolicitud.vue')
+                },
+                {
                     path: '/InformacionSolicitud/:id,:uuid',
                     name: 'InformacionSolicitud',
                     component: () =>
@@ -79,6 +85,12 @@ const router = new Router({
                     component: () =>
                         import ('./views/ModificarTicketUsuario.vue')
                 },
+                {
+                    path: '/InformacionSolicitud/:id,:uuid',
+                    name: 'InformacionSolicitudTrabajador',
+                    component: () =>
+                        import ('./views/trabajadorView/InformacionSolicitud.vue')
+                }
 
 
             ]
@@ -286,48 +298,28 @@ const router = new Router({
                     component: () =>
                         import ('./views/agenteView/ReporteExDiaInfra.vue')
                 },
-                {
-                    path: '/agenteView/ReporteExMesInfra',
-                    name: 'ReporteExMesInfra',
-                    component: () =>
-                        import ('./views/agenteView/ReporteExMesInfra.vue')
-                },
+
                 {
                     path: '/agenteView/ReporteExDiaEM',
                     name: 'ReporteExDiaEM',
                     component: () =>
                         import ('./views/agenteView/ReporteExDiaEM.vue')
                 },
-                {
-                    path: '/agenteView/ReporteExMesEM',
-                    name: 'ReporteExMesEM',
-                    component: () =>
-                        import ('./views/agenteView/ReporteExMesEM.vue')
-                },
+
                 {
                     path: '/agenteView/ReporteExDiaIND',
                     name: 'ReporteExDiaIND',
                     component: () =>
                         import ('./views/agenteView/ReporteExDiaIND.vue')
                 },
-                {
-                    path: '/agenteView/ReporteExMesIND',
-                    name: 'ReporteExMesIND',
-                    component: () =>
-                        import ('./views/agenteView/ReporteExMesIND.vue')
-                },
+
                 {
                     path: '/agenteView/ReporteExDiaCA',
                     name: 'ReporteExDiaCA',
                     component: () =>
                         import ('./views/agenteView/ReporteExDiaCA.vue')
                 },
-                {
-                    path: '/agenteView/ReporteExMesCA',
-                    name: 'ReporteExMesCA',
-                    component: () =>
-                        import ('./views/agenteView/ReporteExMesCA.vue')
-                },
+
 
 
             ]

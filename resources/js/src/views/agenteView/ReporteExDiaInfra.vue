@@ -56,16 +56,29 @@
 
             <!-- Enviar o Limpiar Formulario -->
             <div class="vx-col md:w-1/1 w-full mb-base">
-                <div class="vx-row">
-                    <div class="vx-col sm:w-2/3 w-full ml-auto">
-                        <vs-button color="warning" class="mb-2" @click="volver"
+                <div class="vx-row mb-12">
+                    <div class="vx-col w-1/3 mt-5">
+                        <vs-button
+                            color="warning"
+                            class="mb-2 w-full"
+                            @click="volver"
                             >Volver</vs-button
                         >
+                    </div>
+                    <div class="vx-col w-1/3 mt-5">
                         <vs-button
-                            class="mr-3 mb-2"
+                            class="mb-2 w-full"
                             color="success"
                             @click="GenerarExcel"
-                            >Generar Excel</vs-button
+                            >Generar Reporte Por Fechas</vs-button
+                        >
+                    </div>
+                    <div class="vx-col w-1/3 mt-5">
+                        <vs-button
+                            class="mb-2 w-full"
+                            color="success"
+                            @click="GenerarExcelTodo"
+                            >Generar Reporte Completo</vs-button
                         >
                     </div>
                 </div>
@@ -123,12 +136,33 @@ export default {
             fechas: {
                 fechaInicio: null,
                 fechaTermino: null
-            }
+            },
+            localVal: "http://127.0.0.1:8000"
         };
     },
     methods: {
         volver() {},
-        GenerarExcel() {},
+        GenerarExcelTodo() {
+            let newWindow = window.open();
+
+            axios
+                .get(this.localVal + "/api/Agente/generarExcelTodo")
+                .then(res => {
+                    newWindow.location =
+                        "http://" +
+                        window.location.hostname +
+                        ":8000/api/Agente/generarExcelTodo";
+                });
+        },
+        GenerarExcel() {
+            const url =
+                this.localVal +
+                "/api/Agente/generarExcelByFecha/" +
+                this.fechas.fechaInicio +
+                "/" +
+                this.fechas.fechaTermino;
+            window.open(url, "_blank");
+        },
         onFromChange(selectedDates, dateStr, instance) {
             this.$set(this.configTodateTimePicker, "minDate", dateStr);
         },

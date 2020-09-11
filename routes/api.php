@@ -136,10 +136,6 @@ Route::get('/Agente/GetTicketAsignado/{id}', ['middleware' => 'cors', 'uses' => 
 //Validar Existencia de ticket asignado para asignar
 Route::get('/Agente/ValidarTicketAsignado/{id}', ['middleware' => 'cors', 'uses' => 'GestionTicketController@ValidarTicketAsignado']);
 
-//Api Trabajador
-//Traer datos especificos
-Route::get('/Trabajador/TraerTickets/{id}', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getTicketsAsignadosJoin']);
-
 //Traer Dato Join Calendario
 Route::get('/Agente/getDatoCalendarioEM', ['middleware' => 'cors', 'uses' => 'GestionTicketController@GetDatoCalendarioEM']);
 //Traer Dato Join Calendario
@@ -159,4 +155,12 @@ Route::get('/Agente/imprimirPorTicketIND/{id}', ['middleware' => 'cors', 'uses' 
 Route::get('/Agente/imprimirPorTicketCA/{id}', ['middleware' => 'cors', 'uses' => 'PdfController@imprimirPorTicketCA']);
 
 //Generar Excel	
-Route::get('/Agente/GenerarExcel', 'ExcelController@generarExcel');
+Route::get('/Agente/generarExcelTodo', 'ExcelController@generarExcelTodo');
+//Generar Excel	Por Fechas
+Route::get('/Agente/generarExcelByFecha/{fechaInicio}/{fechaTermino}', 'ExcelController@generarExcelByFecha');
+
+//Api Trabajador
+//Traer datos especificos
+Route::get('/Trabajador/TraerTickets/{id}', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getTicketsAsignadosJoin']);
+//Guardar seguimiento Trabajador
+Route::post('/Trabajador/GuardarSeguimiento/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoController@store']);

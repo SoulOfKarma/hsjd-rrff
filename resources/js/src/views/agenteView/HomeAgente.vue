@@ -100,9 +100,6 @@
             </div>
             <div class="vx-col w-full lg:w-1/4 mb-base"></div>
         </div>
-        <vs-button color="warning" class="mr-3 mb-2" @click="imprimir"
-            >Ticket Formato</vs-button
-        >
     </div>
 </template>
 <script>

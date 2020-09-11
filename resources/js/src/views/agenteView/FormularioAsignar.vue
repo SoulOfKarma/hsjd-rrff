@@ -825,26 +825,7 @@ export default {
 
                 const ticket = this.gestionTicket;
                 this.openLoadingColor();
-                /*   this.gestionTicket = {
-                uuid: "",
-                idSolicitud: 0,
-                idEdificio: 2,
-                idServicio: 2,
-                idUnidadEsp: 3,
-                idTipoRep: 3,
-                idEstado: 1,
-                idSupervisor: 4,
-                idTrabajador: 5,
-                idApoyo1: 5,
-                idApoyo2: 5,
-                idApoyo3: 5,
-                fromDate: null,
-                toDate: null,
-                time1: null,
-                time2: null,
-                horasCalculadas: 0,
-                diaCalculado: 0
-            }; */
+
                 axios
                     .post(this.localVal + "/api/Agente/PostTicket", ticket)
                     .then(res => {

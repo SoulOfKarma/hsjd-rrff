@@ -359,6 +359,7 @@ export default {
         listadoUsuarios: [],
         gestionTicket: {
             id_user: 0,
+            id_userR: 0,
             uuid: "",
             id_solicitud: 0,
             id_edificio: 0,
@@ -893,6 +894,7 @@ export default {
         },
         guardarFormulario() {
             this.gestionTicket.id_user = this.seleccionUsuario.id;
+            this.gestionTicket.id_userR = this.seleccionUsuario.id;
             this.gestionTicket.id_edificio = this.seleccionEdificio[0].id;
             this.gestionTicket.id_servicio = this.seleccionServicio[0].id;
             this.gestionTicket.id_ubicacionEx = this.seleccionUnidadEsp[0].id;

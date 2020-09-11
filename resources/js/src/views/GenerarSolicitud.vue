@@ -29,12 +29,30 @@
             >
                 <p>Recuerda que todos los campos son obligatorios!</p>
             </vs-alert>
+            <!-- Usuario -->
+            <div class="vx-col md:w-1/1 w-full mb-base">
+                <vx-card title="1. Seleccione al 2° Usuario Responsable" c>
+                    <div class="vx-row mb-12">
+                        <div class="vx-col w-full mt-5">
+                            <h6>1.1 - Seleccione al usuario</h6>
+                            <br />
+                            <v-select
+                                v-model="seleccionUsuario"
+                                placeholder="Seleccione al Usuario"
+                                class="w-full select-large"
+                                label="nombre"
+                                :options="listadoUsuarios"
+                            ></v-select>
+                        </div>
+                    </div>
+                </vx-card>
+            </div>
             <!-- Ubicacion -->
             <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="1. Lugar del problema" code-toggler>
+                <vx-card title="2. Lugar del problema" code-toggler>
                     <div class="vx-row mb-12">
                         <div class="vx-col w-1/3 mt-5">
-                            <h6>1.1 - Seleccione el Edificio</h6>
+                            <h6>2.1 - Seleccione el Edificio</h6>
                             <br />
                             <v-select
                                 v-model="seleccionEdificio"
@@ -45,7 +63,7 @@
                             ></v-select>
                         </div>
                         <div class="vx-col w-1/3 mt-5">
-                            <h6>1.2 - Seleccione el Servicio</h6>
+                            <h6>2.2 - Seleccione el Servicio</h6>
                             <br />
                             <v-select
                                 v-model="seleccionServicio"
@@ -57,7 +75,7 @@
                             ></v-select>
                         </div>
                         <div class="vx-col w-1/3 mt-5">
-                            <h6>1.3 - Seleccione la Unidad Especifica</h6>
+                            <h6>2.3 - Seleccione la Unidad Especifica</h6>
                             <br />
                             <v-select
                                 v-model="seleccionUnidadEsp"
@@ -73,10 +91,10 @@
             </div>
             <!-- Informacion del problema -->
             <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="2. Informacion del problema">
+                <vx-card title="3. Informacion del problema">
                     <div class="vx-row mb-12">
                         <div class="vx-col w-full mt-5">
-                            <h6>2.1 - Tipo de Reparacion</h6>
+                            <h6>3.1 - Tipo de Reparacion</h6>
                             <br />
                             <v-select
                                 v-model="seleccionReparacion"
@@ -86,7 +104,7 @@
                                 :options="listadoTipoRep"
                             ></v-select>
                             <br />
-                            <h6>2.2 - Categoria</h6>
+                            <h6>3.2 - Categoria</h6>
                             <br />
                             <v-select
                                 v-model="seleccionCategoria"
@@ -96,7 +114,7 @@
                                 :options="listadoCategoria"
                             ></v-select>
                             <br />
-                            <h6>2.3 - Titulo del Problema</h6>
+                            <h6>3.3 - Titulo del Problema</h6>
                             <br />
                             <vs-input
                                 placeholder="Ej. Falla de red en equipo x"
@@ -106,7 +124,7 @@
                             />
 
                             <br />
-                            <h6>2.4 - Descripcion del Problema</h6>
+                            <h6>3.4 - Descripcion del Problema</h6>
                             <br />
                             <quill-editor
                                 v-model="solicitud.descripcionP"
@@ -172,6 +190,11 @@ export default {
                 ]
             }
         },
+        listadoUsuarios: [],
+        seleccionUsuario: {
+            id: localStorage.getItem("id"),
+            nombre: localStorage.getItem("nombre")
+        },
         colorLoading: "#ff8000",
         listadoEdificios: [],
         listadoServicios: [],
@@ -187,6 +210,7 @@ export default {
             descripcionP: "",
             tituloP: "",
             id_user: localStorage.getItem("id"),
+            id_userR: 0,
             id_estado: 1,
             id_edificio: 0,
             id_servicio: 0,
@@ -345,6 +369,11 @@ export default {
                 position: "top-right"
             });
         },
+        cargarUsuarios() {
+            axios.get(this.localVal + "/api/Agente/getUsuarios").then(res => {
+                this.listadoUsuarios = res.data;
+            });
+        },
         errorTitulo(mensajeError) {
             this.$vs.notify({
                 title: mensajeError,
@@ -379,6 +408,9 @@ export default {
                 this.mensajeError =
                     "La descripcion no supera los 15 caracteres";
                 this.errorDescripcion(this.mensajeError);
+            } else if (this.seleccionUsuario.id == 0) {
+                this.mensajeError = "el Usuario no a sido seleccionado";
+                this.errorTitulo(this.mensajeError);
             } else if (
                 this.solicitud.tituloP.trim() === "" ||
                 this.solicitud.tituloP.length < 10
@@ -406,6 +438,7 @@ export default {
                 this.solicitud.id_ubicacionEx = this.seleccionUnidadEsp[0].id;
                 this.solicitud.id_tipoReparacion = this.seleccionReparacion.id;
                 this.solicitud.id_categoria = this.seleccionCategoria.id;
+                this.solicitud.id_userR = this.seleccionUsuario.id;
                 var newElement = document.createElement("div");
                 newElement.innerHTML = this.solicitud.descripcionP;
                 this.solicitud.descripcionCorreo = newElement.textContent;
@@ -415,6 +448,7 @@ export default {
                     descripcionP: "",
                     tituloP: "",
                     id_user: localStorage.getItem("id"),
+                    id_userR: 0,
                     id_estado: 1,
                     id_edificio: 0,
                     id_servicio: 0,
@@ -496,6 +530,7 @@ export default {
         this.cargarUnidadEsp();
         this.cargarCategoria();
         this.cargarTipoRep();
+        this.cargarUsuarios();
     },
     mounted() {
         setTimeout(() => {

@@ -37,23 +37,10 @@ export default [{
                 icon: 'FileIcon'
             },
             {
-                url: null,
+                url: '/agenteView/ReporteExDiaInfra',
                 name: 'Reportes',
-                slug: 'home',
-                icon: 'PlusCircleIcon',
-                submenu: [{
-                        url: '/agenteView/ReporteExDiaInfra',
-                        name: 'Reporte Por Dia',
-                        slug: 'ReporteExDiaInfra',
-                        icon: 'FileIcon'
-                    },
-                    {
-                        url: '/agenteView/ReporteExMesInfra',
-                        name: 'Reporte Por Mes',
-                        slug: 'ReporteExMesInfra',
-                        icon: 'FileIcon'
-                    }
-                ]
+                slug: 'ReporteExDiaInfra',
+                icon: 'FileIcon'
             }
         ]
     }, {
@@ -80,23 +67,10 @@ export default [{
                 icon: 'FileIcon'
             },
             {
-                url: null,
+                url: '/agenteView/ReporteExDiaEM',
                 name: 'Reportes',
-                slug: 'home',
-                icon: 'PlusCircleIcon',
-                submenu: [{
-                        url: '/agenteView/ReporteExDiaEM',
-                        name: 'Reporte Por Dia',
-                        slug: 'ReporteExDiaEM',
-                        icon: 'FileIcon'
-                    },
-                    {
-                        url: '/agenteView/ReporteExMesEM',
-                        name: 'Reporte Por Mes',
-                        slug: 'ReporteExMesEM',
-                        icon: 'FileIcon'
-                    }
-                ]
+                slug: 'ReporteExDiaEM',
+                icon: 'FileIcon'
             }
         ]
     },
@@ -124,23 +98,10 @@ export default [{
                 icon: 'FileIcon'
             },
             {
-                url: null,
+                url: '/agenteView/ReporteExDiaIND',
                 name: 'Reportes',
-                slug: 'home',
-                icon: 'PlusCircleIcon',
-                submenu: [{
-                        url: '/agenteView/ReporteExDiaIND',
-                        name: 'Reporte Por Dia',
-                        slug: 'ReporteExDiaIND',
-                        icon: 'FileIcon'
-                    },
-                    {
-                        url: '/agenteView/ReporteExMesIND',
-                        name: 'Reporte Por Mes',
-                        slug: 'ReporteExMesIND',
-                        icon: 'FileIcon'
-                    }
-                ]
+                slug: 'ReporteExDiaIND',
+                icon: 'FileIcon'
             }
         ]
     },
@@ -168,23 +129,10 @@ export default [{
                 icon: 'FileIcon'
             },
             {
-                url: null,
-                name: 'Reportes',
-                slug: 'home',
-                icon: 'PlusCircleIcon',
-                submenu: [{
-                        url: '/agenteView/ReporteExDiaCA',
-                        name: 'Reporte Por Dia',
-                        slug: 'ReporteExDiaCA',
-                        icon: 'FileIcon'
-                    },
-                    {
-                        url: '/agenteView/ReporteExMesCA',
-                        name: 'Reporte Por Mes',
-                        slug: 'ReporteExMesCA',
-                        icon: 'FileIcon'
-                    }
-                ]
+                url: '/agenteView/ReporteExDiaCA',
+                name: 'Reporte Por Dia',
+                slug: 'ReporteExDiaCA',
+                icon: 'FileIcon'
             }
         ]
     }
