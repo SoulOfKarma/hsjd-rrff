@@ -11,6 +11,8 @@
                     <vs-th>Persona Solicitante</vs-th>
                     <vs-th>Titulo</vs-th>
                     <vs-th>Descripcion</vs-th>
+                    <vs-th>Fecha Creacion</vs-th>
+                    <vs-th>Fecha Asignacion</vs-th>
                     <vs-th>Estado</vs-th>
                     <vs-th>Opciones Ticket</vs-th>
                 </template>
@@ -34,7 +36,13 @@
                             v-html="data[indextr].descripcionP"
                             >{{ data[indextr].descripcionP }}</vs-td
                         >
-                        <vs-td :data="data[indextr].descripcionP">{{
+                        <vs-td :data="data[indextr].fechaCreacion">{{
+                            data[indextr].fechaCreacion
+                        }}</vs-td>
+                        <vs-td :data="data[indextr].fechaAsignacion">{{
+                            data[indextr].fechaAsignacion
+                        }}</vs-td>
+                        <vs-td :data="data[indextr].descripcionEstado">{{
                             data[indextr].descripcionEstado
                         }}</vs-td>
                         <vs-td :data="data[indextr].id">
@@ -64,7 +72,8 @@
                                 @click="
                                     generarTicket(
                                         data[indextr].id,
-                                        data[indextr].uuid
+                                        data[indextr].uuid,
+                                        data[indextr].id_categoria
                                     )
                                 "
                             ></archive-icon>
@@ -117,28 +126,32 @@ export default {
                 }
             });
         },
-        generarTicket(id, uuid) {
-            axios
-                .get(
-                    this.localVal + `/api/Agente/ValidarTicketAsignadoMod/${id}`
-                )
-                .then(res => {
-                    if (res.data) {
-                        this.$vs.notify({
-                            title: "Ticket no ha sido asignado ",
-                            text:
-                                "Ticket necesita ya estar asignado primero para generar el ticket ",
-                            color: "danger",
-                            position: "top-right"
-                        });
-                    } else {
-                        const url =
-                            this.localVal +
-                            "/api/Agente/imprimirPorTicketINFRA/" +
-                            id;
-                        window.open(url, "_blank");
-                    }
+        generarTicket(id, uuid, categoria) {
+            if ((categoria = 1)) {
+                const url =
+                    this.localVal + "/api/Agente/imprimirPorTicketINFRA/" + id;
+                window.open(url, "_blank");
+            } else if ((categoria = 2)) {
+                const url =
+                    this.localVal + "/api/Agente/imprimirPorTicketEM/" + id;
+                window.open(url, "_blank");
+            } else if ((categoria = 3)) {
+                const url =
+                    this.localVal + "/api/Agente/imprimirPorTicketIND/" + id;
+                window.open(url, "_blank");
+            } else if ((categoria = 4)) {
+                const url =
+                    this.localVal + "/api/Agente/imprimirPorTicketCA/" + id;
+                window.open(url, "_blank");
+            } else {
+                this.$vs.notify({
+                    title: "Error al generar Ticket",
+                    text: "Intente nuevamente o contacte con algun agente",
+                    color: "danger",
+                    position: "top-right",
+                    fixed: true
                 });
+            }
         },
         resolucionSolicitud(id, uuid) {
             this.$router.push({

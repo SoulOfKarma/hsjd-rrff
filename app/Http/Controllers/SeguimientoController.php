@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\SeguimientoSolicitudes;
 use App\Mail\AutoRespuesta;
+use App\SolicitudTickets;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use DB;
@@ -46,6 +47,23 @@ class SeguimientoController extends Controller
         $nombre = $request->nombre;
 
         Mail::send('/Mails/TicketGeneradoUsuario', ['nombre' => $nombre, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento], function ($message) {
+            $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Actualizacion de ticket');
+            $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
+        });
+    }
+
+    public function guardarSeguimientoT(Request $request, $uuid)
+    {
+        SeguimientoSolicitudes::create($request->all());
+        $descripcionSeguimiento = $request->descripcionCorreo;
+        $id_solicitud = $request->id;
+        $nombre = $request->nombre;
+
+        SolicitudTickets::where('id', $id_solicitud)
+            ->where('uuid', $uuid)
+            ->update(['id_estado' => 5]);
+
+        Mail::send('/Mails/TicketResuelto', ['nombre' => $nombre, 'id_solicitud' => $id_solicitud, 'descripcionSeguimiento' => $descripcionSeguimiento], function ($message) {
             $message->to('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez')->subject('Actualizacion de ticket');
             $message->from('knightwalker.zero5@gmail.com', 'Ricardo Soto Gomez');
         });

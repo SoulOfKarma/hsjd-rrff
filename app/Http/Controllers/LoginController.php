@@ -8,22 +8,19 @@ use App\Login;
 use DB;
 use App\permiso_usuario;
 use SebastianBergmann\Environment\Console;
+use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
 
   public function getUsuarios(Request $request)
   {
-
     $rut = str_replace('.', '', $request->input('rut'));
     $rut = strtoupper($rut);
-    $pasword = str_replace('.', '', $request->input('pasword'));
-    $pasword = strtoupper($pasword);
     $get_all = DB::table('users')
       ->where('run', '=', $rut)
-      ->where('password', '=',  $pasword)
+      ->where('password', '=',  crypt($request->input('pasword'), '$5$'))
       ->get();
-    // crypt($request->input('password'), '123123123')
     return $get_all;
   }
 

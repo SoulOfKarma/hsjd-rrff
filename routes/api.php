@@ -164,3 +164,5 @@ Route::get('/Agente/generarExcelByFecha/{fechaInicio}/{fechaTermino}', 'ExcelCon
 Route::get('/Trabajador/TraerTickets/{id}', ['middleware' => 'cors', 'uses' => 'SolicitudUsuarioController@getTicketsAsignadosJoin']);
 //Guardar seguimiento Trabajador
 Route::post('/Trabajador/GuardarSeguimiento/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoController@store']);
+//Guardar seguimiento Trabajador Resolucion Final 
+Route::post('/Trabajador/GuardarSeguimientoT/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoController@guardarSeguimientoT']);

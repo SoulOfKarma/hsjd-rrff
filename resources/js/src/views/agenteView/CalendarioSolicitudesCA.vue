@@ -48,6 +48,7 @@
                 <p>
                     Fecha Asignacion Ticket: {{ infoGeneral.fechaAsignacion }}
                 </p>
+                <p>Fecha Termino Ticket: {{ infoGeneral.fechaTermino }}</p>
                 <p>Titulo Problema: {{ infoGeneral.titulo }}</p>
                 <p>Descripcion: {{ infoGeneral.descripcion }}</p>
             </vs-popup>
@@ -62,6 +63,8 @@ import router from "@/router";
 import moment from "moment";
 import CalendarScroll from "gantt-schedule-timeline-calendar/dist/CalendarScroll.plugin.js";
 import Selection from "gantt-schedule-timeline-calendar/dist/Selection.plugin.js";
+import ItemMovement from "gantt-schedule-timeline-calendar/dist/ItemMovement.plugin.js";
+import WeekendHighlight from "gantt-schedule-timeline-calendar/dist/WeekendHighlight.plugin.js";
 import vSelect from "vue-select";
 import ItemHold from "gantt-schedule-timeline-calendar/dist/ItemHold.plugin.js";
 import { html, render } from "lit-html";
@@ -79,10 +82,11 @@ export default {
             colorLoading: "#ff8000",
             infoGeneral: {
                 titulo: "",
-                nticket: 0,
+                nticket: "",
                 descripcion: "",
                 fechaAsignacion: "",
                 fechaCreacion: "",
+                fechaTermino: "",
                 titulo: ""
             },
             value1: 50,
@@ -189,7 +193,14 @@ export default {
                         deselected(data, type) {
                             //console.log(`deselected ${type}`, data);
                         }
-                    })
+                    }),
+                    ItemMovement({
+                        moveable: false,
+                        resizable: false,
+                        collisionDetection: false
+                    }),
+                    CalendarScroll(),
+                    WeekendHighlight()
                 ],
                 locale: {
                     name: "es-Cl",
@@ -528,10 +539,13 @@ export default {
             var dato = {
                 id: data.item.id,
                 label: data.item.label,
+                nticket: data.item.nticket,
+                descripcion: data.item.descripcion,
                 row: data.item.rowId,
                 fechaAsignacion: data.item.time.start,
                 fechaCreacion: data.item.fechaCreacion,
-                tituloProblema: data.item.titulo
+                tituloProblema: data.item.titulo,
+                fechaTermino: data.item.time.end
             };
 
             element.addEventListener("click", this.mensaje2.bind(null, dato));
@@ -629,8 +643,10 @@ export default {
                     var f = {
                         id: "",
                         rowId: "",
+                        nticket: "",
                         label: "",
                         titulo: "",
+                        descripcion: "",
                         fechaCreacion: moment(),
                         time: {
                             start: new Date().getTime(),
@@ -658,8 +674,10 @@ export default {
                                 f = {
                                     id: "",
                                     rowId: "",
+                                    nticket: "",
                                     label: "",
                                     titulo: "",
+                                    descripcion: "",
                                     fechaCreacion: moment(),
 
                                     time: {
@@ -685,6 +703,8 @@ export default {
                                 f.id = value.id;
                                 f.rowId = element.id;
                                 f.titulo = value.tituloP;
+                                f.nticket = value.nticket;
+                                f.label = "N°Ticket " + value.nticket;
                                 f.fechaCreacion = new Date(
                                     value.created_at
                                 ).getTime();
@@ -692,7 +712,7 @@ export default {
                                 //f.label = value.descripcionP;
                                 var newElement = document.createElement("div");
                                 newElement.innerHTML = value.descripcionP;
-                                f.label = newElement.textContent;
+                                f.descripcion = newElement.textContent;
                                 fecha.start = new Date(
                                     value.fechaInicio + " " + value.horaInicio
                                 ).getTime();
@@ -809,14 +829,19 @@ export default {
 
         mensaje2(dato) {
             this.infoGeneral.titulo = "Numero de ticket: " + dato.id;
-            this.infoGeneral.nticket = dato.id;
-            this.infoGeneral.descripcion = dato.label;
+            this.infoGeneral.nticket = dato.nticket;
+            this.infoGeneral.descripcion = dato.descripcion;
 
             this.infoGeneral.fechaAsignacion = moment(
                 dato.fechaAsignacion
-            ).format("DD-MM-YYYY");
+            ).format("DD-MM-YYYY, HH:mm:ss");
+
+            this.infoGeneral.fechaTermino = moment(dato.fechaTermino).format(
+                "DD-MM-YYYY , HH:mm:ss"
+            );
+
             this.infoGeneral.fechaCreacion = moment(dato.fechaCreacion).format(
-                "DD-MM-YYYY"
+                "DD-MM-YYYY , HH:mm:ss"
             );
             this.infoGeneral.titulo = dato.tituloProblema;
 

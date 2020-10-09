@@ -141,7 +141,9 @@ export default {
         };
     },
     methods: {
-        volver() {},
+        volver() {
+            router.back();
+        },
         GenerarExcelTodo() {
             let newWindow = window.open();
 

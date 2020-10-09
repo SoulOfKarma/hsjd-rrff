@@ -93,6 +93,28 @@
                                     "
                                 ></upload-icon>
                             </div>
+                            <div v-else-if="data[indextr].id_estado == 5">
+                                <info-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        detalleSolicitud(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                ></info-icon>
+                                <check-icon
+                                    size="1.5x"
+                                    class="custom-class"
+                                    @click="
+                                        abrirPopFinalizar(
+                                            data[indextr].id,
+                                            data[indextr].uuid
+                                        )
+                                    "
+                                ></check-icon>
+                            </div>
                             <div v-else>
                                 <info-icon
                                     size="1.5x"
@@ -155,6 +177,53 @@
                 </div>
             </div>
         </vs-popup>
+        <vs-popup
+            classContent="popFinalizar"
+            title="Presione Finalizar si esta conforme con la reparacion realizada"
+            :active.sync="popupActive3"
+        >
+            <vs-input
+                class="inputx mb-3"
+                placeholder="Placeholder"
+                v-model="value1"
+                hidden
+            />
+            <vs-input
+                disabled
+                class="inputx mb-3"
+                placeholder="Disabled"
+                v-model="value2"
+                hidden
+            />
+            <div class="vx-col md:w-1/1 w-full " alignment="fixed">
+                <div class="vx-row ">
+                    <div class="vx-col sm:w-1/3 w-full ">
+                        <vs-button
+                            @click="popupActive3 = false"
+                            color="primary"
+                            type="filled"
+                            >Volver</vs-button
+                        >
+                    </div>
+                    <div class="vx-col sm:w-1/3 w-full ">
+                        <vs-button
+                            @click="finalizarTicket(value1, value2)"
+                            color="success"
+                            type="filled"
+                            >Finalizar</vs-button
+                        >
+                    </div>
+                    <div class="vx-col sm:w-1/3 w-full">
+                        <vs-button
+                            @click="Redirigir(value1, value2)"
+                            color="warning"
+                            type="filled"
+                            >Re-Abrir Solicitud</vs-button
+                        >
+                    </div>
+                </div>
+            </div>
+        </vs-popup>
     </div>
 </template>
 
@@ -165,6 +234,7 @@ import { InfoIcon } from "vue-feather-icons";
 import { PlusCircleIcon } from "vue-feather-icons";
 import { Trash2Icon } from "vue-feather-icons";
 import { UploadIcon } from "vue-feather-icons";
+import { CheckIcon } from "vue-feather-icons";
 import moment from "moment";
 
 export default {
@@ -172,7 +242,8 @@ export default {
         InfoIcon,
         PlusCircleIcon,
         Trash2Icon,
-        UploadIcon
+        UploadIcon,
+        CheckIcon
     },
     data() {
         return {
@@ -184,6 +255,7 @@ export default {
             value2: "",
             validaEliminar: false,
             popupActive2: false,
+            popupActive3: false,
             localVal: "http://127.0.0.1:8000",
             nombre: localStorage.getItem("nombre"),
             run: localStorage.getItem("run")
@@ -257,6 +329,19 @@ export default {
                         }
                     });
             }
+        },
+        abrirPopFinalizar(id, uuid) {
+            this.value1 = id;
+            this.value2 = uuid;
+            this.popupActive3 = true;
+        },
+        finalizarTicket(id, uuid) {
+            console.log(id);
+            console.log(uuid);
+        },
+        Redirigir(id, uuid) {
+            console.log(id);
+            console.log(uuid);
         },
         probar() {
             console.log(this.fechaModificar);

@@ -82,7 +82,7 @@ export default {
             colorLoading: "#ff8000",
             infoGeneral: {
                 titulo: "",
-                nticket: 0,
+                nticket: "",
                 descripcion: "",
                 fechaAsignacion: "",
                 fechaCreacion: "",
@@ -552,6 +552,8 @@ export default {
             var dato = {
                 id: data.item.id,
                 label: data.item.label,
+                nticket: data.item.nticket,
+                descripcion: data.item.descripcion,
                 row: data.item.rowId,
                 fechaAsignacion: data.item.time.start,
                 fechaCreacion: data.item.fechaCreacion,
@@ -653,8 +655,10 @@ export default {
                     var f = {
                         id: "",
                         rowId: "",
+                        nticket: "",
                         label: "",
                         titulo: "",
+                        descripcion: "",
                         fechaCreacion: moment(),
                         time: {
                             start: new Date().getTime(),
@@ -682,8 +686,10 @@ export default {
                                 f = {
                                     id: "",
                                     rowId: "",
+                                    nticket: "",
                                     label: "",
                                     titulo: "",
+                                    descripcion: "",
                                     fechaCreacion: moment(),
 
                                     time: {
@@ -709,6 +715,8 @@ export default {
                                 f.id = value.id;
                                 f.rowId = element.id;
                                 f.titulo = value.tituloP;
+                                f.nticket = value.nticket;
+                                f.label = "N°Ticket " + value.nticket;
                                 f.fechaCreacion = new Date(
                                     value.created_at
                                 ).getTime();
@@ -716,7 +724,7 @@ export default {
                                 //f.label = value.descripcionP;
                                 var newElement = document.createElement("div");
                                 newElement.innerHTML = value.descripcionP;
-                                f.label = newElement.textContent;
+                                f.descripcion = newElement.textContent;
                                 fecha.start = new Date(
                                     value.fechaInicio + " " + value.horaInicio
                                 ).getTime();
@@ -743,8 +751,8 @@ export default {
 
         mensaje2(dato) {
             this.infoGeneral.titulo = "Numero de ticket: " + dato.id;
-            this.infoGeneral.nticket = dato.id;
-            this.infoGeneral.descripcion = dato.label;
+            this.infoGeneral.nticket = dato.nticket;
+            this.infoGeneral.descripcion = dato.descripcion;
 
             this.infoGeneral.fechaAsignacion = moment(
                 dato.fechaAsignacion
