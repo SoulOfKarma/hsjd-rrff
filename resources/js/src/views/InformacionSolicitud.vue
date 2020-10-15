@@ -1,7 +1,7 @@
 <template>
     <vs-row>
         <div class="vx-col md:w-1/1 w-full mb-base">
-            <vx-card :title="titulo" code-toggler>
+            <vx-card :title="titulo">
                 <div class="vx-row mb-4">
                     <div class="vx-col w-full ">
                         <vx-card
@@ -10,14 +10,21 @@
                         >
                             <p v-html="solicitudes.descripcionP">
                                 {{ solicitudes.descripcionP }}
-                            </p>
-                        </vx-card>
+                            </p> </vx-card
+                        ><br />
+                        <div slot="footer">
+                            <vs-row vs-justify="flex-end">
+                                <vs-button class="fixedHeight" @click="volver"
+                                    >Volver</vs-button
+                                >
+                            </vs-row>
+                        </div>
                     </div>
                 </div>
             </vx-card>
         </div>
         <div class="vx-col md:w-1/1 w-full mb-base">
-            <vx-card title="2. Actualizar Seguimiento" code-toggler>
+            <vx-card title="2. Actualizar Seguimiento">
                 <div class="vx-row mb-12">
                     <div class="vx-col w-full mt-5">
                         <quill-editor
@@ -35,10 +42,16 @@
                             >{{ errors.first("Descripcion") }}</span
                         >
                         <br />
-                        <vs-button type="gradient" @click="guardarSeguimiento"
-                            >Actualizar</vs-button
-                        >
-                        <br />
+
+                        <div slot="footer">
+                            <vs-row vs-justify="flex-end">
+                                <vs-button
+                                    type="gradient"
+                                    @click="guardarSeguimiento"
+                                    >Actualizar</vs-button
+                                >
+                            </vs-row>
+                        </div>
                     </div>
                 </div>
             </vx-card>
@@ -51,7 +64,10 @@
                             :key="indextr"
                             v-for="(tr, indextr) in seguimiento"
                         >
-                            <vx-card :title="tr.nombre" title-color="primary">
+                            <vx-card
+                                :title="tr.nombre + ' ' + tr.apellido"
+                                title-color="primary"
+                            >
                                 <p v-html="tr.descripcionSeguimiento">
                                     {{ tr.descripcionSeguimiento }}
                                 </p>
@@ -109,6 +125,9 @@ export default {
         }
     }),
     methods: {
+        volver() {
+            router.back();
+        },
         openLoadingColor() {
             this.$vs.loading({ color: this.colorLoading });
             setTimeout(() => {

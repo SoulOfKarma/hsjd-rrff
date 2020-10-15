@@ -18,18 +18,19 @@ export default [{
         name: 'Menu',
         slug: 'home',
         icon: 'HomeIcon',
-        submenu: [{
-                url: '/Listadosolicitudes',
-                name: 'Listado Tickets',
-                slug: 'Listadosolicitudes',
-                icon: 'FileIcon'
-            },
+        submenu: [
             {
                 url: '/GenerarSolicitud',
-                name: 'Generar Ticket',
+                name: 'Generar Solicitud',
                 slug: 'GenerarSolicitud',
                 icon: 'FileIcon'
+            },{
+                url: '/Listadosolicitudes',
+                name: 'Listado Solicitudes',
+                slug: 'Listadosolicitudes',
+                icon: 'FileIcon'
             }
+            
         ]
     }
 

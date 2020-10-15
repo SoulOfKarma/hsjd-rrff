@@ -139,6 +139,17 @@
                                 @input="arrayApoyo3(seleccionApoyo3.id)"
                             ></v-select>
                         </div>
+                        <div class="vx-col w-full mt-5">
+                            <h6>2.6 - Seleccione Turno</h6>
+                            <br />
+                            <v-select
+                                v-model="seleccionTurno"
+                                placeholder="Seleccione al Apoyo"
+                                class="w-full select-large"
+                                label="descripcionTurno"
+                                :options="listadoTurno"
+                            ></v-select>
+                        </div>
                     </div>
                 </vx-card>
             </div>
@@ -229,10 +240,10 @@
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <div class="vx-row">
                     <div class="vx-col sm:w-2/3 w-full ml-auto">
-                        <vs-button
-                            color="primary"
-                            class="mb-2"
-                            @click="probando"
+                        <vs-button color="primary" class="mb-2" @click="volver"
+                            >Volver</vs-button
+                        >
+                        <vs-button color="primary" class="mb-2" @click="limpiar"
                             >Limpiar</vs-button
                         >
                         <vs-button
@@ -345,6 +356,11 @@ export default {
             id_user: 0,
             descripcionSeguimiento: ""
         },
+        listadoTurno: [],
+        seleccionTurno: {
+            id: 0,
+            descripcionTurno: "Seleccione Turno"
+        },
         seleccionEdificio: {
             id: 0,
             descripcionEdificio: "Seleccione Edificio"
@@ -392,47 +408,56 @@ export default {
     }),
     computed: {
         calcularHorasTrabajo() {
-            this.hora1 = moment(
-                this.gestionTicket.fechaCambiada +
-                    " " +
-                    this.gestionTicket.horaCambiada
-            );
+            if (
+                this.gestionTicket.fechaInicio != null &&
+                this.gestionTicket.horaInicio != null &&
+                this.gestionTicket.fechaTermino != null &&
+                this.gestionTicket.horaTermino != null
+            ) {
+                this.hora1 = moment(
+                    this.gestionTicket.fechaInicio +
+                        " " +
+                        this.gestionTicket.horaInicio
+                );
 
-            this.hora2 = moment(
-                this.gestionTicket.fechaTermino +
-                    " " +
-                    this.gestionTicket.horaTermino
-            );
-            var mili = this.hora2.diff(this.hora1);
-            var duracion = moment.duration(mili);
+                this.hora2 = moment(
+                    this.gestionTicket.fechaTermino +
+                        " " +
+                        this.gestionTicket.horaTermino
+                );
+                var mili = this.hora2.diff(this.hora1);
+                var duracion = moment.duration(mili);
 
-            this.gestionTicket.horasEjecucion = duracion.asHours();
-            return this.gestionTicket.horasEjecucion;
+                this.gestionTicket.horasEjecucion = duracion.asHours();
+                return this.gestionTicket.horasEjecucion;
+            }
         },
         diasCalculados() {
-            this.fecha1 = moment(
-                this.gestionTicket.fechaCambiada +
-                    " " +
-                    this.gestionTicket.horaCambiada
-            );
-            this.fecha2 = moment(
-                this.gestionTicket.fechaTermino +
-                    " " +
-                    this.gestionTicket.horaTermino
-            );
-            this.gestionTicket.diasEjecucion = this.fecha2.diff(
-                this.fecha1,
-                "days"
-            );
+            if (
+                this.gestionTicket.fechaInicio != null &&
+                this.gestionTicket.horaInicio != null &&
+                this.gestionTicket.fechaTermino != null &&
+                this.gestionTicket.horaTermino != null
+            ) {
+                this.fecha1 = moment(this.gestionTicket.fechaInicio);
+                this.fecha2 = moment(this.gestionTicket.fechaTermino);
+                this.gestionTicket.diasEjecucion = this.fecha2.diff(
+                    this.fecha1,
+                    "days"
+                );
 
-            if (this.fecha1.isSame(this.fecha2)) {
-                this.gestionTicket.diasEjecucion = 1;
+                if (this.fecha1.isSame(this.fecha2)) {
+                    this.gestionTicket.diasEjecucion = 1;
+                }
+                return this.gestionTicket.diasEjecucion;
+                // this.diaCalculado = this.fromDate - this.toDate;
             }
-            return this.gestionTicket.diasEjecucion;
-            // this.diaCalculado = this.fromDate - this.toDate;
         }
     },
     methods: {
+        volver() {
+            router.back();
+        },
         cargaSegunUnidadEsp() {
             var idGeneral = this.seleccionUnidadEsp.id;
 
@@ -629,6 +654,11 @@ export default {
                 .then(res => {
                     this.listadoSupervisores = res.data;
                 });
+        },
+        cargarTurnos() {
+            axios.get(this.localVal + "/api/Agente/GetTurnos").then(res => {
+                this.listadoTurno = res.data;
+            });
         },
         cargarTrabajadores() {
             axios
@@ -948,6 +978,9 @@ export default {
             });
             this.seleccionReparacion = b;
         },
+        volver() {
+            router.back();
+        },
         cargarUSE() {
             var datoidServicio = this.datosSolicitud.id_servicio;
             var datoidEdificio = this.datosSolicitud.id_edificio;
@@ -1002,12 +1035,15 @@ export default {
                     var datoidApoyo1 = this.datosTicketAsignado.idApoyo1;
                     var datoidApoyo2 = this.datosTicketAsignado.idApoyo2;
                     var datoidApoyo3 = this.datosTicketAsignado.idApoyo3;
+                    var datoidTurno = this.datosTicketAsignado.idTurno;
+
                     this.cargarSTA(
                         datoidSupervisor,
                         datoidTrabajador,
                         datoidApoyo1,
                         datoidApoyo2,
-                        datoidApoyo3
+                        datoidApoyo3,
+                        datoidTurno
                     );
                 });
         },
@@ -1016,7 +1052,8 @@ export default {
             datoidTrabajador,
             datoidApoyo1,
             datoidApoyo2,
-            datoidApoyo3
+            datoidApoyo3,
+            datoidTurno
         ) {
             let c = this.listadoSupervisores;
             let b = [];
@@ -1087,20 +1124,97 @@ export default {
             } else {
                 this.seleccionApoyo3 = b;
             }
+
+            c = this.listadoTurno;
+
+            b = [];
+            c.forEach((value, index) => {
+                a = value.id;
+                if (a == datoidTurno) {
+                    b.push(value);
+                }
+            });
+
+            if (b.length <= 0) {
+            } else {
+                this.seleccionTurno = b;
+            }
         },
         cargarInicial() {
             this.cargaEstado();
             this.cargaTipoReparacion();
             this.cargarUSE();
         },
-        probando() {
-            console.log(this.seleccionEstado);
-            console.log(this.seleccionApoyo1);
-            console.log(this.seleccionApoyo2);
-            console.log(this.seleccionApoyo3);
+        limpiar() {
+            (this.gestionTicket = {
+                uuid: "",
+                id_solicitud: 0,
+                id_edificio: 0,
+                id_servicio: 0,
+                id_ubicacionEx: 0,
+                id_tipoReparacion: 0,
+                id_estado: 1,
+                id_supervisor: 0,
+                id_trabajador: 0,
+                idApoyo1: 999,
+                idApoyo2: 999,
+                idApoyo3: 999,
+                idTurno: 0,
+                fechaCambiada: null,
+                fechaTermino: null,
+                horaCambiada: null,
+                horaTermino: null,
+                horasEjecucion: 0,
+                diasEjecucion: 0
+            }),
+                (this.seleccionTurno = {
+                    id: 0,
+                    descripcionTurno: "Seleccione Turno"
+                }),
+                (this.seleccionEdificio = {
+                    id: 0,
+                    descripcionEdificio: "Seleccione Edificio"
+                }),
+                (this.seleccionServicio = {
+                    id: 0,
+                    descripcionServicio: "Seleccione Servicio"
+                }),
+                (this.seleccionUnidadEsp = {
+                    id: 0,
+                    descripcionUnidadEsp: "Seleccione Unidad Especifica"
+                }),
+                (this.seleccionReparacion = {
+                    id: 0,
+                    descripcionTipoReparacion: "Seleccione Tipo de Reparacion"
+                }),
+                (this.seleccionEstado = {
+                    id: 0,
+                    descripcionEstado: "Seleccione Estado"
+                }),
+                (this.seleccionSupervisor = {
+                    id: 0,
+                    sup_nombre_apellido: "Seleccione al Supervisor"
+                }),
+                (this.seleccionTrabajador = {
+                    id: 0,
+                    tra_nombre_apellido: "Seleccione al Trabajador"
+                }),
+                (this.seleccionApoyo1 = {
+                    id: 999,
+                    tra_nombre_apellido: "Sin Asignar"
+                }),
+                (this.seleccionApoyo2 = {
+                    id: 999,
+                    tra_nombre_apellido: "Sin Asignar"
+                }),
+                (this.seleccionApoyo3 = {
+                    id: 999,
+                    tra_nombre_apellido: "Sin Asignar"
+                });
         }
     },
     created() {
+        this.cargarTurnos();
         this.cargarEdificios();
         this.cargarServicios();
         this.cargarUnidadEsp();

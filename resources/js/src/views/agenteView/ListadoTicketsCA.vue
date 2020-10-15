@@ -23,7 +23,7 @@
                         }}</vs-td>
 
                         <vs-td :data="data[indextr].id_user">{{
-                            data[indextr].nombre
+                            data[indextr].nombre + " " + data[indextr].apellido
                         }}</vs-td>
 
                         <vs-td :data="data[indextr].tituloP">{{
@@ -139,7 +139,7 @@
             />
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <div class="vx-row">
-                    <div class="vx-col sm:w-1/2 w-full ">
+                    <div class="vx-col sm:w-full w-full ">
                         <vs-button
                             @click="
                                 eliminarSolicitud(
@@ -153,7 +153,7 @@
                             >Eliminar</vs-button
                         >
                     </div>
-                    <div class="vx-col sm:w-1/2 w-full ">
+                    <div class="vx-col sm:w-full w-full ">
                         <vs-button
                             @click="popupActive2 = false"
                             color="primary"
@@ -195,7 +195,10 @@ export default {
             popupActive2: false,
             solicitudes: [],
             localVal: "http://127.0.0.1:8000",
-            nombre: localStorage.getItem("nombre"),
+            nombre:
+                localStorage.getItem("nombre") +
+                " " +
+                localStorage.getItem("apellido"),
             run: localStorage.getItem("run")
         };
     },
@@ -346,3 +349,11 @@ export default {
     }
 };
 </script>
+<style lang="stylus">
+.popup-example
+  .vs-button
+    float left
+    width 97%
+    margin 10px
+    margin-top 5px
+</style>

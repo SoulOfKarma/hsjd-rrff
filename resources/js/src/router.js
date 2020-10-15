@@ -61,24 +61,7 @@ const router = new Router({
                     component: () =>
                         import ('./views/trabajadorView/homeTrabajador.vue')
                 },
-                {
-                    path: '/HomeAdmin',
-                    name: 'InicioAdmin',
-                    component: () =>
-                        import ('./views/adminView/homeAdmin.vue')
-                },
-                {
-                    path: '/AgregarUsuarioJefe',
-                    name: 'InicioTrabajador',
-                    component: () =>
-                        import ('./views/adminView/AgregarUsuarioJefe.vue')
-                },
-                {
-                    path: '/AgregarSubroganteJefe',
-                    name: 'InicioTrabajador',
-                    component: () =>
-                        import ('./views/adminView/AgregarSubroganteJefe.vue')
-                },
+                
                 {
                     path: '/ListadoTicketsTrabajador',
                     name: 'ListadoTicketsTrabajador',
@@ -135,6 +118,18 @@ const router = new Router({
                     name: 'GenerarTicket',
                     component: () =>
                         import ('./views/agenteView/GenerarTicket.vue')
+                },
+                {
+                    path: '/AgregarUsuarioJefe',
+                    name: 'agregarUsuarioJefe',
+                    component: () =>
+                        import ('./views/adminView/AgregarUsuarioJefe.vue')
+                },
+                {
+                    path: '/AgregarSubroganteJefe',
+                    name: 'agregarSubroganteJefe',
+                    component: () =>
+                        import ('./views/adminView/AgregarSubroganteJefe.vue')
                 },
                 {
                     path: '/agenteView/CalendarioSolicitudes',

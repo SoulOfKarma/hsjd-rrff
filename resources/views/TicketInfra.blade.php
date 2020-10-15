@@ -94,15 +94,15 @@
             </div>
             <div class="row">
               <div class="col-xs-2"><label>Apoyo 1</label></div>
-              <div class="col-xs-2"><label>{{$nomApoyo1}}</label> </div>
+              <div class="col-xs-2"><label>{{$nomApoyo1}} {{$apeApoyo3}}</label> </div>
               <div class="col-xs-1"></div>
               <div class="col-xs-3"><label>Apoyo 2</label> </div>
-              <div class="col-xs-2"><label>{{$nomApoyo2}}</label></div>
+              <div class="col-xs-2"><label>{{$nomApoyo2}} {{$apeApoyo3}}</label></div>
               <div class="col-xs-2"></div>
             </div>
             <div class="row">
               <div class="col-xs-2"><label>Apoyo 3</label></div>
-              <div class="col-xs-2"><label>{{$nomApoyo3}}</label></div>
+              <div class="col-xs-2"><label>{{$nomApoyo3}} {{$apeApoyo3}}</label></div>
               <div class="col-xs-1"></div>
               <div class="col-xs-3"><label>Especialidad</label> </div>
               <div class="col-xs-2"><label>{{$desTipoRep}}</label></div>
@@ -119,12 +119,16 @@
             <div class="row">
               <div class="col-xs-2"><label>Horas Ejecucion</label></div>
               <div class="col-xs-2"><label>{{$horasEjecucion}}</label> </div>
+              <div class="col-xs-1"></div>
+              <div class="col-xs-3"><label>Turno</label></div>
+              <div class="col-xs-2"><label>{{$descripcionTurno}}</label></div>
+              <div class="col-xs-2"></div>
             </div><br>
             <div class="row">
               <div class="col-xs-12">
                 <div class="panel panel-primary">
                   <div class="panel-heading">
-                    <h3 class="panel-title">Solicitud realizada por el servicio de {{$desServicio}} - {{$desEdificio}}</h3>
+                    <h3 class="panel-title">Solicitud realizada por el servicio de: {{$desServicio}} || Edificio: {{$desEdificio}}</h3>
                   </div>
                   <div class="panel-body" id="descripcion">
                     {{$descripcionPro}}

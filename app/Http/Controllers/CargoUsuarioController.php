@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\cargoUsuario;
+use DB;
 
 class CargoUsuarioController extends Controller
 {
@@ -15,6 +16,14 @@ class CargoUsuarioController extends Controller
     public function index()
     {
         $getall = cargoUsuario::all();
+        return $getall;
+    }
+
+    public function getCargoNoJefatura()
+    {
+        $getall = cargoUsuario::select('cargo_Usuarios.*')
+        ->where('id','!=',1)
+        ->get();
         return $getall;
     }
 

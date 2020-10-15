@@ -139,6 +139,17 @@
                                 @input="arrayApoyo3(seleccionApoyo3.id)"
                             ></v-select>
                         </div>
+                        <div class="vx-col w-full mt-5">
+                            <h6>2.6 - Seleccione Turno</h6>
+                            <br />
+                            <v-select
+                                v-model="seleccionTurno"
+                                placeholder="Seleccione al Apoyo"
+                                class="w-full select-large"
+                                label="descripcionTurno"
+                                :options="listadoTurno"
+                            ></v-select>
+                        </div>
                     </div>
                 </vx-card>
             </div>
@@ -229,6 +240,9 @@
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <div class="vx-row">
                     <div class="vx-col sm:w-2/3 w-full ml-auto">
+                        <vs-button color="primary" class="mb-2" @click="volver"
+                            >Volver</vs-button
+                        >
                         <vs-button
                             color="primary"
                             class="mb-2"
@@ -345,6 +359,11 @@ export default {
             id_user: 0,
             descripcionSeguimiento: ""
         },
+        listadoTurno: [],
+        seleccionTurno: {
+            id: 0,
+            descripcionTurno: "Seleccione Turno"
+        },
         seleccionEdificio: {
             id: 0,
             descripcionEdificio: "Seleccione Edificio"
@@ -392,39 +411,56 @@ export default {
     }),
     computed: {
         calcularHorasTrabajo() {
-            this.hora1 = moment(
-                this.gestionTicket.fechaCambiada +
-                    " " +
-                    this.gestionTicket.horaCambiada
-            );
+            if (
+                this.gestionTicket.fechaInicio != null &&
+                this.gestionTicket.horaInicio != null &&
+                this.gestionTicket.fechaTermino != null &&
+                this.gestionTicket.horaTermino != null
+            ) {
+                this.hora1 = moment(
+                    this.gestionTicket.fechaInicio +
+                        " " +
+                        this.gestionTicket.horaInicio
+                );
 
-            this.hora2 = moment(
-                this.gestionTicket.fechaTermino +
-                    " " +
-                    this.gestionTicket.horaTermino
-            );
-            var mili = this.hora2.diff(this.hora1);
-            var duracion = moment.duration(mili);
+                this.hora2 = moment(
+                    this.gestionTicket.fechaTermino +
+                        " " +
+                        this.gestionTicket.horaTermino
+                );
+                var mili = this.hora2.diff(this.hora1);
+                var duracion = moment.duration(mili);
 
-            this.gestionTicket.horasEjecucion = duracion.asHours();
-            return this.gestionTicket.horasEjecucion;
+                this.gestionTicket.horasEjecucion = duracion.asHours();
+                return this.gestionTicket.horasEjecucion;
+            }
         },
         diasCalculados() {
-            this.fecha1 = moment(this.gestionTicket.fechaCambiada);
-            this.fecha2 = moment(this.gestionTicket.fechaTermino);
-            this.gestionTicket.diasEjecucion = this.fecha2.diff(
-                this.fecha1,
-                "days"
-            );
+            if (
+                this.gestionTicket.fechaInicio != null &&
+                this.gestionTicket.horaInicio != null &&
+                this.gestionTicket.fechaTermino != null &&
+                this.gestionTicket.horaTermino != null
+            ) {
+                this.fecha1 = moment(this.gestionTicket.fechaInicio);
+                this.fecha2 = moment(this.gestionTicket.fechaTermino);
+                this.gestionTicket.diasEjecucion = this.fecha2.diff(
+                    this.fecha1,
+                    "days"
+                );
 
-            if (this.fecha1.isSame(this.fecha2)) {
-                this.gestionTicket.diasEjecucion = 1;
+                if (this.fecha1.isSame(this.fecha2)) {
+                    this.gestionTicket.diasEjecucion = 1;
+                }
+                return this.gestionTicket.diasEjecucion;
+                // this.diaCalculado = this.fromDate - this.toDate;
             }
-            return this.gestionTicket.diasEjecucion;
-            // this.diaCalculado = this.fromDate - this.toDate;
         }
     },
     methods: {
+        volver() {
+            router.back();
+        },
         cargaSegunUnidadEsp() {
             var idGeneral = this.seleccionUnidadEsp.id;
 
@@ -621,6 +657,11 @@ export default {
                 .then(res => {
                     this.listadoSupervisores = res.data;
                 });
+        },
+        cargarTurnos() {
+            axios.get(this.localVal + "/api/Agente/GetTurnos").then(res => {
+                this.listadoTurno = res.data;
+            });
         },
         cargarTrabajadores() {
             axios
@@ -1101,6 +1142,7 @@ export default {
         this.cargarEstado();
         this.cargaSolicitudEspecifica();
         this.cargaTicketAsignado();
+        this.cargarTurnos();
     },
     async beforeMount() {},
     components: {

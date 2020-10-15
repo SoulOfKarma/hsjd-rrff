@@ -17,7 +17,6 @@ class CreateSolicitudTicketsTable extends Migration
             $table->id();
             $table->uuid('uuid');
             $table->bigInteger('id_user');
-            $table->bigInteger('id_userR');
             $table->bigInteger('id_estado');
             $table->bigInteger('id_edificio');
             $table->bigInteger('id_servicio');

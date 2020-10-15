@@ -15,8 +15,14 @@ use App\Mail\AutoRespuesta;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:api')->get('/users', function (Request $request) {
+    $data = [
+        'run' => $request->user()->run,
+        'nombre' => $request->user()->nombre,
+        'apellido' => $request->user()->apellido
+    ];
+   
+    return $data;
 });
 Route::post('/Login/GetUsers', ['middleware' => 'cors', 'uses' => 'LoginController@getUsuarios']);
 Route::post('/Login/getpr', ['middleware' => 'cors', 'uses' => 'LoginController@adminPr']);
@@ -92,6 +98,14 @@ Route::get('/Agente/GetSolicitudTicketsEM', ['middleware' => 'cors', 'uses' => '
 Route::get('/Agente/GetSolicitudTicketsIND', ['middleware' => 'cors', 'uses' => 'GestionTicketController@getSolicitudUsuariosJoinIND']);
 //Traer Tickets con sus usuarios CA
 Route::get('/Agente/GetSolicitudTicketsCA', ['middleware' => 'cors', 'uses' => 'GestionTicketController@getSolicitudUsuariosJoinCA']);
+//Traer Turno
+Route::get('/Agente/GetTurnos', ['middleware' => 'cors', 'uses' => 'TurnoController@index']);
+//Traer Cargos
+Route::get('/Agente/GetCargos', ['middleware' => 'cors', 'uses' => 'CargoUsuarioController@index']);
+//Traer Cargos sin Jefatura
+Route::get('/Agente/GetCargoNoJefatura', ['middleware' => 'cors', 'uses' => 'CargoUsuarioController@getCargoNoJefatura']);
+//Traer Toda Cuenta de Usuarios
+Route::get('/Agente/GetUsuariosCargo', ['middleware' => 'cors', 'uses' => 'UsersController@traerTodoUsuarios']);
 
 //Traer seguimiento de tickets
 Route::get('/Agente/TraerSeguimiento/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoController@indexSeguimiento']);
@@ -136,6 +150,7 @@ Route::get('/Agente/GetTicketAsignado/{id}', ['middleware' => 'cors', 'uses' => 
 //Validar Existencia de ticket asignado para asignar
 Route::get('/Agente/ValidarTicketAsignado/{id}', ['middleware' => 'cors', 'uses' => 'GestionTicketController@ValidarTicketAsignado']);
 
+
 //Traer Dato Join Calendario
 Route::get('/Agente/getDatoCalendarioEM', ['middleware' => 'cors', 'uses' => 'GestionTicketController@GetDatoCalendarioEM']);
 //Traer Dato Join Calendario
@@ -154,6 +169,7 @@ Route::get('/Agente/imprimirPorTicketIND/{id}', ['middleware' => 'cors', 'uses' 
 //Imprimir CA
 Route::get('/Agente/imprimirPorTicketCA/{id}', ['middleware' => 'cors', 'uses' => 'PdfController@imprimirPorTicketCA']);
 
+
 //Generar Excel	
 Route::get('/Agente/generarExcelTodo', 'ExcelController@generarExcelTodo');
 //Generar Excel	Por Fechas
@@ -166,3 +182,6 @@ Route::get('/Trabajador/TraerTickets/{id}', ['middleware' => 'cors', 'uses' => '
 Route::post('/Trabajador/GuardarSeguimiento/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoController@store']);
 //Guardar seguimiento Trabajador Resolucion Final 
 Route::post('/Trabajador/GuardarSeguimientoT/{uuid}', ['middleware' => 'cors', 'uses' => 'SeguimientoController@guardarSeguimientoT']);
+
+//Guardar Nuevo Usuario
+Route::post('/Agente/GuardarUsuarioJefe', ['middleware' => 'cors', 'uses' => 'UsersController@registrarUsuario']);

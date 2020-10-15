@@ -22,6 +22,7 @@ class CreateGestionSolicitudesTable extends Migration
             $table->bigInteger('idApoyo1');
             $table->bigInteger('idApoyo2');
             $table->bigInteger('idApoyo3');
+            $table->bigInteger('idTurno');
             $table->time('horaInicio');
             $table->time('horaCambiada')->nullable();
             $table->time('horaTermino');

@@ -318,9 +318,6 @@ export default {
         } else if (aux2 == 3) {
             console.log("Acceso Correcto Trabajador");
             this.navMenuItems = navMenuItemsTrabajador;
-        } else if (aux2 == 4) {
-            console.log("Acceso Correcto Admin");
-            this.navMenuItems = navMenuItemsAdmin;
         } else {
             router.push("/pages/login");
         }

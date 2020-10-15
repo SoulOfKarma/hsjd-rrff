@@ -73,7 +73,7 @@ class SeguimientoController extends Controller
     {
         $users = SeguimientoSolicitudes::select('seguimiento_solicitudes')
             ->join('users', 'seguimiento_solicitudes.id_user', '=', 'users.id')
-            ->select('seguimiento_solicitudes.*', 'users.nombre')
+            ->select('seguimiento_solicitudes.*', 'users.nombre', 'users.apellido')
             ->where('seguimiento_solicitudes.uuid', '=', $uuid)
             ->orderBy('seguimiento_solicitudes.id', 'desc')
             ->get();
@@ -89,7 +89,7 @@ class SeguimientoController extends Controller
             ->join('edificios', 'solicitud_tickets.id_edificio', '=', 'edificios.id')
             ->join('servicios', 'solicitud_tickets.id_servicio', '=', 'servicios.id')
             ->join('unidad_esps', 'solicitud_tickets.id_ubicacionEx', '=', 'unidad_esps.id')
-            ->select('solicitud_tickets.*', 'users.nombre', 'edificios.descripcionEdificio', 'servicios.descripcionServicio', 'unidad_esps.descripcionUnidadEsp')
+            ->select('solicitud_tickets.*', 'users.nombre','users.apellido', 'edificios.descripcionEdificio', 'servicios.descripcionServicio', 'unidad_esps.descripcionUnidadEsp')
             ->where('solicitud_tickets.uuid', '=', $id)
             ->get();
 

@@ -12,23 +12,16 @@
                 </div>
                 <div class="vx-breadcrumb ml-4 md:block hidden">
                     <div
-                        class="content-area__heading pr-4 border-0 md:border-r border-solid border-grey-light"
+                        class="content-area__heading pr-6 border-0 md:border-r border-solid border-grey-light"
                     >
-                        <h3 class="mb-1">
+                        <h3 class="mb-6">
                             Agente:
                             <p>{{ nombre }} - {{ run }}</p>
                         </h3>
                     </div>
                 </div>
             </div>
-            <vs-alert
-                color="primary"
-                icon="new_releases"
-                active="true"
-                style="margin-bottom: 10px;"
-            >
-                <p>Recuerda que todos los campos son obligatorios!</p>
-            </vs-alert>
+
             <!-- Informacion General Ticket -->
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <vx-card :title="titulo">
@@ -108,7 +101,7 @@
                                 pagination
                             >
                                 <vx-card
-                                    :title="tr.nombre"
+                                    :title="tr.nombre + ' ' + tr.apellido"
                                     title-color="primary"
                                 >
                                     <p v-html="tr.descripcionSeguimiento">
@@ -183,8 +176,11 @@ export default {
                 .then(res => {
                     this.solicitudes = res.data;
                     try {
-                        this.titulo = "Ticket N°" + this.solicitudes[0].id;
-                        this.infoSeguimiento.nombre = this.solicitudes[0].nombre;
+                        this.titulo = "1. Ticket N°" + this.solicitudes[0].id;
+                        this.infoSeguimiento.nombre =
+                            this.solicitudes[0].nombre +
+                            " " +
+                            this.solicitudes[0].apellido;
                         this.infoSeguimiento.edificio = this.solicitudes[0].descripcionEdificio;
                         this.infoSeguimiento.servicio = this.solicitudes[0].descripcionServicio;
                         this.infoSeguimiento.unidadEsp = this.solicitudes[0].descripcionUnidadEsp;

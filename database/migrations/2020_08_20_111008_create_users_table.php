@@ -18,7 +18,16 @@ class CreateUsersTable extends Migration
             $table->string('run');
             $table->string('email')->unique();
             $table->string('nombre');
+            $table->string('apellido');
+            $table->bigInteger('anexo');
+            $table->bigInteger('id_cargo')->nullable();
+            $table->bigInteger('id_cargo_asociado')->nullable();
+            $table->bigInteger('id_edificio');
+            $table->bigInteger('id_servicio');
+            $table->bigInteger('id_unidadEspecifica');
             $table->string('password');
+            $table->string('api_token', 80)->unique()
+                        ->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

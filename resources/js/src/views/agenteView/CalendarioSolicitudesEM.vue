@@ -582,7 +582,8 @@ export default {
                         };
 
                         objeto.id = value.id;
-                        objeto.label = value.tra_nombre_apellido;
+                        objeto.label =
+                            value.tra_nombre + " " + value.tra_apellido;
                         arregloTra.push(objeto);
                     });
 
@@ -618,7 +619,8 @@ export default {
                         contador = contador + 1;
                         objeto.id = contador;
 
-                        objeto.label = value.tra_nombre_apellido;
+                        objeto.label =
+                            value.tra_nombre + " " + value.tra_apellido;
                         objeto.parentId = value.id_trabajador;
                         objeto.id_solicitud = value.id_solicitud;
                         listadoRow.push(objeto);

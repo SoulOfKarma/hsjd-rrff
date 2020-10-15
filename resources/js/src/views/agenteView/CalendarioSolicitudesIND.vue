@@ -129,7 +129,7 @@ export default {
                 }
             ],
             config: {
-                height: 423,
+                height: 0,
                 plugins: [
                     Selection({
                         items: true,
@@ -231,18 +231,26 @@ export default {
                 },
                 list: {
                     rows: {},
-
+                    row: {
+                        height: 40,
+                        gap: {
+                            top: 0,
+                            bottom: 0
+                        }
+                    },
                     columns: {
                         percent: 100,
                         resizer: {
-                            inRealTime: true
+                            width: 10,
+                            inRealTime: true,
+                            dots: 6
                         },
                         minWidth: 50,
                         data: {
                             id: {
                                 id: "id",
                                 data: "id",
-                                width: 50,
+                                width: 40,
                                 header: {
                                     content: "ID"
                                 }
@@ -250,7 +258,7 @@ export default {
                             label: {
                                 id: "label",
                                 data: "label",
-                                width: 230,
+                                width: 180,
                                 expander: true,
                                 isHTML: false,
                                 header: {
@@ -299,6 +307,7 @@ export default {
                         y: 0
                     }
                 },
+                spacing: 1,
                 chart: {
                     items: {},
                     time: {
@@ -535,6 +544,9 @@ export default {
         };
     },
     methods: {
+        recenter() {
+            GSTC.api.scrollToTime(GSTC.api.time.date().valueOf());
+        },
         mensaje(element, data) {
             var dato = {
                 id: data.item.id,
@@ -582,7 +594,8 @@ export default {
                         };
 
                         objeto.id = value.id;
-                        objeto.label = value.tra_nombre_apellido;
+                        objeto.label =
+                            value.tra_nombre + " " + value.tra_apellido;
                         arregloTra.push(objeto);
                     });
 
@@ -618,7 +631,8 @@ export default {
                         contador = contador + 1;
                         objeto.id = contador;
 
-                        objeto.label = value.tra_nombre_apellido;
+                        objeto.label =
+                            value.tra_nombre + " " + value.tra_apellido;
                         objeto.parentId = value.id_trabajador;
                         objeto.id_solicitud = value.id_solicitud;
                         listadoRow.push(objeto);

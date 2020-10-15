@@ -27,32 +27,47 @@
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <vx-card title="1. Ingrese Datos del Usuario">
                     <div class="vx-row mb-12">
+                        <div class="vx-col w-full mt-5">
+                            <h6>1.1 Rut del Usuario</h6>
+                            <vs-input
+                                class="vx-col w-full mt-5"
+                                v-model="rutUsuario"
+                            />
+                        </div>
                         <div class="vx-col w-1/2 mt-5">
-                            <h6>1.1 Nombre del Usuario</h6>
+                            <h6>1.2 Nombre del Usuario</h6>
                             <vs-input
                                 class="vx-col w-full mt-5"
                                 v-model="nombreUsuario"
                             />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
-                            <h6>1.2 Apellido del Usuario</h6>
+                            <h6>1.3 Apellido del Usuario</h6>
                             <vs-input
                                 class="vx-col w-full mt-5"
                                 v-model="apellidoUsuario"
                             />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
-                            <h6>1.3 Anexo del Usuario</h6>
+                            <h6>1.4 Anexo del Usuario</h6>
                             <vs-input
                                 class="vx-col w-full mt-5"
-                                v-model="nombreUsuario"
+                                v-model="anexoUsuario"
                             />
                         </div>
-                        <div class="vx-col w-full mt-5">
-                            <h6>1.4 Correo del Usuario</h6>
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>1.5 Correo del Usuario</h6>
                             <vs-input
                                 class="vx-col w-full mt-5"
-                                v-model="nombreUsuario"
+                                v-model="correoUsuario"
+                            />
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>1.6 Contraseña del Usuario</h6>
+                            <vs-input
+                                type="password"
+                                class="vx-col w-full mt-5"
+                                v-model="passUsuario"
                             />
                         </div>
                     </div>
@@ -60,7 +75,7 @@
             </div>
             <!-- Ubicacion -->
             <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="2. Lugar del problema">
+                <vx-card title="2. Ubicacion del Usuario">
                     <div class="vx-row mb-12">
                         <div class="vx-col w-1/3 mt-5">
                             <h6>2.1 - Seleccione el Edificio</h6>
@@ -138,9 +153,18 @@ export default {
             localVal: "http://127.0.0.1:8000",
             nombreUsuario: "",
             apellidoUsuario: "",
+            anexoUsuario: 0,
+            correoUsuario: "",
+            rutUsuario: "",
+            passUsuario: "",
+            listadoCargo: [],
             listadoEdificios: [],
             listadoServicios: [],
             listadoUnidadEsp: [],
+            seleccionCargo: {
+                id: 0,
+                descripcionCargo: "Seleccione Cargo"
+            },
             seleccionEdificio: {
                 id: 0,
                 descripcionEdificio: "Seleccione Edificio"
@@ -154,14 +178,67 @@ export default {
                 descripcionUnidadEsp: "Seleccion Unidad Especifica"
             },
             dataUsuarioCreador: {
-                nombre: localStorage.getItem("nombre"),
+                nombre:
+                    localStorage.getItem("nombre") +
+                    " " +
+                    localStorage.getItem("apellido"),
                 id_user: localStorage.getItem("id")
+            },
+            registroUsuario: {
+                run: "",
+                email: "",
+                nombre: "",
+                apellido: "",
+                anexo: "",
+                id_cargo: 0,
+                id_cargo_asociado: 0,
+                id_edificio: 0,
+                id_servicio: 0,
+                id_unidadEspecifica: 0,
+                password: ""
             }
         };
     },
     methods: {
-        limpiar() {},
-        guardar() {},
+        limpiar() {
+            this.registroUsuario.run = this.rutUsuario;
+            this.registroUsuario.email = this.correoUsuario;
+            this.registroUsuario.nombre = this.nombreUsuario;
+            this.registroUsuario.apellido = this.apellidoUsuario;
+            this.registroUsuario.anexo = this.anexoUsuario;
+            this.registroUsuario.id_cargo = 1;
+            this.registroUsuario.id_edificio = this.seleccionEdificio[0].id;
+            this.registroUsuario.id_servicio = this.seleccionServicio[0].id;
+            this.registroUsuario.id_unidadEspecifica = this.seleccionUnidadEsp[0].id;
+            this.registroUsuario.password = this.passUsuario;
+
+            console.log(this.registroUsuario);
+        },
+        guardar() {
+            this.registroUsuario.run = this.rutUsuario;
+            this.registroUsuario.email = this.correoUsuario;
+            this.registroUsuario.nombre = this.nombreUsuario;
+            this.registroUsuario.apellido = this.apellidoUsuario;
+            this.registroUsuario.anexo = this.anexoUsuario;
+            this.registroUsuario.id_cargo = 1;
+            this.registroUsuario.id_edificio = this.seleccionEdificio[0].id;
+            this.registroUsuario.id_servicio = this.seleccionServicio[0].id;
+            this.registroUsuario.id_unidadEspecifica = this.seleccionUnidadEsp[0].id;
+            this.registroUsuario.password = this.passUsuario;
+
+            const registro = this.registroUsuario;
+
+            axios
+                .post(
+                    this.localVal + "/api/Agente/GuardarUsuarioJefe",
+                    registro
+                )
+                .then(res => {
+                    const ticketServer = res.data;
+                    console.log(ticketServer);
+                    console.log("Si funciono c:");
+                });
+        },
         cargaSegunUnidadEsp() {
             var idGeneral = this.seleccionUnidadEsp.id;
 
@@ -233,6 +310,13 @@ export default {
 
             this.seleccionEdificio = b;
         },
+        cargarCargoUsuario() {
+            this.csrf_token;
+
+            axios.get(this.localVal + "/api/Agente/GetCargos").then(res => {
+                this.listadoCargo = res.data;
+            });
+        },
         cargarEdificios() {
             this.csrf_token;
 
@@ -240,6 +324,7 @@ export default {
                 this.listadoEdificios = res.data;
             });
         },
+
         cargarServicios() {
             this.csrf_token;
 
@@ -259,6 +344,7 @@ export default {
         this.cargarEdificios();
         this.cargarServicios();
         this.cargarUnidadEsp();
+        this.cargarCargoUsuario();
     },
     components: {
         "v-select": vSelect,

@@ -23,8 +23,8 @@ class PdfController extends Controller
             'unidad_esps.descripcionUnidadEsp',
             'estado_solicituds.descripcionEstado',
             'tipo_reparacions.descripcionTipoReparacion',
-            'trabajadores.tra_nombre_apellido',
-            'supervisores.sup_nombre_apellido',
+            DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"),
+            DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
             DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket"),
             DB::raw("DATE_FORMAT(solicitud_tickets.created_at, '%d/%m/%Y') as nfechaS"),
             DB::raw("DATE_FORMAT(gestion_solicitudes.fechaInicio, '%d/%m/%Y') as nfechaI"),
@@ -51,7 +51,14 @@ class PdfController extends Controller
         $apoyo2 = Trabajadores::firstWhere('id', $idApoyo2);
         $apoyo3 = Trabajadores::firstWhere('id', $idApoyo3);
 
+        $nom1 = $apoyo1->tra_nombre;
+        $ape1 = $apoyo1->tra_apellido;
 
+        $nom2 = $apoyo2->tra_nombre;
+        $ape2 = $apoyo2->tra_apellido;
+
+        $nom3 = $apoyo3->tra_nombre;
+        $ape3 = $apoyo3->tra_apellido;
 
         $idSol = $data->nticket;
         $nombreTra = $data->tra_nombre_apellido;
@@ -65,11 +72,13 @@ class PdfController extends Controller
         $fechaI = $data->nfechaI;
         $horasEjecucion = $data->horasEjecucion;
         $diasEjecucion = $data->diasEjecucion;
-        $nomApoyo1 = $apoyo1->tra_nombre_apellido;
-        $nomApoyo2 = $apoyo2->tra_nombre_apellido;
-        $nomApoyo3 = $apoyo3->tra_nombre_apellido;
+        $nomApoyo1 = $nom1 + $ape1;
+        $nomApoyo2 = $nom2 + $ape2;
+        $nomApoyo3 = $nom3 + $ape3;
         $descripcionPro = $data->desFormat;
         $nombreUsuario = $data->nombre;
+
+
 
         $data = [
             'nombreTra' =>  $nombreTra,
@@ -105,12 +114,13 @@ class PdfController extends Controller
             'gestion_solicitudes.*',
             'edificios.descripcionEdificio',
             'servicios.descripcionServicio',
-            'users.nombre',
             'unidad_esps.descripcionUnidadEsp',
             'estado_solicituds.descripcionEstado',
             'tipo_reparacions.descripcionTipoReparacion',
-            'trabajadores.tra_nombre_apellido',
-            'supervisores.sup_nombre_apellido',
+            'turnos.descripcionTurno',
+            DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
+            DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"),
+            DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
             DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket"),
             DB::raw("DATE_FORMAT(solicitud_tickets.created_at, '%d/%m/%Y') as nfechaS"),
             DB::raw("DATE_FORMAT(gestion_solicitudes.fechaInicio, '%d/%m/%Y') as nfechaI"),
@@ -125,6 +135,7 @@ class PdfController extends Controller
             ->join('unidad_esps', 'solicitud_tickets.id_ubicacionEx', '=', 'unidad_esps.id')
             ->join('estado_solicituds', 'solicitud_tickets.id_estado', '=', 'estado_solicituds.id')
             ->join('tipo_reparacions', 'solicitud_tickets.id_tipoReparacion', '=', 'tipo_reparacions.id')
+            ->join('turnos', 'gestion_solicitudes.idTurno', '=', 'turnos.id')
             ->join('users', 'solicitud_tickets.id_user', '=', 'users.id')
             ->where('gestion_solicitudes.id_solicitud', $id)
             ->first();
@@ -138,6 +149,14 @@ class PdfController extends Controller
         $apoyo3 = Trabajadores::firstWhere('id', $idApoyo3);
 
 
+        $nom1 = $apoyo1->tra_nombre;
+        $ape1 = $apoyo1->tra_apellido;
+
+        $nom2 = $apoyo2->tra_nombre;
+        $ape2 = $apoyo2->tra_apellido;
+
+        $nom3 = $apoyo3->tra_nombre;
+        $ape3 = $apoyo3->tra_apellido;
 
         $idSol = $data->nticket;
         $nombreTra = $data->tra_nombre_apellido;
@@ -151,11 +170,10 @@ class PdfController extends Controller
         $fechaI = $data->nfechaI;
         $horasEjecucion = $data->horasEjecucion;
         $diasEjecucion = $data->diasEjecucion;
-        $nomApoyo1 = $apoyo1->tra_nombre_apellido;
-        $nomApoyo2 = $apoyo2->tra_nombre_apellido;
-        $nomApoyo3 = $apoyo3->tra_nombre_apellido;
         $descripcionPro = $data->desFormat;
         $nombreUsuario = $data->nombre;
+        $turno = $data->descripcionTurno;
+
 
         $data = [
             'nombreTra' =>  $nombreTra,
@@ -170,11 +188,15 @@ class PdfController extends Controller
             'fechaI' => $fechaI,
             'horasEjecucion' => $horasEjecucion,
             'diasEjecucion' => $diasEjecucion,
-            'nomApoyo1' => $nomApoyo1,
-            'nomApoyo2' => $nomApoyo2,
-            'nomApoyo3' => $nomApoyo3,
+            'nomApoyo1' => $nom1,
+            'apeApoyo1' => $ape1,
+            'nomApoyo2' => $nom2,
+            'apeApoyo2' => $ape2,
+            'nomApoyo3' => $nom3,
+            'apeApoyo3' => $ape3,
             'descripcionPro' => $descripcionPro,
-            'nombreUsuario' => $nombreUsuario
+            'nombreUsuario' => $nombreUsuario,
+            'descripcionTurno' =>$turno
         ];
 
         $pdf = App::make("dompdf.wrapper");
@@ -191,12 +213,12 @@ class PdfController extends Controller
             'gestion_solicitudes.*',
             'edificios.descripcionEdificio',
             'servicios.descripcionServicio',
-            'users.nombre',
             'unidad_esps.descripcionUnidadEsp',
             'estado_solicituds.descripcionEstado',
             'tipo_reparacions.descripcionTipoReparacion',
-            'trabajadores.tra_nombre_apellido',
-            'supervisores.sup_nombre_apellido',
+            DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
+            DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"),
+            DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
             DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket"),
             DB::raw("DATE_FORMAT(solicitud_tickets.created_at, '%d/%m/%Y') as nfechaS"),
             DB::raw("DATE_FORMAT(gestion_solicitudes.fechaInicio, '%d/%m/%Y') as nfechaI"),
@@ -225,6 +247,15 @@ class PdfController extends Controller
 
 
 
+        $nom1 = $apoyo1->tra_nombre;
+        $ape1 = $apoyo1->tra_apellido;
+
+        $nom2 = $apoyo2->tra_nombre;
+        $ape2 = $apoyo2->tra_apellido;
+
+        $nom3 = $apoyo3->tra_nombre;
+        $ape3 = $apoyo3->tra_apellido;
+
         $idSol = $data->nticket;
         $nombreTra = $data->tra_nombre_apellido;
         $nombreSup = $data->sup_nombre_apellido;
@@ -237,11 +268,10 @@ class PdfController extends Controller
         $fechaI = $data->nfechaI;
         $horasEjecucion = $data->horasEjecucion;
         $diasEjecucion = $data->diasEjecucion;
-        $nomApoyo1 = $apoyo1->tra_nombre_apellido;
-        $nomApoyo2 = $apoyo2->tra_nombre_apellido;
-        $nomApoyo3 = $apoyo3->tra_nombre_apellido;
         $descripcionPro = $data->desFormat;
         $nombreUsuario = $data->nombre;
+        $turno = $data->descripcionTurno;
+
 
         $data = [
             'nombreTra' =>  $nombreTra,
@@ -256,11 +286,15 @@ class PdfController extends Controller
             'fechaI' => $fechaI,
             'horasEjecucion' => $horasEjecucion,
             'diasEjecucion' => $diasEjecucion,
-            'nomApoyo1' => $nomApoyo1,
-            'nomApoyo2' => $nomApoyo2,
-            'nomApoyo3' => $nomApoyo3,
+            'nomApoyo1' => $nom1,
+            'apeApoyo1' => $ape1,
+            'nomApoyo2' => $nom2,
+            'apeApoyo2' => $ape2,
+            'nomApoyo3' => $nom3,
+            'apeApoyo3' => $ape3,
             'descripcionPro' => $descripcionPro,
-            'nombreUsuario' => $nombreUsuario
+            'nombreUsuario' => $nombreUsuario,
+            'descripcionTurno' =>$turno
         ];
 
         $pdf = App::make("dompdf.wrapper");
@@ -277,12 +311,12 @@ class PdfController extends Controller
             'gestion_solicitudes.*',
             'edificios.descripcionEdificio',
             'servicios.descripcionServicio',
-            'users.nombre',
             'unidad_esps.descripcionUnidadEsp',
             'estado_solicituds.descripcionEstado',
             'tipo_reparacions.descripcionTipoReparacion',
-            'trabajadores.tra_nombre_apellido',
-            'supervisores.sup_nombre_apellido',
+            DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
+            DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"),
+            DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
             DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket"),
             DB::raw("DATE_FORMAT(solicitud_tickets.created_at, '%d/%m/%Y') as nfechaS"),
             DB::raw("DATE_FORMAT(gestion_solicitudes.fechaInicio, '%d/%m/%Y') as nfechaI"),
@@ -311,6 +345,15 @@ class PdfController extends Controller
 
 
 
+        $nom1 = $apoyo1->tra_nombre;
+        $ape1 = $apoyo1->tra_apellido;
+
+        $nom2 = $apoyo2->tra_nombre;
+        $ape2 = $apoyo2->tra_apellido;
+
+        $nom3 = $apoyo3->tra_nombre;
+        $ape3 = $apoyo3->tra_apellido;
+
         $idSol = $data->nticket;
         $nombreTra = $data->tra_nombre_apellido;
         $nombreSup = $data->sup_nombre_apellido;
@@ -323,11 +366,10 @@ class PdfController extends Controller
         $fechaI = $data->nfechaI;
         $horasEjecucion = $data->horasEjecucion;
         $diasEjecucion = $data->diasEjecucion;
-        $nomApoyo1 = $apoyo1->tra_nombre_apellido;
-        $nomApoyo2 = $apoyo2->tra_nombre_apellido;
-        $nomApoyo3 = $apoyo3->tra_nombre_apellido;
         $descripcionPro = $data->desFormat;
         $nombreUsuario = $data->nombre;
+        $turno = $data->descripcionTurno;
+
 
         $data = [
             'nombreTra' =>  $nombreTra,
@@ -342,11 +384,15 @@ class PdfController extends Controller
             'fechaI' => $fechaI,
             'horasEjecucion' => $horasEjecucion,
             'diasEjecucion' => $diasEjecucion,
-            'nomApoyo1' => $nomApoyo1,
-            'nomApoyo2' => $nomApoyo2,
-            'nomApoyo3' => $nomApoyo3,
+            'nomApoyo1' => $nom1,
+            'apeApoyo1' => $ape1,
+            'nomApoyo2' => $nom2,
+            'apeApoyo2' => $ape2,
+            'nomApoyo3' => $nom3,
+            'apeApoyo3' => $ape3,
             'descripcionPro' => $descripcionPro,
-            'nombreUsuario' => $nombreUsuario
+            'nombreUsuario' => $nombreUsuario,
+            'descripcionTurno' =>$turno
         ];
 
         $pdf = App::make("dompdf.wrapper");
@@ -363,12 +409,12 @@ class PdfController extends Controller
             'gestion_solicitudes.*',
             'edificios.descripcionEdificio',
             'servicios.descripcionServicio',
-            'users.nombre',
             'unidad_esps.descripcionUnidadEsp',
             'estado_solicituds.descripcionEstado',
             'tipo_reparacions.descripcionTipoReparacion',
-            'trabajadores.tra_nombre_apellido',
-            'supervisores.sup_nombre_apellido',
+            DB::raw("CONCAT(users.nombre,' ',users.apellido) as nombre"),
+            DB::raw("CONCAT(trabajadores.tra_nombre,' ',trabajadores.tra_apellido) as tra_nombre_apellido"),
+            DB::raw("CONCAT(supervisores.sup_nombre,' ',supervisores.sup_apellido) as sup_nombre_apellido"),
             DB::raw("CONCAT(DATE_FORMAT(solicitud_tickets.created_at, '%d%m%Y'),'-',solicitud_tickets.id,'-',solicitud_tickets.id_user) as nticket"),
             DB::raw("DATE_FORMAT(solicitud_tickets.created_at, '%d/%m/%Y') as nfechaS"),
             DB::raw("DATE_FORMAT(gestion_solicitudes.fechaInicio, '%d/%m/%Y') as nfechaI"),
@@ -397,6 +443,15 @@ class PdfController extends Controller
 
 
 
+        $nom1 = $apoyo1->tra_nombre;
+        $ape1 = $apoyo1->tra_apellido;
+
+        $nom2 = $apoyo2->tra_nombre;
+        $ape2 = $apoyo2->tra_apellido;
+
+        $nom3 = $apoyo3->tra_nombre;
+        $ape3 = $apoyo3->tra_apellido;
+
         $idSol = $data->nticket;
         $nombreTra = $data->tra_nombre_apellido;
         $nombreSup = $data->sup_nombre_apellido;
@@ -409,11 +464,10 @@ class PdfController extends Controller
         $fechaI = $data->nfechaI;
         $horasEjecucion = $data->horasEjecucion;
         $diasEjecucion = $data->diasEjecucion;
-        $nomApoyo1 = $apoyo1->tra_nombre_apellido;
-        $nomApoyo2 = $apoyo2->tra_nombre_apellido;
-        $nomApoyo3 = $apoyo3->tra_nombre_apellido;
         $descripcionPro = $data->desFormat;
         $nombreUsuario = $data->nombre;
+        $turno = $data->descripcionTurno;
+
 
         $data = [
             'nombreTra' =>  $nombreTra,
@@ -428,11 +482,15 @@ class PdfController extends Controller
             'fechaI' => $fechaI,
             'horasEjecucion' => $horasEjecucion,
             'diasEjecucion' => $diasEjecucion,
-            'nomApoyo1' => $nomApoyo1,
-            'nomApoyo2' => $nomApoyo2,
-            'nomApoyo3' => $nomApoyo3,
+            'nomApoyo1' => $nom1,
+            'apeApoyo1' => $ape1,
+            'nomApoyo2' => $nom2,
+            'apeApoyo2' => $ape2,
+            'nomApoyo3' => $nom3,
+            'apeApoyo3' => $ape3,
             'descripcionPro' => $descripcionPro,
-            'nombreUsuario' => $nombreUsuario
+            'nombreUsuario' => $nombreUsuario,
+            'descripcionTurno' =>$turno
         ];
 
         $pdf = App::make("dompdf.wrapper");

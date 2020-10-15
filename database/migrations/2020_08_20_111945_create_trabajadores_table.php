@@ -15,7 +15,9 @@ class CreateTrabajadoresTable extends Migration
     {
         Schema::create('trabajadores', function (Blueprint $table) {
             $table->id();
-            $table->text('tra_nombre_apellido');
+            $table->text('tra_run');
+            $table->text('tra_nombre');
+            $table->text('tra_apellido');
             $table->text('especialidad');
             $table->timestamps();
         });

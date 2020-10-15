@@ -9,7 +9,7 @@
                     class="content-area__heading pr-4 border-0 md:border-r border-solid border-grey-light"
                 >
                     <h2 class="mb-1">
-                        Registrar nuevo Usuario Cargo Subrogante
+                        Registrar nuevo Usuario Subrogante
                     </h2>
                 </div>
                 <div class="vx-breadcrumb ml-4 md:block hidden">
@@ -27,47 +27,77 @@
             <div class="vx-col md:w-1/1 w-full mb-base">
                 <vx-card title="1. Ingrese Datos del Usuario">
                     <div class="vx-row mb-12">
+                        <div class="vx-col w-full mt-5">
+                            <h6>1.1 Rut del Usuario</h6>
+                            <vs-input
+                                class="vx-col w-full mt-5"
+                                v-model="rutUsuario"
+                            />
+                        </div>
                         <div class="vx-col w-1/2 mt-5">
-                            <h6>1.1 Nombre del Usuario</h6>
+                            <h6>1.2 Nombre del Usuario</h6>
                             <vs-input
                                 class="vx-col w-full mt-5"
                                 v-model="nombreUsuario"
                             />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
-                            <h6>1.2 Apellido del Usuario</h6>
+                            <h6>1.3 Apellido del Usuario</h6>
                             <vs-input
                                 class="vx-col w-full mt-5"
                                 v-model="apellidoUsuario"
                             />
                         </div>
                         <div class="vx-col w-1/2 mt-5">
-                            <h6>1.3 Cargo del Usuario</h6>
-                            <vs-input
-                                class="vx-col w-full mt-5"
-                                v-model="nombreUsuario"
-                            />
-                        </div>
-                        <div class="vx-col w-1/2 mt-5">
                             <h6>1.4 Anexo del Usuario</h6>
                             <vs-input
                                 class="vx-col w-full mt-5"
-                                v-model="nombreUsuario"
+                                v-model="anexoUsuario"
                             />
                         </div>
-                        <div class="vx-col w-full mt-5">
+                        <div class="vx-col w-1/2 mt-5">
                             <h6>1.5 Correo del Usuario</h6>
                             <vs-input
                                 class="vx-col w-full mt-5"
-                                v-model="nombreUsuario"
+                                v-model="correoUsuario"
                             />
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>1.6 - Seleccione el Cargo</h6>
+                            <br />
+                            <v-select
+                                v-model="seleccionCargo"
+                                placeholder="Edificio"
+                                class="w-full select-large"
+                                label="descripcionCargo"
+                                :options="listadoCargo"
+                            ></v-select>
+                        </div>
+                        <div class="vx-col w-1/2 mt-5">
+                            <h6>1.7 Contraseña del Usuario</h6>
+                            <vs-input
+                                type="password"
+                                class="vx-col w-full mt-5"
+                                v-model="passUsuario"
+                            />
+                        </div>
+                        <div class="vx-col w-full mt-5">
+                            <h6>1.8 - Seleccione el Cargo</h6>
+                            <br />
+                            <v-select
+                                v-model="seleccionUsuariosCargo"
+                                placeholder="Jefe"
+                                class="w-full select-large"
+                                label="nombrecompleto"
+                                :options="listadoUsuariosCargo"
+                            ></v-select>
                         </div>
                     </div>
                 </vx-card>
             </div>
             <!-- Ubicacion -->
             <div class="vx-col md:w-1/1 w-full mb-base">
-                <vx-card title="2. Lugar del problema">
+                <vx-card title="2. Ubicacion del Usuario">
                     <div class="vx-row mb-12">
                         <div class="vx-col w-1/3 mt-5">
                             <h6>2.1 - Seleccione el Edificio</h6>
@@ -145,13 +175,28 @@ export default {
             localVal: "http://127.0.0.1:8000",
             nombreUsuario: "",
             apellidoUsuario: "",
+            anexoUsuario: 0,
+            correoUsuario: "",
+            rutUsuario: "",
+            passUsuario: "",
+            listadoCargo: [],
             listadoEdificios: [],
             listadoServicios: [],
             listadoUnidadEsp: [],
+            listadoUsuariosCargo: [],
+            seleccionCargo: {
+                id: 0,
+                descripcionCargo: "Seleccione Cargo"
+            },
+            seleccionUsuariosCargo: {
+                id: 0,
+                nombrecompleto: "Seleccione Usuario Jefe"
+            },
             seleccionEdificio: {
                 id: 0,
                 descripcionEdificio: "Seleccione Edificio"
             },
+
             seleccionServicio: {
                 id: 0,
                 descripcionServicio: "Seleccione Servicio"
@@ -161,7 +206,10 @@ export default {
                 descripcionUnidadEsp: "Seleccion Unidad Especifica"
             },
             dataUsuarioCreador: {
-                nombre: localStorage.getItem("nombre"),
+                nombre:
+                    localStorage.getItem("nombre") +
+                    " " +
+                    localStorage.getItem("apellido"),
                 id_user: localStorage.getItem("id")
             }
         };
@@ -240,6 +288,24 @@ export default {
 
             this.seleccionEdificio = b;
         },
+        cargarCargoUsuario() {
+            this.csrf_token;
+
+            axios
+                .get(this.localVal + "/api/Agente/GetCargoNoJefatura")
+                .then(res => {
+                    this.listadoCargo = res.data;
+                });
+        },
+        cargarListadoUsuarios() {
+            this.csrf_token;
+
+            axios
+                .get(this.localVal + "/api/Agente/GetUsuariosCargo")
+                .then(res => {
+                    this.listadoUsuariosCargo = res.data;
+                });
+        },
         cargarEdificios() {
             this.csrf_token;
 
@@ -247,6 +313,7 @@ export default {
                 this.listadoEdificios = res.data;
             });
         },
+
         cargarServicios() {
             this.csrf_token;
 
@@ -266,6 +333,8 @@ export default {
         this.cargarEdificios();
         this.cargarServicios();
         this.cargarUnidadEsp();
+        this.cargarCargoUsuario();
+        this.cargarListadoUsuarios();
     },
     components: {
         "v-select": vSelect,

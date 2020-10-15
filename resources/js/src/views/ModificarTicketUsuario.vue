@@ -115,13 +115,19 @@
                 <div class="vx-row">
                     <div class="vx-col sm:w-2/3 w-full ml-auto">
                         <vs-button
+                            class="mr-3 mb-2"
+                            @click="volver"
+                            color="success"
+                            >Volver</vs-button
+                        >
+                        <vs-button
                             color="warning"
                             class="mr-3 mb-2"
-                            @click="probando2"
+                            @click="probando"
                             >Limpiar</vs-button
                         >
                         <vs-button class="mb-2" @click="modificarSolicitud"
-                            >Enviar</vs-button
+                            >Modificar</vs-button
                         >
                     </div>
                 </div>
@@ -173,7 +179,10 @@ export default {
         colorLoading: "#ff8000",
         solicitud: {
             id: 0,
-            nombre: localStorage.getItem("nombre"),
+            nombre:
+                localStorage.getItem("nombre") +
+                " " +
+                localStorage.getItem("apellido"),
             descripcionP: "",
             tituloP: "",
             id_user: localStorage.getItem("id"),
@@ -212,6 +221,9 @@ export default {
         }
     },
     methods: {
+        volver() {
+            router.back();
+        },
         arrayTipoReparacion(id) {
             let c = this.listadoTipoRep;
             let b = [];
